@@ -5,15 +5,22 @@
     <div class="form" @keyup.enter.exact="login">
       <div class="title">ME-Admin</div>
       <el-form ref="formRef" :rules="rules" :model="loginParams">
-        <textfield
-          :inputfor="'username'"
-          :vmodel="loginParams.username"
-          :placeholder="'Username'"
-          autofocus
-          clearable
-        />
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginParams.username"
+            autofocus
+            :placeholder="t('用户名') + '(示例：admin、editor、viewer)'"
+            clearable
+          />
+        </el-form-item>
         <el-form-item prop="password">
-          <textfield vmodel="loginParams.password" :placeholder="'Password'" type="password" />
+          <el-input
+            v-model="loginParams.password"
+            type="password"
+            :placeholder="t('密码') + '(任意填写即可)'"
+            clearable
+            show-password
+          />
         </el-form-item>
         <el-form-item prop="captcha">
           <el-input v-model="loginParams.captcha" :placeholder="t('验证码') + '(任意填写即可)'" clearable>
@@ -22,7 +29,6 @@
             </template>
           </el-input>
         </el-form-item>
-
         <el-button class="submit" type="primary" @click="login">{{ t('登录') }}</el-button>
       </el-form>
     </div>
@@ -34,7 +40,6 @@ import { LoginParams } from '@/api/user';
 import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
-import Textfield from '@/components/textfield/textfield.vue';
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
 const route = useRoute();

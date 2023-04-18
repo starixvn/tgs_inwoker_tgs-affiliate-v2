@@ -6,5 +6,26 @@
       "agent": "代理",
       "player": "玩家"
     }
+  },
+  "report": {
+    "title": "报表",
+    "submenu": {
+      "contribute": "贡献报表",
+      "dividend": "分红报表",
+      "round": "订单查询"
+    }
+  },
+  "wallet": {
+    "title": "钱包",
+    "submenu": {
+      "withdraw": "提款",
+      "balance": "余额"
+    }
+  },
+  "account": {
+    "title": "账户"
+  },
+  "helpcenter": {
+    "title": "帮助中心"
   }
 }

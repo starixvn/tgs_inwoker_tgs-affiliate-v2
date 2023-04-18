@@ -6,5 +6,26 @@
       "agent": "Agent",
       "player": "Player"
     }
+  },
+  "report": {
+    "title": "Report",
+    "submenu": {
+      "contribute": "Contribution",
+      "dividend": "Dividend",
+      "round": "Order Tracking"
+    }
+  },
+  "wallet": {
+    "title": "Wallet",
+    "submenu": {
+      "withdraw": "Withdraw",
+      "balance": "Balance History"
+    }
+  },
+  "account": {
+    "title": "Account"
+  },
+  "helpcenter": {
+    "title": "Help Center"
   }
 }

@@ -1,6 +1,9 @@
 <template>
   <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
-    <div class="title">Agent Admin 2.0</div>
+    <div class="title">
+      Agent <br />
+      Admin 2.0
+    </div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
@@ -48,15 +51,15 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
   --el-menu-base-level-padding: 12px;
   --el-menu-text-color: v-bind('menuTextColor');
   --el-menu-active-color: v-bind('menuActiveColor');
-  background-color: v-bind('themeConfig.menuBg');
+  background: #fff;
   height: 100%;
   position: relative;
   padding-top: var(--el-menu-item-height);
   .title {
     height: var(--el-menu-item-height);
-    line-height: var(--el-menu-item-height);
+
     font-weight: bold;
-    padding: 0 12px;
+    padding: 12px 24px;
     font-size: 1.25em;
     word-break: break-all;
     overflow-y: hidden;
@@ -66,7 +69,8 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
     left: 0;
     right: 0;
     top: 0;
-    box-shadow: 0 1px v-bind(menuBg1);
+
+    white-space: pre-line;
   }
   .menu-box {
     height: 100%;
@@ -74,39 +78,57 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
       width: v-bind('themeConfig.menuWidth');
       color: var(--el-menu-text-color);
       transition: width 0.5s;
+      border: 0px;
 
       .menu {
         padding-right: 6px;
+        padding-left: 12px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         word-break: break-all;
       }
 
+      .el-menu-item {
+        color: #000;
+      }
+
       .el-menu {
         background-color: unset;
         border: 0;
+        padding: 0 10px;
 
         .el-sub-menu.is-active {
           > .el-sub-menu__title {
-            color: var(--el-menu-active-color);
+            background: #07b5bc;
+            color: #fff;
+            border-radius: 8px;
+
+            .el-icon {
+              color: #fff;
+            }
           }
         }
         .el-sub-menu__title {
           padding-right: 28px;
+          color: #000;
         }
         .el-sub-menu__title:hover,
         .el-menu-item:hover {
-          background-color: rgba(var(--el-color-primary-rgb), 0.3);
-          color: var(--el-menu-active-color);
+          background: transparent;
         }
 
         .el-menu-item.is-active {
-          color: var(--el-color-primary);
+          color: #07b5bc;
+          font-weight: bold;
         }
 
         .el-menu--inline {
-          background-color: v-bind('menuBg1');
+          background: transparent;
+        }
+
+        .el-sub-menu.is-opened .el-menu-item {
+          padding: 0;
         }
 
         .el-menu-item,
@@ -115,6 +137,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
             width: 1em;
             margin-left: -1px;
             margin-right: 12px;
+            color: #000;
           }
         }
       }

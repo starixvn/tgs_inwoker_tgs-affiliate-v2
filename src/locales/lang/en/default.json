@@ -1,5 +1,15 @@
 {
-  "dashboard": "Dashboard",
+  "dashboard": {
+    "title": "Dashboard",
+    "content": {
+      "addagent": "Add Agent",
+      "addplayer": "Add Player",
+      "changepassword": "Change Password",
+      "wallet": "Wallet",
+      "referrallink": "Referral Link",
+      "winlossreport": "Win/Loss Report"
+    }
+  },
   "team": {
     "title": "Team",
     "submenu": {

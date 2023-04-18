@@ -6,6 +6,6 @@ export const routes: RouteRecordRaw[] = [
     path: '/wallet',
     component: Layout,
     children: concatObjectValue<RouteRecordRaw>(import.meta.glob('./wallet/*.ts', { eager: true, import: 'routes' })),
-    meta: { title: 'wallet.title', icon: 'mel-icon-files' },
+    meta: { title: 'wallet.title' },
   },
 ];

@@ -1,5 +1,15 @@
 {
-  "dashboard": "首頁",
+  "dashboard": {
+    "title": "首頁",
+    "content": {
+      "addagent": "新增代理",
+      "addplayer": "新增玩家",
+      "changepassword": "修改密碼",
+      "wallet": "錢包",
+      "referrallink": "推薦連結",
+      "winlossreport": "贏/輸報表"
+    }
+  },
   "team": {
     "title": "團隊",
     "submenu": {

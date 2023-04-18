@@ -1,20 +1,13 @@
 <template>
   <div class="total-panel">
-    <el-row :gutter="20">
+    <el-row :gutter="30">
       <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :lg="6">
-        <el-card shadow="hover" :header="loading ? '' : item.title" class="total-item">
-          <el-skeleton :loading="loading">
-            <div class="content">
-              <div class="total">
-                <me-number :end="item.total"></me-number>
-                <component :is="item.icon" :style="{ color: item.iconColor }" />
-              </div>
-              <div class="footer">
-                {{ item.subTitle }}<span>{{ item.subTotal }}</span>
-              </div>
-            </div>
-          </el-skeleton>
-        </el-card>
+        <div class="card" :on-click="() => {}">
+          <div class="card-icon">{{ t(item.title) }} icon here</div>
+          <div>
+            {{ t(item.title) }}
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -22,78 +15,76 @@
 <script setup lang="ts">
 import { statisticsApi } from '@/api/statistics';
 import { useLocalesI18n } from '@/locales/i18n';
+
 let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'dashboard']);
 const { loading, runAsync, data } = statisticsApi(true);
 const list = reactive([
   {
-    title: computed(() => t('访问量')),
+    title: 'dashboard.content.addagent',
     icon: 'mel-icon-platform',
-    iconColor: '#409EFF',
-    total: computed(() => data.value?.view.total),
-    subTitle: computed(() => t('昨日新增') + '：'),
-    subTotal: computed(() => data.value?.view.yesterdayTotal),
+    path: '/dashboard',
   },
   {
-    title: t('用户数'),
+    title: 'dashboard.content.addplayer',
     icon: 'mel-icon-user-filled',
-    iconColor: '#67C23A',
-    total: computed(() => data.value?.user.total),
-    subTitle: computed(() => t('昨日新增') + '：'),
-    subTotal: computed(() => data.value?.user.yesterdayTotal),
+    path: '/team/agent',
   },
   {
-    title: computed(() => t('订单数')),
-    icon: 'mel-icon-histogram',
-    iconColor: '#E6A23C',
-    total: computed(() => data.value?.order.total),
-    subTitle: computed(() => t('昨日新增') + '：'),
-    subTotal: computed(() => data.value?.order.yesterdayTotal),
+    title: 'dashboard.title',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
   },
   {
-    title: computed(() => t('成交额')),
-    icon: 'mel-icon-money',
-    iconColor: '#F56C6C',
-    total: computed(() => (data.value ? ([data.value.turnover.total, '￥'] as [number, string]) : 0)),
-    subTitle: computed(() => t('昨日新增') + '：'),
-    subTotal: computed(() => '￥' + data.value?.turnover.yesterdayTotal ?? ''),
+    title: 'dashboard.content.changepassword',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
+  },
+  {
+    title: 'wallet.title',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
+  },
+  {
+    title: 'dashboard.content.referrallink',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
+  },
+  {
+    title: 'dashboard.content.winlossreport',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
+  },
+  {
+    title: 'helpcenter.title',
+    icon: 'mel-icon-user-filled',
+    path: '/dashboard',
   },
 ]);
 runAsync();
 </script>
 <style lang="scss" scoped>
-.total-panel {
-  margin-bottom: -10px;
-  .total-item {
-    --el-card-padding: 10px;
-    margin-bottom: 10px;
-    .content {
-      height: 91.5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 0 10px;
-      .total {
-        font-size: 24px;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-grow: 1;
-        .el-icon,
-        :deep(svg) {
-          height: 100%;
-          width: auto;
-        }
-      }
-      .footer {
-        font-size: 13px;
-        color: var(--el-text-color-regular);
-        span {
-          font-weight: bold;
-          color: var(--el-text-color-primary);
-        }
-      }
-    }
+.card {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 9px 18px rgba(0, 0, 0, 0.1), 0 15px 12px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #07b5bc;
+    color: #fff;
   }
+}
+
+.card-icon {
+  height: 100px;
+  width: 100px;
+  background: rgba(0, 0, 0, 0.02);
 }
 </style>

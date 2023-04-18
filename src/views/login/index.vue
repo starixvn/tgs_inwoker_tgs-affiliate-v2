@@ -1,30 +1,33 @@
 <template>
   <div class="login">
-    <img src="/logo.svg?url" class="bg" />
     <login-header class="header"></login-header>
-    <div class="form" @keyup.enter.exact="login">
-      <div class="title">ME-Admin</div>
-      <el-form ref="formRef" :rules="rules" :model="loginParams">
-        <textfield
-          :inputfor="'username'"
-          :vmodel="loginParams.username"
-          :placeholder="'Username'"
-          autofocus
-          clearable
-        />
-        <el-form-item prop="password">
-          <textfield vmodel="loginParams.password" :placeholder="'Password'" type="password" />
-        </el-form-item>
-        <el-form-item prop="captcha">
-          <el-input v-model="loginParams.captcha" :placeholder="t('验证码') + '(任意填写即可)'" clearable>
-            <template #append>
-              <img src="@/assets/images/captcha.png" class="captcha" />
-            </template>
-          </el-input>
-        </el-form-item>
+    <div id="wrapper">
+      <div class="title">Agent Admin 2.0</div>
+      <div class="form" @keyup.enter.exact="login">
+        <el-form ref="formRef" :rules="rules" :model="loginParams" class="EPForm">
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginParams.username"
+              class="textInput"
+              autofocus
+              :placeholder="t('用户名') + '(示例：admin、editor、viewer)'"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item prop="password" class="textInput">
+            <el-input
+              v-model="loginParams.password"
+              class="textInput"
+              type="password"
+              :placeholder="t('密码') + '(任意填写即可)'"
+              clearable
+              show-password
+            />
+          </el-form-item>
 
-        <el-button class="submit" type="primary" @click="login">{{ t('登录') }}</el-button>
-      </el-form>
+          <el-button class="submit" type="primary" @click="login">{{ t('登录') }}</el-button>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
@@ -34,7 +37,6 @@ import { LoginParams } from '@/api/user';
 import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
-import Textfield from '@/components/textfield/textfield.vue';
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
 const route = useRoute();
@@ -65,18 +67,6 @@ const rules = computed<FormRules>(() => ({
       min: 6,
       max: 12,
       message: t('长度必须在 {0} 到 {1}个字符之间', [6, 12]),
-      trigger: 'blur',
-    },
-  ],
-  captcha: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('验证码'),
-      trigger: 'blur',
-    },
-    {
-      len: 4,
-      message: t('验证码') + ' ' + t('长度必须为 {0} 个字符', [4]),
       trigger: 'blur',
     },
   ],
@@ -119,27 +109,45 @@ const login = async () => {
     width: 100%;
   }
 
+  .EPForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
+    width: 100%;
+  }
+
+  #wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 80%;
+  }
+
+  .title {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    color: #07b5bc;
+    font-size: 25px;
+  }
+
   .form {
     z-index: 1;
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 500px;
-    margin: auto;
-    padding: 30px 20px;
-    background-color: var(--el-mask-color);
-    border-radius: 4px;
-    box-shadow: 0px 0px 4px var(--el-border-color);
+    width: 100%;
 
-    .title {
-      text-align: center;
-      width: 100%;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+    max-width: 500px;
+    padding: 30px 50px;
+    background-color: var(--el-mask-color);
+    border-radius: 12px;
+    box-shadow: 0 9px 28px rgba(0, 0, 0, 0.1), 0 15px 12px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     :deep(.el-input) {
       .captcha {
         margin: 0 -19px;
@@ -157,9 +165,12 @@ const login = async () => {
         height: calc(var(--el-component-size-small) - 2px);
       }
     }
-    .submit {
+    .el-form-item {
       width: 100%;
-      margin: auto;
+    }
+    .submit {
+      width: fit-content;
+      padding: 10px 20px;
       display: block;
     }
   }

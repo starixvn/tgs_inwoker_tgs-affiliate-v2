@@ -1,6 +1,10 @@
 {
-  "large": "大",
-  "default": "默认",
-  "small": "小",
-  " ": ""
+  "dashboard": "首頁",
+  "team": {
+    "title": "團隊",
+    "submenu": {
+      "agent": "代理",
+      "player": "玩家"
+    }
+  }
 }

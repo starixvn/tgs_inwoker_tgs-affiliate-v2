@@ -1,6 +1,6 @@
 <template>
   <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
-    <div class="title">M<span>e - Admin</span></div>
+    <div class="title">Agent Admin 2.0</div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
@@ -60,7 +60,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
     font-size: 1.25em;
     word-break: break-all;
     overflow-y: hidden;
-    color: var(--el-menu-active-color);
+    color: #07b5bc;
     background-color: inherit;
     position: absolute;
     left: 0;

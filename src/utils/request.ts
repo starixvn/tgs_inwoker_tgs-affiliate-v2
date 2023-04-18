@@ -6,8 +6,9 @@ import log from './log';
 import { useRequest, Options, setGlobalOptions } from 'vue-request';
 import qs from 'qs';
 const t = (...args: [string | number]) => useGlobalStore().i18n.t(...args);
+
 const service = axios.create({
-  baseURL: '/api/', // url = base url + request url
+  baseURL: import.meta.env.ME_API_URL + '/api/', // url = base url + request url
   timeout: 10000, // request timeout
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true }), // 数组query参数转换为repeat a=1&a=2,null值会被删除
 });
@@ -20,7 +21,7 @@ service.interceptors.request.use(
     }
     const userStore = useUserStore();
     if (userStore.token) {
-      config.headers['Auth-Token'] = userStore.token;
+      config.headers['token'] = userStore.token;
     }
     return config;
   },
@@ -83,19 +84,20 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       //loading放到微任务中去执行以确保在自动调用请求时等待所有的宏任务中的生命周期函数执行完再创建loading实例 以规避currentInstance的相关警告
       !options?.noLoading && Promise.resolve(undefined).then(loading);
       const { data: res } = await service(await axiosConfig(...args));
-      if (!res || res.code === undefined) {
+      if (!res || res.err === undefined) {
         throw Error(t('返回值解析失败'));
       }
       // 401：认证失败
-      if (res.code === '401') {
+      if (res.err === 401) {
         await useUserStore().logOut();
         return res;
       }
-      if (res.code !== '200') {
-        throw Error(res.msg);
+      if (res.err !== 0) {
+        throw Error(res.errmsg);
       }
+
       if (options?.success) {
-        ElMessage.success({ message: res.msg });
+        ElMessage.success({ message: res.errmsg });
       }
       !options?.noLoading && closeLoading();
       return options?.needAll ? res : res.data;

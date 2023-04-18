@@ -16,7 +16,8 @@ export default defineStore('route', {
   actions: {
     //生成权限过滤后的动态路由
     async generateRoutes() {
-      if (useUserStore().rules) {
+     
+      //if (useUserStore().rules) {
         switch (settingConfig.menuMode) {
           case MenuModeEnum.STATIC:
             this.addRoutes = markRaw(filterAsyncRoutes(asyncRoutes));
@@ -26,7 +27,7 @@ export default defineStore('route', {
             this.addRoutes = markRaw(filterAsyncRoutes(await menuApi()(), undefined, true));
             break;
         }
-      }
+      //}
       return this.addRoutes;
     },
     //初始化路由

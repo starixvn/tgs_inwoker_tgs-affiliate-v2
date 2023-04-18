@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'index',
     component: () => import('@/views/dashboard/dashboard.vue'),
-    meta: { title: 'dashboard.title', affix: true },
+    meta: { title: '首页', affix: true, icon: 'me-icon-dashboard' },
   },
 ];

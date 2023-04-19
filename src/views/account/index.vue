@@ -1,14 +1,14 @@
 <template>
   <div class="big-container">
-    <div class="big-title">{{ $t('account.myaccount') }}</div>
+    <div class="big-title">{{ $t('myaccount') }}</div>
     <div class="content-wrapper">
       <div class="contents">
-        <div class="another-big-title">{{ $t('account.profile.title') }}</div>
+        <div class="another-big-title">{{ $t('myprofile') }}</div>
         <div class="content-inside-content">
           <div>
             <div v-for="item in profileInfo" :key="item.name">
               <div class="profile-info">
-                <div class="title">{{ $t('account.profile.content.' + item.name) }}:</div>
+                <div class="title">{{ $t(item.name) }}:</div>
 
                 <div class="data">{{ item.editable ? '' : item.value }}</div>
               </div>
@@ -18,7 +18,7 @@
       </div>
       <div class="right-content">
         <div class="contents">
-          <div class="another-big-title">{{ $t('account.mydomain') }}</div>
+          <div class="another-big-title">{{ $t('mydomain') }}</div>
           <div class="content-inside-content">
             <div v-for="item in user.agentdomains" :key="item">
               <div class="links">
@@ -29,12 +29,12 @@
           </div>
         </div>
         <div class="contents">
-          <div class="another-big-title">My Profit Share</div>
+          <div class="another-big-title">{{ $t('profitshare') }}</div>
           <div class="content-inside-content">
             <div class="table-background">
               <div v-for="item in profitShare" :key="item.name">
                 <div class="profit-share-item">
-                  <div class="table-content">{{ $t('account.profitshare.games.' + item.name) }}</div>
+                  <div class="table-content">{{ $t(item.name) }}</div>
                   <div class="table-content">{{ item.value }}%</div>
                 </div>
               </div>
@@ -106,6 +106,10 @@ const profileInfo = reactive([
   width: 100%;
   gap: 20px;
   grid-template-columns: 1fr 1fr;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .another-big-title {

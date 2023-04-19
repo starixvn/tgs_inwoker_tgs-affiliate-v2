@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'withdraw',
     component: () => import('@/views/wallet/withdraw.vue'),
-    meta: { title: 'wallet.submenu.withdraw' },
+    meta: { title: 'withdraw' },
   },
 ];

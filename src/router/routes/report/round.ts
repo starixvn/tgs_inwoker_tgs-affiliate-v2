@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'round',
     component: () => import('@/views/report/round.vue'),
-    meta: { title: 'report.submenu.round' },
+    meta: { title: 'round' },
   },
 ];

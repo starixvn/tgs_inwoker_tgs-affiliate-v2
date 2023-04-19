@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'contribute',
     component: () => import('@/views/report/contribute.vue'),
-    meta: { title: 'report.submenu.contribute' },
+    meta: { title: 'contribute' },
   },
 ];

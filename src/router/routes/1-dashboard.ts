@@ -10,6 +10,6 @@ export const routes: RouteRecordRaw[] = [
     children: concatObjectValue<RouteRecordRaw>(
       import.meta.glob('./dashboard/*.ts', { eager: true, import: 'routes' }),
     ),
-    meta: { title: 'team.title' },
+    meta: { title: 'team' },
   },
 ];

@@ -1,73 +1,44 @@
 {
-  "dashboard": {
-    "title": "Dashboard",
-    "content": {
-      "addagent": "Add Agent",
-      "addplayer": "Add Player",
-      "changepassword": "Change Password",
-      "wallet": "Wallet",
-      "referrallink": "Referral Link",
-      "winlossreport": "Win/Loss Report"
-    }
-  },
-  "team": {
-    "title": "Team",
-    "submenu": {
-      "agent": "Agent",
-      "player": "Player"
-    }
-  },
-  "report": {
-    "title": "Report",
-    "submenu": {
-      "contribute": "Contribution",
-      "dividend": "Dividend",
-      "round": "Order Tracking"
-    }
-  },
-  "wallet": {
-    "title": "Wallet",
-    "submenu": {
-      "withdraw": "Withdraw",
-      "balance": "Balance History"
-    }
-  },
-  "account": {
-    "title": "Account",
-    "myaccount": "My Account",
-    "profile": {
-      "title": "My Profile",
-      "content": {
-        "agentusername": "Agent Username",
-        "realname": "Real Name",
-        "registeron": "Register On",
-        "balance": "Balance",
-        "status": "Status",
-        "type": "Type",
-        "profitsharept": "Profit Share P/T",
-        "email": "Email",
-        "phone": "Phone",
-        "loginpassword": "Login Password",
-        "withdrawpassword": "Withdraw Password"
-      }
-    },
-    "mydomain": "My Domains",
-    "profitshare": {
-      "title": "My Profit Share",
-      "games": {
-        "live": "Live",
-        "sportsbook": "Sportsbook",
-        "egame": "E-Game",
-        "lottery": "Lottery",
-        "esports": "E-Sports",
-        "qipai": "Qipai",
-        "visualsports": "Visual Sports",
-        "cockfight": "Cockfight",
-        "horserace": "Horse Race"
-      }
-    }
-  },
-  "helpcenter": {
-    "title": "Help Center"
-  }
+  "dashboard": "Dashboard",
+  "addagent": "Add Agent",
+  "addplayer": "Add Player",
+  "changepassword": "Change Password",
+  "wallet": "Wallet",
+  "referrallink": "Referral Link",
+  "winlossreport": "Win/Loss Report",
+  "team": "Team",
+  "agent": "Agent",
+  "player": "Player",
+  "report": "Report",
+  "contribute": "Contribution",
+  "dividend": "Dividend",
+  "round": "Order Tracking",
+  "withdraw": "Withdraw",
+  "balancehistory": "Balance History",
+  "account": "Account",
+  "myaccount": "My Account",
+  "title": "My Profile",
+  "agentusername": "Agent Username",
+  "realname": "Real Name",
+  "registeron": "Register On",
+  "balance": "Balance",
+  "status": "Status",
+  "type": "Type",
+  "profitsharept": "Profit Share P/T",
+  "email": "Email",
+  "phone": "Phone",
+  "loginpassword": "Login Password",
+  "withdrawpassword": "Withdraw Password",
+  "mydomain": "My Domains",
+  "profitshare": "My Profit Share",
+  "live": "Live",
+  "helpcenter": "Help Center",
+  "sportsbook": "Sportsbook",
+  "egame": "E-Game",
+  "lottery": "Lottery",
+  "esports": "E-Sports",
+  "qipai": "Qipai",
+  "visualsports": "Visual Sports",
+  "cockfight": "Cockfight",
+  "horserace": "Horse Race"
 }

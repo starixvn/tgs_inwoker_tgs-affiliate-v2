@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'agent',
     component: () => import('@/views/team/agent.vue'),
-    meta: { title: 'team.submenu.agent' },
+    meta: { title: 'agent' },
   },
 ];

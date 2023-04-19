@@ -1,73 +1,44 @@
 {
-  "dashboard": {
-    "title": "首頁",
-    "content": {
-      "addagent": "新增代理",
-      "addplayer": "新增玩家",
-      "changepassword": "修改密碼",
-      "wallet": "錢包",
-      "referrallink": "推薦連結",
-      "winlossreport": "贏/輸報表"
-    }
-  },
-  "team": {
-    "title": "團隊",
-    "submenu": {
-      "agent": "代理",
-      "player": "玩家"
-    }
-  },
-  "report": {
-    "title": "报表",
-    "submenu": {
-      "contribute": "贡献报表",
-      "dividend": "分红报表",
-      "round": "订单查询"
-    }
-  },
-  "wallet": {
-    "title": "钱包",
-    "submenu": {
-      "withdraw": "提款",
-      "balance": "余额"
-    }
-  },
-  "account": {
-    "title": "账户",
-    "myaccount": "我的账户",
-    "profile": {
-      "title": "个人资料",
-      "content": {
-        "agentusername": "代理用户名",
-        "realname": "真实姓名",
-        "registeron": "注册时间",
-        "balance": "余额",
-        "status": "状态",
-        "type": "类型",
-        "profitsharept": "分红比例",
-        "email": "电子邮件",
-        "phone": "电话",
-        "loginpassword": "登录密码",
-        "withdrawpassword": "提款密码"
-      }
-    },
-    "mydomain": "我的域名",
-    "profitshare": {
-      "title": "分红比例",
-      "games": {
-        "live": "真人",
-        "sportsbook": "体育",
-        "egame": "电子",
-        "lottery": "彩票",
-        "esports": "电竞",
-        "qipai": "棋牌",
-        "visualsports": "视讯体育",
-        "cockfight": "鸡斗",
-        "horserace": "赛马"
-      }
-    }
-  },
-  "helpcenter": {
-    "title": "帮助中心"
-  }
+  "dashboard": "首頁",
+  "addagent": "新增代理",
+  "addplayer": "新增玩家",
+  "changepassword": "修改密碼",
+  "wallet": "錢包",
+  "referrallink": "推薦連結",
+  "winlossreport": "贏/輸報表",
+  "team": "團隊",
+  "agent": "代理",
+  "player": "玩家",
+  "report": "报表",
+  "contribute": "贡献报表",
+  "dividend": "分红报表",
+  "round": "订单查询",
+  "withdraw": "提款",
+  "balancehistory": "余额历史",
+  "account": "账户",
+  "myaccount": "我的账户",
+  "myprofile": "我的资料",
+  "agentusername": "代理用户名",
+  "realname": "真实姓名",
+  "registeron": "注册时间",
+  "balance": "余额",
+  "status": "状态",
+  "type": "类型",
+  "profitsharept": "分红比例",
+  "email": "电子邮件",
+  "phone": "电话",
+  "loginpassword": "登录密码",
+  "withdrawpassword": "提款密码",
+  "mydomain": "我的域名",
+  "profitshare": "分红比例",
+  "helpcenter": "帮助中心",
+  "live": "真人",
+  "sportsbook": "体育",
+  "egame": "电子",
+  "lottery": "彩票",
+  "esports": "电竞",
+  "qipai": "棋牌",
+  "visualsports": "视讯体育",
+  "cockfight": "鸡斗",
+  "horserace": "赛马"
 }

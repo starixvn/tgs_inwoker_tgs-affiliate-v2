@@ -19,42 +19,42 @@ let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'd
 
 const list = reactive([
   {
-    title: 'dashboard.content.addagent',
+    title: 'addagent',
     icon: 'mel-icon-platform',
     path: '/dashboard',
   },
   {
-    title: 'dashboard.content.addplayer',
+    title: 'addplayer',
     icon: 'mel-icon-user-filled',
     path: '/team/agent',
   },
   {
-    title: 'dashboard.title',
+    title: 'dashboard',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },
   {
-    title: 'dashboard.content.changepassword',
+    title: 'changepassword',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },
   {
-    title: 'wallet.title',
+    title: 'wallet',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },
   {
-    title: 'dashboard.content.referrallink',
+    title: 'referrallink',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },
   {
-    title: 'dashboard.content.winlossreport',
+    title: 'winlossreport',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },
   {
-    title: 'helpcenter.title',
+    title: 'helpcenter',
     icon: 'mel-icon-user-filled',
     path: '/dashboard',
   },

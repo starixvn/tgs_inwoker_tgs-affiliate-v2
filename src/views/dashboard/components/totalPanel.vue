@@ -13,11 +13,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { statisticsApi } from '@/api/statistics';
 import { useLocalesI18n } from '@/locales/i18n';
 
 let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'dashboard']);
-const { loading, runAsync, data } = statisticsApi(true);
+
 const list = reactive([
   {
     title: 'dashboard.content.addagent',
@@ -60,7 +59,6 @@ const list = reactive([
     path: '/dashboard',
   },
 ]);
-runAsync();
 </script>
 <style lang="scss" scoped>
 .card {

@@ -47,6 +47,12 @@ const menuActiveColor = computed(() => (getColorLuma(themeConfig.menuBg) < 100 ?
 const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColor.value, 0.8));
 </script>
 <style lang="scss" scoped>
+//add  class name
+.el-menu-item.is-active .el-menu-item__content {
+  background-color: #07b5bc;
+  color: #fff;
+}
+
 .layout-menu {
   --el-menu-base-level-padding: 12px;
   --el-menu-text-color: v-bind('menuTextColor');
@@ -72,6 +78,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
     white-space: pre-line;
   }
+
   .menu-box {
     height: 100%;
     :deep(.layout-menu-content) {
@@ -144,6 +151,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
     }
   }
 }
+
 .collapse {
   :deep(.layout-menu-content) {
     width: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2) !important;

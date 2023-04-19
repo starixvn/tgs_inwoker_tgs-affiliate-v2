@@ -10,6 +10,7 @@ import { router } from '@/router';
 interface UserState {
   user: UserInfoResult; // 用户信息
   rules: string[] | undefined; // 用户权限信息
+  data: any; // 用户数据
   token: Ref<string>; // 用户token
 }
 export default defineStore({
@@ -19,6 +20,7 @@ export default defineStore({
     return {
       user: {} as UserInfoResult,
       rules: undefined,
+      data: {},
       token: customRef<string>((track, trigger) => {
         return {
           get() {
@@ -51,7 +53,7 @@ export default defineStore({
       if (token) {
         this.token = token;
         this.user = await userInfoApi(true, !tokenValue)();
-        this.rules = this.user.rules;
+        this.data = this.user.data;
         await useRouteStore().initRoutes(); //初始化路由
       } else {
         this.token = '';

@@ -2,7 +2,6 @@
 import request from '@/utils/request';
 
 const enum Api {
-  STATISTICS = 'statistics/index',
   CHART = 'statistics/chart',
 }
 
@@ -28,15 +27,6 @@ export interface StatisticsResult {
     total: number;
     yesterdayTotal: number;
   };
-}
-export function statisticsApi(noLoading?: boolean) {
-  return request<StatisticsResult, []>(
-    () => ({
-      url: Api.STATISTICS,
-      method: 'get',
-    }),
-    { noLoading },
-  );
 }
 
 export interface ChartResult {

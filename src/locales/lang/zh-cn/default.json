@@ -40,5 +40,10 @@
   "qipai": "棋牌",
   "visualsports": "视讯体育",
   "cockfight": "鸡斗",
-  "horserace": "赛马"
+  "horserace": "赛马",
+  "Cash": "现金",
+  "Enabled": "启用",
+  "large": "大",
+  "default": "默认",
+  "small": "小"
 }

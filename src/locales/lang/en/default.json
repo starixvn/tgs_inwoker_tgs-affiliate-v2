@@ -17,7 +17,7 @@
   "balancehistory": "Balance History",
   "account": "Account",
   "myaccount": "My Account",
-  "title": "My Profile",
+  "myprofile": "My Profile",
   "agentusername": "Agent Username",
   "realname": "Real Name",
   "registeron": "Register On",
@@ -40,5 +40,10 @@
   "qipai": "Qipai",
   "visualsports": "Visual Sports",
   "cockfight": "Cockfight",
-  "horserace": "Horse Race"
+  "horserace": "Horse Race",
+  "Cash": "Cash",
+  "Enabled": "Enabled",
+  "large": "Large",
+  "default": "Default",
+  "small": "Small"
 }

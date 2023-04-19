@@ -53,7 +53,6 @@ import { useUserStore } from '@/store';
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
-console.log(user);
 
 const profitShare = reactive([
   { name: 'live', value: 70 },
@@ -77,7 +76,7 @@ const profileInfo = reactive([
   { name: 'agentusername', value: user?.username, editable: false },
   { name: 'realname', value: user?.realname, editable: false },
   { name: 'registeron', value: convertDate(user?.registeredon), editable: false },
-  { name: 'balance', value: '', editable: false },
+  { name: 'balance', value: user?.balance, editable: false },
   { name: 'status', value: user?.status, editable: false },
   { name: 'type', value: user?.type, editable: false },
   { name: 'profitsharept', value: user?.dividendpercentage, editable: false },
@@ -144,6 +143,17 @@ const profileInfo = reactive([
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  //on mobile
+  @media (max-width: 768px) {
+    > :first-child {
+      //elipsis
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+  }
 }
 
 .table-background {

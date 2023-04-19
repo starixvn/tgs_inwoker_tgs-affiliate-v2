@@ -14,7 +14,7 @@ export const localeList = [
     locale: 'zh-cn',
   },
   {
-    text: '美国英语',
+    text: 'English',
     locale: 'en',
   },
   // {

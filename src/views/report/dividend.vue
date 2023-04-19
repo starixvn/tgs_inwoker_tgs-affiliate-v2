@@ -1,6 +1,39 @@
 <template>
   <el-card shadow="never" class="table">
-    <el-table
+    <el-row>
+      <el-col :span="24">
+        <div>
+          <el-radio-group v-model="searchForm.dateType" size="large">
+            
+            <el-radio-button label="1" >Today</el-radio-button> 
+            <el-radio-button label="2" >Yesterday</el-radio-button> 
+            <el-radio-button label="3" >This Week</el-radio-button> 
+            <el-radio-button label="4" >Last Week</el-radio-button> 
+            <el-radio-button label="5" >This Month</el-radio-button> 
+            <el-radio-button label="6" >Last Month</el-radio-button> 
+            <div  class="datefrom">
+              <el-date-picker
+             
+             v-model="searchForm.From"
+             type="date"
+
+             size="large"
+           />
+           <el-date-picker
+             v-model="searchForm.To"
+             type="date"
+
+             size="large"
+           />
+            </div>
+            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">SEARCH</el-button>
+          </el-radio-group>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <el-table
       :data="tableData"
       :span-method="arraySpanMethod"
       :row-class-name="getRowClassName"
@@ -37,6 +70,9 @@
         {{ t('No Record') }}
       </template>
     </el-table>
+      </el-col>
+    </el-row>
+    
   </el-card>
 </template>
 <script lang="ts">
@@ -76,8 +112,9 @@ export default defineComponent({
       tableData: reactive<any[]>([
       ]),
       searchForm: reactive<any>({
-        From:'2023-04-01T16:00:00.000Z',
-        To:'2023-04-16T16:00:00.000Z',
+        dateType:"1",
+        From:'2023-04-01',
+        To:'2023-04-16',
         page:1,
         rows:10,
         desc:true,
@@ -92,7 +129,9 @@ export default defineComponent({
         const response = await agentDividends();
         const data = await response.runAsync(this.searchForm);
         const emptyRow = {username:"Direct Agent", id: ""} as ISubitems;
-        this.tableData = [...data?.mainitems ,...[emptyRow], ...data?.subitems];
+        const subtotalRow = data?.subtotal;
+        subtotalRow.username = "Total";
+        this.tableData = [...data?.mainitems ,...[emptyRow], ...data?.subitems, ...[subtotalRow]];
 
     },
     arraySpanMethod  ({
@@ -104,13 +143,29 @@ export default defineComponent({
         if (rowIndex === 1) {
           return [1, 12]
         }
-    },
-    getRowClassName(row: any) {
+     
+        if(row.username == 'Total'){
 
-      if (row.rowIndex === 1) {
+          if(columnIndex == 0){
+
+            return [1, 2]
+          }
+          if(columnIndex == 1){
+
+          return [0, 0]
+          }
+
+        }
+    },
+    getRowClassName({ row, rowIndex }: { row: any; rowIndex: number }) {
+
+      if (rowIndex === 1) {
         return 'empty-row';
       } 
-      
+      if(row.username == "Total"){
+        return 'subtotal-row';
+
+      }
     },
     formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
       if(!isNaN(row[column.property])){
@@ -125,6 +180,10 @@ export default defineComponent({
       }
       
     },
+    onSearch(){
+        this.getItems();
+
+    }
   },
   beforeMount() {
     this.getItems();
@@ -144,6 +203,23 @@ export default defineComponent({
 
 </script>
 <style lang="scss" scoped>
+.el-row {
+  margin-bottom: 20px;
+}
+.datefrom{
+  margin-left: 10px;
+}
+.btnsearch{
+  margin-left: 10px;
+}
+.empty-row{
+    background-color: #000000;
+
+  }
+.subtotal-row{
+  background-color: #000000;
+
+}
 .table {
   .search {
     margin-bottom: -18px;
@@ -151,10 +227,6 @@ export default defineComponent({
     :deep(.el-input) {
       width: 319px;
     }
-  }
-  .el-table tr.empty-row{
-    background-color: #000000;
-
   }
 
 }

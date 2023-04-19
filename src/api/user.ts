@@ -7,8 +7,8 @@ const enum Api {
 
 // 登录
 export class LoginParams {
-  username = '';
-  password = '';
+  username = 'aaronxiao';
+  password = '1q2w3e4r';
   platformtype = 1;
 }
 export interface LoginResult {

@@ -20,23 +20,9 @@ interface ISubitems {
 }
 
 export type Result = BaseResult<{
-  mainitems: {};
+  mainitems: ISubitems[];
   subitems: ISubitems[];
-  subtotal: {
-    agentAdjustAmount: number;
-    agentCoveredBonus: number;
-    agentCoveredBonusAdjust: number;
-    agentDividendAmount: number;
-    betAmount: number;
-    bonusAdjustAmount: number;
-    bonusAmount: number;
-    fromPlayerAgentDividendAmount: number;
-    fromTeamAgentDividendAmount: number;
-    netProfit: number;
-    turnover: number;
-    validBetAmount: number;
-    winLossAmount: number;
-  };
+  subtotal: ISubitems;
   subtotalcount: number
 }>;
 export function agentDividends(options: RequestOptions<Result, [BasePageParams]> = {}) {
@@ -46,6 +32,7 @@ export function agentDividends(options: RequestOptions<Result, [BasePageParams]>
       method: 'get',
       params: params,
     }),
-    Object.assign({ noLoading: true }, options),
+    Object.assign({ noLoading: true }, 
+      options),
   );
 }

@@ -1,9 +1,5 @@
 <template>
   <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
-    <div class="title">
-      Agent <br />
-      Admin 2.0
-    </div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
@@ -60,7 +56,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
   background: #fff;
   height: 100%;
   position: relative;
-  padding-top: var(--el-menu-item-height);
   .title {
     height: var(--el-menu-item-height);
 

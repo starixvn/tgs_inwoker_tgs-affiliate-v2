@@ -2,7 +2,7 @@
   <div class="dashboard">
     <div class="title-holder">
       <div class="title">Welcome back!</div>
-      <div class="subtitle">username here</div>
+      <div class="subtitle">{{ user.username }}</div>
     </div>
     <total-panel></total-panel>
   </div>
@@ -10,7 +10,13 @@
 
 <script setup lang="ts">
 import TotalPanel from './components/totalPanel.vue';
-import Charts from './components/charts.vue';
+
+import { useUserStore } from '@/store';
+
+//get data from userStore
+const { $state } = useUserStore();
+//from $state get the data
+const { user } = $state;
 </script>
 <style lang="scss" scoped>
 .dashboard {

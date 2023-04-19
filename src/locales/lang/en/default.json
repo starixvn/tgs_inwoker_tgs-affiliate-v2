@@ -33,7 +33,39 @@
     }
   },
   "account": {
-    "title": "Account"
+    "title": "Account",
+    "myaccount": "My Account",
+    "profile": {
+      "title": "My Profile",
+      "content": {
+        "agentusername": "Agent Username",
+        "realname": "Real Name",
+        "registeron": "Register On",
+        "balance": "Balance",
+        "status": "Status",
+        "type": "Type",
+        "profitsharept": "Profit Share P/T",
+        "email": "Email",
+        "phone": "Phone",
+        "loginpassword": "Login Password",
+        "withdrawpassword": "Withdraw Password"
+      }
+    },
+    "mydomain": "My Domains",
+    "profitshare": {
+      "title": "My Profit Share",
+      "games": {
+        "live": "Live",
+        "sportsbook": "Sportsbook",
+        "egame": "E-Game",
+        "lottery": "Lottery",
+        "esports": "E-Sports",
+        "qipai": "Qipai",
+        "visualsports": "Visual Sports",
+        "cockfight": "Cockfight",
+        "horserace": "Horse Race"
+      }
+    }
   },
   "helpcenter": {
     "title": "Help Center"

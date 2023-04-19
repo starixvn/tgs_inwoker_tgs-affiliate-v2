@@ -1,48 +1,307 @@
 <template>
-  <div class="dashboard">
-    <div class="title-holder">
-      <div class="title">Welcome back!</div>
-      <div class="subtitle">{{ user.username }}</div>
+  <div class="big-container">
+    <div class="big-title">{{ $t('dashboard') }}</div>
+    <div class="content-wrapper">
+      <div class="">
+        <div class="another-big-title">Account Overview</div>
+        <div class="content">
+          <div class="account-container">
+            <div class="title">Account</div>
+            <div class="data">{{ user.username }}</div>
+          </div>
+          <div class="account-container">
+            <div class="title">Wallet Balance</div>
+            <div class="data">
+              <div>{{ user.balance }}</div>
+              <div class="button">Wallet</div>
+            </div>
+          </div>
+          <div class="account-container">
+            <div class="title">Referral Code</div>
+            <div class="data">
+              <div>{{ user.invitationCode }}</div>
+              <div class="button">Copy</div>
+            </div>
+          </div>
+          <div class="account-container">
+            <div class="title">Referral Link</div>
+            <div class="affiliate-link-container">
+              {{ 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register' }}
+            </div>
+            <div class="button-container">
+              <div class="button">Copy</div>
+              <div class="button">Add Agent</div>
+              <div class="button">Add Player</div>
+              <custom-button />
+            </div>
+          </div>
+
+          <div>
+            <div>Referral QR Code</div>
+            <div class="qrcode-container">
+              <div>
+                <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" />
+              </div>
+              <div class="qrcode-button">
+                <div class="button">Download</div>
+                <div class="button">Copy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-content">
+        <div>
+          <div class="another-big-title">Team Overview</div>
+          <div class="content">
+            <div class="statistic-container">
+              <div v-for="item in statistic" :key="item.name" class="statistic" :class="`${item.color}-gradient`">
+                <div class="name">{{ item.name }}</div>
+                <div class="data">{{ item.data }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="title-wrapper">
+            <div class="another-big-title">Stats Overview</div>
+            <div>
+              2022/09/01 00:00 ~ 2022/09/30 23:59 (GMT+8) <br />
+              updated hourly
+            </div>
+          </div>
+          <div class="content">
+            <div class="overview-container">
+              <div v-for="item in overview" :key="item.name" class="overview">
+                <div class="name" :class="`${item.color}`">{{ item.name }}</div>
+                <div class="data">{{ item.data }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Account">
 import { useUserStore } from '@/store';
 
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
-</script>
-<style lang="scss" scoped>
-.dashboard {
-  padding: 100px 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
 
-  @media only screen and (max-width: 500px) {
-    padding: 20px;
+const statistic = reactive([
+  { name: 'Direct Agent', data: '29', color: 'blue' },
+  { name: 'Indirect Agent', data: '76', color: 'purple' },
+  { name: 'Direct Player', data: '12', color: 'yellow' },
+  { name: 'Indirect Player', data: '133', color: 'pink' },
+]);
+
+const overview = reactive([
+  { name: 'Estimated Profit Share', data: '123456', color: 'blue' },
+  { name: 'Total Net Worth', data: '123456', color: 'purple' },
+  { name: 'total Expense', data: '123456', color: 'green' },
+  { name: 'Total Company Winloss', data: '123456', color: 'orange' },
+  { name: 'Total Turnover', data: '123456', color: 'black' },
+  { name: 'Total Valid Bet', data: '123456', color: 'darkblue' },
+  { name: 'Total Deposit', data: '123456', color: 'darkgreen' },
+  { name: 'Total Withdraw', data: '123456', color: 'maroon' },
+]);
+</script>
+
+<style lang="scss" scoped>
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  //second child
+  > *:nth-child(2) {
+    text-align: right;
+    font-size: 10px;
   }
 }
 
-.title-holder {
+.big-title {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 20px 30px;
+}
+
+.content-wrapper {
+  display: grid;
+  width: 100%;
+  gap: 20px;
+  grid-template-columns: auto auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.another-big-title {
+  font-size: 35px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+.content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px 30px;
+  border: solid 1px #e5e5e5;
+}
+
+.right-content {
+  .content {
+    background: transparent;
+    border: none;
+  }
+}
+
+.content-inside-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 50px;
+}
+
+.statistic-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 10px;
-  margin-bottom: 40px;
 }
 
-.title {
-  font-size: 30px;
-  font-weight: bold;
-  text-transform: uppercase;
+.statistic {
+  border-radius: 20px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  .data {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  &.blue-gradient {
+    background: linear-gradient(90deg, #008dce 0%, #00b0ff 100%);
+  }
+
+  &.purple-gradient {
+    background: linear-gradient(90deg, #6200c4 0%, #a55eea 100%);
+  }
+  &.yellow-gradient {
+    background: linear-gradient(90deg, #d8b400 0%, #f9d423 100%);
+  }
+
+  &.pink-gradient {
+    background: linear-gradient(90deg, #d30000 0%, #ff5e5e 100%);
+  }
 }
 
-.subtitle {
-  font-size: 20px;
+.overview-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  .overview {
+    display: flex;
+    padding: 20px 20px;
+    border-radius: 20px;
+    background: #fff;
+    border: solid 1px #e5e5e5;
+    flex-direction: column;
+    gap: 10px;
+
+    .blue {
+      color: #008dce;
+    }
+    .purple {
+      color: #6200c4;
+    }
+    .green {
+      color: #00b0ff;
+    }
+    .orange {
+      color: #d8b400;
+    }
+    .black {
+      color: #000;
+    }
+    .darkblue {
+      color: #00b0ff;
+    }
+    .darkgreen {
+      color: #00b0ff;
+    }
+    .maroon {
+      color: #d30000;
+    }
+
+    .data {
+      font-weight: bold;
+      font-size: 24px;
+    }
+  }
+}
+
+.account-container {
+  padding-bottom: 10px;
+  .title {
+    padding-bottom: 5px;
+  }
+
+  .data {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+
+    .button {
+      font-size: 12px;
+      font-weight: initial;
+    }
+  }
+  .affiliate-link-container {
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px #e5e5e5;
+    margin-bottom: 10px;
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  background: #07b5bc;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.qrcode-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  .qrcode-button {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 20px;
+
+    max-width: fit-content;
+  }
 }
 </style>

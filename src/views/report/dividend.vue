@@ -111,6 +111,7 @@ interface ISubitems {
   validBetAmount: number;
   winLossAmount: number;
 }
+
 interface SpanMethodProps {
   row: ISubitems;
   column: TableColumnCtx<ISubitems>;

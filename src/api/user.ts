@@ -30,16 +30,40 @@ export function loginApi<T extends boolean = true>(returnAxios: T = true as T) {
   );
 }
 
-// 获取用户详细信息
-export type UserInfoResult = BaseResult<{
-  agentdomains: string[]; // 权限
-  accumulatedprofitsharing: string; // 备注
-  agentdividendtype: string; // 头像
-  agentlevel: string; // 名称
-  balance: string; // 用户名
-}>;
+export interface IUserInfoData extends BaseResult {
+    accumulatedprofitsharing: number,
+    agentdividendtype: string; 
+    agentdomains: string[]; 
+    agentlevel: number; 
+    balance: number; 
+    brandUrl: string;
+    dividendconditions:any[];
+    dividendpercentage:number;
+    email: string; 
+    id: string; 
+    invitationCode: string; 
+    issetpaypassword: boolean; 
+    leveltype: string; 
+    parentusername: string; 
+    phone: string; 
+    playernumber: number; 
+    qq: string; 
+    realname: string; 
+    registeredon: string; 
+    status: string; 
+    type: string; 
+    username: string; 
+    wechat: string; 
+
+}
+
+interface IUserInfoResult extends BaseResult {
+  data:IUserInfoData
+}
+
+
 export function userInfoApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
-  return request<UserInfoResult, [], T>(
+  return request<IUserInfoResult, [], T>(
     () => ({
       url: Api.USER_INFO,
       method: 'get',

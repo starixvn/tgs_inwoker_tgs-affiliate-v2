@@ -6,16 +6,14 @@ declare global {
   interface BaseResult {
     err: number;
     errmsg: string;
-    errmsgid: string
-  };
+    errmsgid: string;
+  }
   type BasePageResult<R> = {
     page: number;
     size: number;
     count: number;
     list: R[];
   };
-
-  
 }
 
 export {};

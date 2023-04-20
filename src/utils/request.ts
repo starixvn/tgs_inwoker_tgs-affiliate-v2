@@ -40,7 +40,7 @@ service.interceptors.response.use(
   (error) => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    if(error.response.data.err === 401 || error.response.data.err === 900){
+    if (error.response.data.err === 401 || error.response.data.err === 900) {
       useUserStore().logOut();
     }
     log.error(error); // for debug
@@ -105,7 +105,6 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       !options?.noLoading && closeLoading();
       return options?.needAll ? res : res;
     } catch (e) {
-
       !options?.noLoading && closeLoading();
       !options?.noError &&
         ElMessage.error({

@@ -1,5 +1,8 @@
 <template>
-  <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse }">
+  <div
+    class="layout-menu"
+    :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse }"
+  >
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
@@ -132,24 +135,20 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
         .el-menu--inline {
           background: transparent;
           position: relative;
-
-          
         }
         .el-menu--inline::before {
-          content: "";
+          content: '';
           position: absolute;
           top: 15px;
           left: 10px; /* Set the distance of the line from the left edge */
           bottom: 15px;
           width: 0;
 
-          border-left: 2px solid #B7B7B7; 
-
-          
+          border-left: 2px solid #b7b7b7;
         }
 
         .el-sub-menu .el-menu-item {
-          padding-left:10px;
+          padding-left: 10px;
         }
 
         .el-menu-item,

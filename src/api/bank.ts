@@ -4,25 +4,22 @@ const enum Api {
   BANK_INFO = 'bankinfo',
 }
 interface IBankInfoDataDetails extends BaseResult {
-
-  bankAccount: string; 
+  bankAccount: string;
   bankBranch: string;
-  bankName: string; 
-  name: string; 
-  address: string; 
+  bankName: string;
+  name: string;
+  address: string;
 }
 export interface IBankInfoData extends BaseResult {
-
-    banktype: string; 
-    id: string;
-    paymentchannelid: string; 
-    detail:IBankInfoDataDetails
+  banktype: string;
+  id: string;
+  paymentchannelid: string;
+  detail: IBankInfoDataDetails;
 }
 
 interface IBankInfoResult extends BaseResult {
-  data:IBankInfoData[]
+  data: IBankInfoData[];
 }
-
 
 export function bankInfoApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
   return request<IBankInfoResult, [], T>(

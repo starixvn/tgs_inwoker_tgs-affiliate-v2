@@ -3,14 +3,9 @@
     <el-row>
       <div class="button-form">
         <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-          <el-option
-            v-for="(item, key) in statuses"
-            :key="key"
-            :label="t(item)"
-            :value="item"
-          />
+          <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
         </el-select>
-        
+
         <el-input placeholder="Please input" size="large" v-model="searchForm.Username" /><el-button
           type="primary"
           class="btnsearch"
@@ -55,9 +50,7 @@ import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import moment from 'moment';
 import type { TableColumnCtx } from 'element-plus';
-import { getPlayerList, getPlayerStatuses, PlayerStatusData,PlayerData,SearchForm } from '@/api/reports';
-
-
+import { getPlayerList, getPlayerStatuses, PlayerStatusData, PlayerData, SearchForm } from '@/api/reports';
 
 export default defineComponent({
   name: 'MyComponent',
@@ -121,7 +114,6 @@ export default defineComponent({
     formatDateTime(row: any, column: TableColumnCtx<PlayerData>) {
       if (row[column.property]) {
         return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
-
       } else {
         return '';
       }
@@ -138,7 +130,6 @@ export default defineComponent({
         return '';
       }
     },
-
 
     onSearch() {
       this.getItems();

@@ -31,36 +31,34 @@ export function loginApi<T extends boolean = true>(returnAxios: T = true as T) {
 }
 
 export interface IUserInfoData extends BaseResult {
-    accumulatedprofitsharing: number,
-    agentdividendtype: string; 
-    agentdomains: string[]; 
-    agentlevel: number; 
-    balance: number; 
-    brandUrl: string;
-    dividendconditions:any[];
-    dividendpercentage:number;
-    email: string; 
-    id: string; 
-    invitationCode: string; 
-    issetpaypassword: boolean; 
-    leveltype: string; 
-    parentusername: string; 
-    phone: string; 
-    playernumber: number; 
-    qq: string; 
-    realname: string; 
-    registeredon: string; 
-    status: string; 
-    type: string; 
-    username: string; 
-    wechat: string; 
-
+  accumulatedprofitsharing: number;
+  agentdividendtype: string;
+  agentdomains: string[];
+  agentlevel: number;
+  balance: number;
+  brandUrl: string;
+  dividendconditions: any[];
+  dividendpercentage: number;
+  email: string;
+  id: string;
+  invitationCode: string;
+  issetpaypassword: boolean;
+  leveltype: string;
+  parentusername: string;
+  phone: string;
+  playernumber: number;
+  qq: string;
+  realname: string;
+  registeredon: string;
+  status: string;
+  type: string;
+  username: string;
+  wechat: string;
 }
 
 interface IUserInfoResult extends BaseResult {
-  data:IUserInfoData
+  data: IUserInfoData;
 }
-
 
 export function userInfoApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
   return request<IUserInfoResult, [], T>(

@@ -31,7 +31,7 @@ export default defineComponent({
           key.value = props.componentKey;
           _attrs.value = attrs;
           props.doneProgress && done();
-          props.closeLoading && closeLoading(false,1,props.closeLoading);
+          props.closeLoading && closeLoading(false, 1, props.closeLoading);
         }
       },
       { immediate: true },

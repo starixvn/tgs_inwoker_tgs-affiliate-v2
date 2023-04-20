@@ -45,7 +45,7 @@ interface AgentListResult extends BaseResult {
     message: string;
   };
 }
-export interface SearchForm extends BasePageParams{
+export interface SearchForm extends BasePageParams {
   BeginRegisteredOn: string;
   EndRegisteredOn: string;
   RegisterHost: string;
@@ -57,10 +57,10 @@ export interface SearchForm extends BasePageParams{
   all: boolean;
 }
 export interface PlayerStatusData {
-  [key: string|number]: string
+  [key: string | number]: string;
 }
 interface PlayerStatusResult {
-  data:PlayerStatusData
+  data: PlayerStatusData;
 }
 
 export function getPlayerList(options: RequestOptions<PlayeListResult, [SearchForm]> = {}) {
@@ -83,7 +83,6 @@ export function getPlayerStatuses<T extends boolean = false>(returnAxios: T = fa
     returnAxios,
   );
 }
-
 
 export function getAgentList(options: RequestOptions<AgentListResult, [BasePageParams]> = {}) {
   return request(

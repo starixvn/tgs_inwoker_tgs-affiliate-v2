@@ -1,6 +1,6 @@
 import { request, RequestOptions } from '@/utils/request';
 
-interface ISubitems {
+export interface ISubitems {
   agentAdjustAmount: number
   agentCoveredBonus: number
   agentCoveredBonusAdjust: number

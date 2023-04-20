@@ -10,7 +10,7 @@
               <div class="profile-info">
                 <div class="title">{{ $t(item.name) }}:</div>
 
-                <div class="data">{{ item.editable ? '' : item.value }}</div>
+                <div class="data">{{ item.value }}</div>
               </div>
             </div>
           </div>

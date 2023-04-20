@@ -91,27 +91,10 @@
 <script lang="ts">
 import { defineComponent,ref,reactive } from 'vue'
 import { useI18n } from 'vue-i18n';
-import { agentDividends } from '@/api/agentreport'
+import { agentDividends, ISubitems } from '@/api/agentreport'
 import type { TableColumnCtx } from 'element-plus'
-import { number } from '@intlify/core-base';
-interface ISubitems {
-  agentAdjustAmount: number
-  agentCoveredBonus: number
-  agentCoveredBonusAdjust: number
-  agentDividendAmount?: number
-  agentDividendPercentage: number
-  betAmount: number
-  bonusAdjustAmount: number
-  bonusAmount: number
-  fromPlayerAgentDividendAmount: number
-  fromTeamAgentDividendAmount: number
-  id: string
-  netProfit: number
-  turnover: number
-  username: string
-  validBetAmount: number
-  winLossAmount: number
-}
+
+
 interface SpanMethodProps {
   row: ISubitems
   column: TableColumnCtx<ISubitems>

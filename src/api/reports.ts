@@ -1,6 +1,6 @@
 import { request, RequestOptions } from '@/utils/request';
 
-interface PlayerData {
+export interface PlayerData {
   areacode: string;
   phone: string;
   playercode: string;
@@ -45,8 +45,25 @@ interface AgentListResult extends BaseResult {
     message: string;
   };
 }
+export interface SearchForm extends BasePageParams{
+  BeginRegisteredOn: string;
+  EndRegisteredOn: string;
+  RegisterHost: string;
+  Status: string;
+  Username: string;
+  VipId: string;
+  desc: boolean;
+  sort: string;
+  all: boolean;
+}
+export interface PlayerStatusData {
+  [key: string|number]: string
+}
+interface PlayerStatusResult {
+  data:PlayerStatusData
+}
 
-export function getPlayerList(options: RequestOptions<PlayeListResult, [BasePageParams]> = {}) {
+export function getPlayerList(options: RequestOptions<PlayeListResult, [SearchForm]> = {}) {
   return request(
     (params) => ({
       url: 'player/list',
@@ -56,17 +73,18 @@ export function getPlayerList(options: RequestOptions<PlayeListResult, [BasePage
     Object.assign({ noLoading: true }, options),
   );
 }
-
-export function getPlayerStatuses(options: RequestOptions<BaseResult, [string]> = {}) {
-  return request(
-    (params) => ({
+export function getPlayerStatuses<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
+  return request<PlayerStatusResult, [], T>(
+    () => ({
       url: 'player/list/statuses',
       method: 'get',
-      params: { params },
     }),
-    Object.assign({ noLoading: true }, options),
+    { noLoading },
+    returnAxios,
   );
 }
+
+
 export function getAgentList(options: RequestOptions<AgentListResult, [BasePageParams]> = {}) {
   return request(
     (params) => ({

@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="hover" :header="loading ? '' : t('浏览量')" class="card-item">
+  <!-- <el-card shadow="hover" :header="loading ? '' : t('浏览量')" class="card-item">
     <el-skeleton :loading="loading" :rows="8">
       <div ref="viewChartRef" class="view-charts"></div>
     </el-skeleton>
@@ -27,10 +27,10 @@
         </el-skeleton>
       </el-card>
     </el-col>
-  </el-row>
+  </el-row> -->
 </template>
 <script setup lang="ts" name="viewCharts">
-import { chartApi } from '@/api/statistics';
+// import { chartApi } from '@/api/statistics';
 import { useSettingStore } from '@/store';
 import * as echarts from 'echarts/core';
 import { TitleComponent, ToolboxComponent, TooltipComponent, GridComponent, LegendComponent } from 'echarts/components';
@@ -59,8 +59,8 @@ const allocationChartRef = ref(null as HTMLElement | null);
 const orderDistributionChartRef = ref(null as HTMLElement | null);
 const setting = useSettingStore();
 const textColor = computed(() => (setting.isDark ? '#E5EAF3' : '#303133'));
-const { loading, runAsync, data } = chartApi();
-runAsync();
+// const { loading, runAsync, data } = chartApi();
+// runAsync();
 const viewChart = computed(() => (viewChartRef.value ? echarts.init(viewChartRef.value) : null));
 const origionChart = computed(() => (origionChartRef.value ? echarts.init(origionChartRef.value) : null));
 const allocationChart = computed(() => (allocationChartRef.value ? echarts.init(allocationChartRef.value) : null));
@@ -256,22 +256,22 @@ watchPostEffect(() => {
       },
     ],
   };
-  if (data.value) {
-    viewChartOptions.series[0].data = data.value.view.PV;
-    viewChartOptions.series[1].data = data.value.view.UV;
-    origionOptions.series[0].data.forEach((item, key) => {
-      item.value = data.value!.origion[key];
-    });
-    allocationOptions.series[0].data.forEach((item, key) => {
-      item.value = data.value!.allocation[key];
-    });
-    orderDistributionOptions.series[0].data[0].value = data.value.orderDistribution.new;
-    orderDistributionOptions.series[0].data[1].value = data.value.orderDistribution.old;
-    viewChart.value?.setOption(viewChartOptions);
-    origionChart.value?.setOption(origionOptions);
-    allocationChart.value?.setOption(allocationOptions);
-    orderDistributionChart.value?.setOption(orderDistributionOptions);
-  }
+  // if (data.value) {
+  //   viewChartOptions.series[0].data = data.value.view.PV;
+  //   viewChartOptions.series[1].data = data.value.view.UV;
+  //   origionOptions.series[0].data.forEach((item, key) => {
+  //     item.value = data.value!.origion[key];
+  //   });
+  //   allocationOptions.series[0].data.forEach((item, key) => {
+  //     item.value = data.value!.allocation[key];
+  //   });
+  //   orderDistributionOptions.series[0].data[0].value = data.value.orderDistribution.new;
+  //   orderDistributionOptions.series[0].data[1].value = data.value.orderDistribution.old;
+  //   viewChart.value?.setOption(viewChartOptions);
+  //   origionChart.value?.setOption(origionOptions);
+  //   allocationChart.value?.setOption(allocationOptions);
+  //   orderDistributionChart.value?.setOption(orderDistributionOptions);
+  // }
 });
 mitter.on(
   event.RESIZE,

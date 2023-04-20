@@ -2,19 +2,16 @@
   <el-card shadow="never" class="table">
     <el-row>
       <div class="button-form">
-        <el-dropdown>
-          <el-button type="primary" size="large" class="btn">
-            {{ t('status') }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-          </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item v-for="(item, key) in statuses" :key="key" @click="onStatusChange">
-                {{ t(item) }}</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <el-input placeholder="Please input" size="large" /><el-button
+        <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
+          <el-option
+            v-for="(item, key) in statuses"
+            :key="key"
+            :label="t(item)"
+            :value="item"
+          />
+        </el-select>
+        
+        <el-input placeholder="Please input" size="large" v-model="searchForm.Username" /><el-button
           type="primary"
           class="btnsearch"
           size="large"
@@ -56,34 +53,12 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import moment from 'moment';
 import type { TableColumnCtx } from 'element-plus';
-import { getPlayerList, getPlayerStatuses } from '@/api/reports';
+import { getPlayerList, getPlayerStatuses, PlayerStatusData,PlayerData,SearchForm } from '@/api/reports';
 
-interface ISubitems {
-  areacode: string;
-  phone: string;
-  playercode: string;
-  registeredtime: string;
-  registerhost: string;
-  status: number;
-  username: string;
-  viplevel: number;
-}
 
-interface ISearchForm {
-  BeginRegisteredOn: string;
-  EndRegisteredOn: string;
-  RegisterHost: string;
-  Status: string;
-  Username: string;
-  VipId: string;
-  page: number;
-  rows: number;
-  desc: boolean;
-  sort: string;
-  all: boolean;
-}
+
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -97,10 +72,10 @@ export default defineComponent({
   data() {
     return {
       showAgent: false,
-      tableData: reactive<any[]>([]),
-      statuses: reactive<any[]>([]),
+      tableData: reactive<PlayerData[]>([]),
+      statuses: reactive<PlayerStatusData>({}),
       totalRowCount: 0,
-      searchForm: reactive<ISearchForm>({
+      searchForm: reactive<SearchForm>({
         BeginRegisteredOn: '',
         EndRegisteredOn: '',
         RegisterHost: '',
@@ -124,17 +99,18 @@ export default defineComponent({
     async getItems() {
       const response = await getPlayerList();
       const result = await response.runAsync(this.searchForm);
-      this.tableData = [...result.data.items];
+      this.tableData = result.data.items;
+      this.totalRowCount = result.data.totalcount;
     },
 
     async getStatuses() {
       const status = await getPlayerStatuses();
-      const statusResult = await status.runAsync(this.statuses);
+      const statusResult = await status.runAsync();
 
       this.statuses = statusResult.data;
     },
 
-    formatStatus(row: any, column: TableColumnCtx<ISubitems>) {
+    formatStatus(row: any, column: TableColumnCtx<PlayerData>) {
       if (this.statuses[row[column.property]]) {
         return this.t(this.statuses[row[column.property]]);
       } else {
@@ -142,40 +118,16 @@ export default defineComponent({
       }
     },
 
-    formatDateTime(row: any, column: TableColumnCtx<ISubitems>) {
+    formatDateTime(row: any, column: TableColumnCtx<PlayerData>) {
       if (row[column.property]) {
-        let date = new Date(row[column.property]);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let dt = date.getDate();
+        return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
 
-        let hour = date.getHours();
-        let min = date.getMinutes();
-        let sec = date.getSeconds();
-
-        if (dt < 10) {
-          dt = '0' + dt;
-        }
-        if (month < 10) {
-          month = '0' + month;
-        }
-        if (hour < 10) {
-          hour = '0' + hour;
-        }
-        if (min < 10) {
-          min = '0' + min;
-        }
-        if (sec < 10) {
-          sec = '0' + sec;
-        }
-
-        return year + '-' + month + '-' + dt + ' ' + hour + ':' + min + ':' + sec;
       } else {
         return '';
       }
     },
 
-    formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
+    formatPrice(row: any, column: TableColumnCtx<PlayerData>) {
       if (!isNaN(row[column.property])) {
         let percentage = '%' as string;
         if (column.property !== 'agentDividendPercentage') {
@@ -187,11 +139,7 @@ export default defineComponent({
       }
     },
 
-    onStatusChange(value: string) {
-      this.searchForm.Status = value;
-      console.log(value);
-      this.getItems();
-    },
+
     onSearch() {
       this.getItems();
     },

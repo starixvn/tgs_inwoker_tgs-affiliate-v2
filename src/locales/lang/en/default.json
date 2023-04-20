@@ -63,5 +63,14 @@
   "bonusAdjust": "Bonus Adjustment",
   "winloss": "Win/Loss",
   "contribution": "Contribution",
-  "agentDividendAmount": "Agent Dividend"
+  "agentDividendAmount": "Agent Dividend",
+
+  "viplevel": "VIP Level",
+  "registeredtime": "Registered Time",
+  "Disabled": "Disabled",
+  "InBlacklist": "Blacklist",
+  "RegisterUndone": "Register Undone",
+
+  "teamnumber": "Team Number",
+  "dividendpercentage": "Dividend Percentage"
 }

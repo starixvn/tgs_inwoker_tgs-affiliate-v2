@@ -63,5 +63,14 @@
   "bonusAdjust": "优惠调帐",
   "winloss": "输赢金额",
   "contribution": "贡献",
-  "agentDividendAmount": "代理分红金额"
+  "agentDividendAmount": "代理分红金额",
+
+  "viplevel": "VIP等级",
+  "registeredtime": "注册时间",
+  "Disabled": "已禁用",
+  "InBlacklist": "黑名单",
+  "RegisterUndone": "注册未完成",
+
+  "teamnumber": "团队人数",
+  "dividendpercentage": "分紅配置比例"
 }

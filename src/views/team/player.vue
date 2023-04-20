@@ -1,59 +1,238 @@
 <template>
   <el-card shadow="never" class="table">
-    <me-table
-      ref="meTableRef"
-      :data="data?.list"
-      :pagination-options="paginationOptions"
-      :custom-column="customColumn"
-      :loading="loading"
-      :header-cell-style="{ textAlign: 'center' }"
-      :cell-style="{ textAlign: 'center' }"
-      stripe
-    >
-      <el-table-column :label="t('地址') + t(' ') + t('详情')">
-        <el-table-column prop="province" :label="t('省')" />
-        <el-table-column prop="city" :label="t('市')" />
-        <el-table-column prop="address" :label="t('地址')" />
-        <el-table-column prop="zip" :label="t('邮政编码')"> </el-table-column>
-      </el-table-column>
+    <el-row>
+      <div class="button-form">
+        <el-dropdown>
+          <el-button type="primary" size="large" class="btn">
+            {{ t('status') }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="(item, key) in statuses" :key="key" @click="onStatusChange">
+                {{ t(item) }}</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-input placeholder="Please input" size="large" /><el-button
+          type="primary"
+          class="btnsearch"
+          size="large"
+          @click="onSearch()"
+          >SEARCH</el-button
+        >
+      </div>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <el-table :data="tableData" stripe>
+          <el-table-column :label="t('username')" prop="username" />
+          <el-table-column :label="t('viplevel')" prop="viplevel" />
+          <el-table-column :label="t('registeredtime')" prop="registeredtime" :formatter="formatDateTime" />
+          <el-table-column :label="t('balance')" prop="balance" />
+          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" />
 
-      <template #empty>
-        {{ t('空空如也') }}
-      </template>
-    </me-table>
+          <template #empty>
+            {{ t('No Record') }}
+          </template>
+        </el-table>
+      </el-col>
+    </el-row>
+    <el-row>
+      <div class="demo-pagination-block">
+        <el-pagination
+          v-model:current-page="searchForm.page"
+          v-model:page-size="searchForm.rows"
+          :page-sizes="[10, 50, 200]"
+          layout="sizes, prev, pager, next"
+          :total="totalRowCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+    </el-row>
   </el-card>
 </template>
-<script setup lang="ts" name="Table">
-import { listApi } from '@/api/table';
-import { useLocalesI18n } from '@/locales/i18n';
-import { FormInstance } from 'element-plus';
-const meTableRef = ref<MeTableInstance>();
-const customColumn = ref(true);
-const { t } = useLocalesI18n({}, [(locale: string) => import(`./lang/${locale}.json`), 'tableLang']);
-const canDel = ref(true);
-const searchForm = reactive({
-  search: '',
-  name: '',
-  type: undefined,
-  date: '',
-  address: '',
-  zip: '',
-  page: 1,
-  size: 10,
-});
-const { loading, run, data, refresh } = listApi({ defaultParams: [searchForm], manual: false });
-const getData = (page = searchForm.page, size = searchForm.size) => {
-  run(Object.assign(searchForm, { page, size }));
-};
-const paginationOptions = reactive({
-  currentPage: computed(() => searchForm.page),
-  pageSize: computed(() => searchForm.size),
-  total: computed(() => data.value?.count ?? 0),
-  layout: 'sizes, prev, pager, next, jumper, ->, total',
-  change: getData,
+<script lang="ts">
+import { defineComponent, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import type { TableColumnCtx } from 'element-plus';
+import { getPlayerList, getPlayerStatuses } from '@/api/reports';
+
+interface ISubitems {
+  areacode: string;
+  phone: string;
+  playercode: string;
+  registeredtime: string;
+  registerhost: string;
+  status: number;
+  username: string;
+  viplevel: number;
+}
+
+interface ISearchForm {
+  BeginRegisteredOn: string;
+  EndRegisteredOn: string;
+  RegisterHost: string;
+  Status: string;
+  Username: string;
+  VipId: string;
+  page: number;
+  rows: number;
+  desc: boolean;
+  sort: string;
+  all: boolean;
+}
+export default defineComponent({
+  name: 'MyComponent',
+  setup() {
+    const { t } = useI18n();
+
+    return {
+      t,
+    };
+  },
+
+  data() {
+    return {
+      showAgent: false,
+      tableData: reactive<any[]>([]),
+      statuses: reactive<any[]>([]),
+      totalRowCount: 0,
+      searchForm: reactive<ISearchForm>({
+        BeginRegisteredOn: '',
+        EndRegisteredOn: '',
+        RegisterHost: '',
+        Status: '',
+        Username: '',
+        VipId: '',
+        page: 1,
+        rows: 10,
+        desc: true,
+        sort: '',
+        all: false,
+      }),
+    };
+  },
+  beforeMount() {
+    this.getItems();
+    this.getStatuses();
+  },
+
+  methods: {
+    async getItems() {
+      const response = await getPlayerList();
+      const result = await response.runAsync(this.searchForm);
+      this.tableData = [...result.data.items];
+    },
+
+    async getStatuses() {
+      const status = await getPlayerStatuses();
+      const statusResult = await status.runAsync(this.statuses);
+
+      this.statuses = statusResult.data;
+    },
+
+    formatStatus(row: any, column: TableColumnCtx<ISubitems>) {
+      if (this.statuses[row[column.property]]) {
+        return this.t(this.statuses[row[column.property]]);
+      } else {
+        return '';
+      }
+    },
+
+    formatDateTime(row: any, column: TableColumnCtx<ISubitems>) {
+      if (row[column.property]) {
+        let date = new Date(row[column.property]);
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let dt = date.getDate();
+
+        let hour = date.getHours();
+        let min = date.getMinutes();
+        let sec = date.getSeconds();
+
+        if (dt < 10) {
+          dt = '0' + dt;
+        }
+        if (month < 10) {
+          month = '0' + month;
+        }
+        if (hour < 10) {
+          hour = '0' + hour;
+        }
+        if (min < 10) {
+          min = '0' + min;
+        }
+        if (sec < 10) {
+          sec = '0' + sec;
+        }
+
+        return year + '-' + month + '-' + dt + ' ' + hour + ':' + min + ':' + sec;
+      } else {
+        return '';
+      }
+    },
+
+    formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
+      if (!isNaN(row[column.property])) {
+        let percentage = '%' as string;
+        if (column.property !== 'agentDividendPercentage') {
+          percentage = '';
+        }
+        return row[column.property].toFixed(2) + percentage;
+      } else {
+        return '';
+      }
+    },
+
+    onStatusChange(value: string) {
+      this.searchForm.Status = value;
+      console.log(value);
+      this.getItems();
+    },
+    onSearch() {
+      this.getItems();
+    },
+
+    handleSizeChange(val: number) {
+      this.searchForm.rows = val;
+      this.searchForm.page = 1;
+      this.getItems();
+    },
+    handleCurrentChange(val: number) {
+      this.searchForm.page = val;
+      this.getItems();
+    },
+  },
 });
 </script>
 <style lang="scss" scoped>
+.el-row {
+  margin-bottom: 20px;
+}
+.datefrom {
+  margin-left: 10px;
+}
+.btn {
+  background: transparent;
+  color: var(--el-input-border-color);
+  box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color)) inset;
+  border: none;
+}
+.empty-row {
+  background-color: #000000;
+}
+.subtotal-row {
+  background-color: #000000;
+}
+
+.button-form {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 .table {
   .search {
     margin-bottom: -18px;

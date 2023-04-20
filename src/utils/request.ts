@@ -103,7 +103,7 @@ export function request<R, P extends unknown[] = [], T = boolean>(
         ElMessage.success({ message: res.errmsg });
       }
       !options?.noLoading && closeLoading();
-      return options?.needAll ? res : res.data;
+      return options?.needAll ? res : res;
     } catch (e) {
 
       !options?.noLoading && closeLoading();

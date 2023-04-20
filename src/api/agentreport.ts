@@ -18,14 +18,16 @@ interface ISubitems {
   validBetAmount: number
   winLossAmount: number
 }
+interface IResult extends BaseResult {
+  data:{  
+    mainitems: ISubitems[];
+    subitems: ISubitems[];
+    subtotal: ISubitems;
+    subtotalcount: number
+  }
+}
 
-export type Result = BaseResult<{
-  mainitems: ISubitems[];
-  subitems: ISubitems[];
-  subtotal: ISubitems;
-  subtotalcount: number
-}>;
-export function agentDividends(options: RequestOptions<Result, [BasePageParams]> = {}) {
+export function agentDividends(options: RequestOptions<IResult, [BasePageParams]> = {}) {
   return request(
     (params) => ({
       url: "agentreport/agentdividends",

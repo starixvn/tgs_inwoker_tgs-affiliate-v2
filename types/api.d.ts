@@ -3,11 +3,10 @@ declare global {
     page: number;
     rows: number;
   } & P;
-  type BaseResult<R> = {
+  interface BaseResult {
     err: number;
     errmsg: string;
-    errmsgid: string;
-    data: R;
+    errmsgid: string
   };
   type BasePageResult<R> = {
     page: number;
@@ -15,6 +14,8 @@ declare global {
     count: number;
     list: R[];
   };
+
+  
 }
 
 export {};

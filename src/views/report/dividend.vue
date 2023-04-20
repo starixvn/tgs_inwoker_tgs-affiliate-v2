@@ -72,7 +72,20 @@
     </el-table>
       </el-col>
     </el-row>
-    
+    <el-row>
+      <div class="demo-pagination-block">
+
+          <el-pagination
+            v-model:current-page="searchForm.page"
+            v-model:page-size="searchForm.rows"
+            :page-sizes="[10, 50, 200]"
+            layout="sizes, prev, pager, next"
+            :total="totalRowCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+      </div>
+    </el-row>
   </el-card>
 </template>
 <script lang="ts">
@@ -80,6 +93,7 @@ import { defineComponent,ref,reactive } from 'vue'
 import { useI18n } from 'vue-i18n';
 import { agentDividends } from '@/api/agentreport'
 import type { TableColumnCtx } from 'element-plus'
+import { number } from '@intlify/core-base';
 interface ISubitems {
   agentAdjustAmount: number
   agentCoveredBonus: number
@@ -104,6 +118,16 @@ interface SpanMethodProps {
   rowIndex: number
   columnIndex: number
 }
+interface ISearchForm {
+        dateType:string
+        From:string
+        To:string
+        page:number
+        rows:number
+        desc:boolean
+        sort:string
+        all:boolean
+}
 export default defineComponent({
   name: 'MyComponent',
  
@@ -111,7 +135,8 @@ export default defineComponent({
     return {
       tableData: reactive<any[]>([
       ]),
-      searchForm: reactive<any>({
+      totalRowCount:0,
+      searchForm: reactive<ISearchForm>({
         dateType:"1",
         From:'2023-04-01',
         To:'2023-04-16',
@@ -127,11 +152,13 @@ export default defineComponent({
     async getItems (){
  
         const response = await agentDividends();
-        const data = await response.runAsync(this.searchForm);
+        const result = await response.runAsync(this.searchForm);
+
         const emptyRow = {username:"Direct Agent", id: ""} as ISubitems;
-        const subtotalRow = data?.subtotal;
+        const subtotalRow = result.data.subtotal;
         subtotalRow.username = "Total";
-        this.tableData = [...data?.mainitems ,...[emptyRow], ...data?.subitems, ...[subtotalRow]];
+        this.tableData = [...result.data.mainitems ,...[emptyRow], ...result.data.subitems, ...[subtotalRow]];
+        this.totalRowCount = result.data.subtotalcount;
 
     },
     arraySpanMethod  ({
@@ -183,6 +210,15 @@ export default defineComponent({
     onSearch(){
         this.getItems();
 
+    },
+    handleSizeChange(val: number){
+      this.searchForm.rows = val;
+      this.searchForm.page = 1;
+      this.getItems();
+    },
+    handleCurrentChange(val: number){
+      this.searchForm.page = val;
+      this.getItems();
     }
   },
   beforeMount() {

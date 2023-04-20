@@ -11,6 +11,5 @@ export const routes: RouteRecordRaw[] = [
         meta: { title: 'account' },
       },
     ],
-    meta: { title: 'account' },
   },
 ];

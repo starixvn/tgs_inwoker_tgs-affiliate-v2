@@ -2,8 +2,8 @@ import { SizeEnum } from '@/dict/configEnum';
 export default {
   primaryColor: '#07b5bc', // 主题颜色
   menuBg: '#fff', // 菜单背景颜色
-  menuWidth: '300px', // 菜单展开宽度
-  menuCollapse: true, // 菜单是否折叠
+  menuWidth: '400px', // 菜单展开宽度
+  menuCollapse: false, // 菜单是否折叠
   size: SizeEnum.DEFAULT, // 默认大小
   fixedHeader: true, // 固定header
   topBar: true, // 是否显示顶栏

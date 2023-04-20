@@ -1,7 +1,7 @@
 <template>
   <div class="total-panel">
     <el-row :gutter="30">
-      <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :lg="6">
+      <el-col v-for="(item, index) in list" :key="index" :xs="12" :sm="12" :lg="6">
         <div class="card" :on-click="() => {}">
           <div class="card-icon">{{ t(item.title) }} icon here</div>
           <div>

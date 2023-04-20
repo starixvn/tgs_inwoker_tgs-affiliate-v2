@@ -74,6 +74,10 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
     white-space: pre-line;
   }
 
+  &.collapse {
+    width: 0;
+  }
+
   .menu-box {
     height: 100%;
     :deep(.layout-menu-content) {

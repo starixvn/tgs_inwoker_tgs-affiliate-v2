@@ -4,6 +4,7 @@ export default {
   menuBg: '#fff', // 菜单背景颜色
   menuWidth: '400px', // 菜单展开宽度
   menuCollapse: false, // 菜单是否折叠
+  allowMenuCollapse: false, // 菜单是否折叠
   size: SizeEnum.DEFAULT, // 默认大小
   fixedHeader: true, // 固定header
   topBar: true, // 是否显示顶栏

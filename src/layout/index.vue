@@ -18,7 +18,7 @@
     </el-container>
   </el-container>
   <el-drawer
-    v-if="globalStore.isMobile"
+    v-if="globalStore.isMobile && themeConfig.allowMenuCollapse "
     class="me-sidebar-drawer"
     :model-value="!themeConfig.menuCollapse"
     :with-header="false"

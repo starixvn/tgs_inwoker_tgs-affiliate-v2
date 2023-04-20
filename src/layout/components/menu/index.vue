@@ -1,11 +1,11 @@
 <template>
-  <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
+  <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse }">
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
           class="el-menu-vertical-demo"
           :default-active="activeMenu"
-          :collapse="!globalStore.isMobile && themeConfig.menuCollapse"
+          :collapse="!globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse"
         >
           <layout-menu-item v-for="route in routeStore.routes" :key="route.path" :item="route" />
         </el-menu>
@@ -131,10 +131,25 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-menu--inline {
           background: transparent;
+          position: relative;
+
+          
+        }
+        .el-menu--inline::before {
+          content: "";
+          position: absolute;
+          top: 15px;
+          left: 10px; /* Set the distance of the line from the left edge */
+          bottom: 15px;
+          width: 0;
+
+          border-left: 2px solid #B7B7B7; 
+
+          
         }
 
-        .el-sub-menu.is-opened .el-menu-item {
-          padding: 0;
+        .el-sub-menu .el-menu-item {
+          padding-left:10px;
         }
 
         .el-menu-item,

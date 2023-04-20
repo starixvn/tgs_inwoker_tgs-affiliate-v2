@@ -1,9 +1,12 @@
 <template>
   <el-space class="left">
     <div></div>
-    <mel-icon-expand v-if="themeConfig.menuCollapse" class="fold-expand pointer" @click="setMenuCollapse">
+    <div v-if="themeConfig.allowMenuCollapse">
+      <mel-icon-expand v-if="themeConfig.menuCollapse" class="fold-expand pointer" @click="setMenuCollapse">
     </mel-icon-expand>
-    <mel-icon-fold v-else class="fold-expand pointer" @click="setMenuCollapse"></mel-icon-fold>
+    <mel-icon-fold  v-else class="fold-expand pointer" @click="setMenuCollapse"></mel-icon-fold>
+    </div>
+  
     <el-scrollbar
       v-if="!globalStore.isMobile && themeConfig.breadcrumb"
       :min-size="10"

@@ -1,5 +1,6 @@
 <template>
-     <div class="big-title">{{ $t('withdraw') }}</div>
+    <div>
+        <div class="big-title">{{ $t('withdraw') }}</div>
     <el-row>
         <el-col :span="6">
             <div class="balance boxshadow"  >
@@ -76,6 +77,8 @@
                
             </div>
         </div>
+    </div>
+     
 
   </template>
   

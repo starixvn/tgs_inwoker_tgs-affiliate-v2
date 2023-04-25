@@ -72,5 +72,18 @@
   "RegisterUndone": "Register Undone",
 
   "teamnumber": "Team Number",
-  "dividendpercentage": "Dividend Percentage"
+  "dividendpercentage": "Dividend Percentage",
+  "manageBankCard": "Manage Bank Card",
+  "enterWithdrawPassword": "Enter Withdraw Password",
+  "amount": "Amount",
+  "bankCard": "Bank Card",
+  "submit": "Submit",
+  "endingIn": "Ending In",
+  "withdrawalRange": "Must between 10.00 - 100,000.00",
+  "bank": "Bank",
+  "branch": "Branch",
+  "accountName": "Account Name",
+  "accountNumber": "Account No.",
+  "address": "Address",
+  "addBankCard": "Add Bank Card"
 }

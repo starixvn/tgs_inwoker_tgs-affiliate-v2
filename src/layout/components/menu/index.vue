@@ -1,12 +1,12 @@
 <template>
-  <div class="layout-menu"  :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse   }">
+  <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
     <div class="title">M<span>e - Admin</span></div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
           class="el-menu-vertical-demo"
           :default-active="activeMenu"
-          :collapse="!globalStore.isMobile && themeConfig.menuCollapse "
+          :collapse="!globalStore.isMobile && themeConfig.menuCollapse"
         >
           <layout-menu-item v-for="route in routeStore.routes" :key="route.path" :item="route" />
         </el-menu>
@@ -44,7 +44,6 @@ const menuActiveColor = computed(() => (getColorLuma(themeConfig.menuBg) < 100 ?
 const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColor.value, 0.8));
 </script>
 <style lang="scss" scoped>
-
 .layout-menu {
   --el-menu-base-level-padding: 12px;
   --el-menu-text-color: v-bind('menuTextColor');
@@ -53,7 +52,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
   height: 100%;
   position: relative;
   padding-top: var(--el-menu-item-height);
-  margin:0 8px;
+  margin: 0 8px;
   .title {
     height: var(--el-menu-item-height);
     line-height: var(--el-menu-item-height);
@@ -88,10 +87,9 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
       .el-menu {
         background-color: unset;
         border: 0;
-     
+
         .el-sub-menu.is-active {
           > .el-sub-menu__title {
-
             background: #07b5bc;
             color: #fff;
             border-radius: 8px;
@@ -100,7 +98,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
               color: #fff;
             }
           }
-
         }
         .el-sub-menu__title {
           padding-right: 28px;
@@ -113,7 +110,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-menu-item.is-active {
           color: var(--el-color-primary);
-          
         }
 
         .el-menu--inline {

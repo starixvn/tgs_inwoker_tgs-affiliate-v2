@@ -2,8 +2,9 @@ import request from '@/utils/request';
 
 const enum Api {
   BANK_INFO = 'bankinfo',
+  WITHDRAWAL = 'withdraw',
 }
-interface IBankInfoDataDetails extends BaseResult {
+export interface IBankInfoDataDetails {
   bankAccount: string;
   bankBranch: string;
   bankName: string;
@@ -21,6 +22,14 @@ interface IBankInfoResult extends BaseResult {
   data: IBankInfoData[];
 }
 
+export class WithdrawalParams {
+  amount = '';
+  bankinfoid = '';
+  paypassword = '';
+}
+interface IWithdrawalResult extends BaseResult {
+  data: string;
+}
 export function bankInfoApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
   return request<IBankInfoResult, [], T>(
     () => ({
@@ -28,6 +37,17 @@ export function bankInfoApi<T extends boolean = false>(returnAxios: T = false as
       method: 'get',
     }),
     { noLoading },
+    returnAxios,
+  );
+}
+export function withdrawal<T extends boolean = true>(returnAxios: T = true as T) {
+  return request<IWithdrawalResult, [WithdrawalParams], T>(
+    (params) => ({
+      url: Api.WITHDRAWAL,
+      method: 'post',
+      data: params,
+    }),
+    { needAll: true },
     returnAxios,
   );
 }

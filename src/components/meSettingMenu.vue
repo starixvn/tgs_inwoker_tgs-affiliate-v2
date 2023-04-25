@@ -66,7 +66,7 @@ const predefinePrimaryColors = reactive([
   '#F5222D',
 ]);
 const sidebarBgColors = reactive([
-  '#1d1e1f',
+  '#ffffff',
   '#212121',
   '#273352',
   '#ffffff',

@@ -1,14 +1,12 @@
 <template>
-  <div
-    class="layout-menu"
-    :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse }"
-  >
+  <div class="layout-menu"  :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse   }">
+    <div class="title">M<span>e - Admin</span></div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
           class="el-menu-vertical-demo"
           :default-active="activeMenu"
-          :collapse="!globalStore.isMobile && themeConfig.menuCollapse && themeConfig.allowMenuCollapse"
+          :collapse="!globalStore.isMobile && themeConfig.menuCollapse "
         >
           <layout-menu-item v-for="route in routeStore.routes" :key="route.path" :item="route" />
         </el-menu>
@@ -46,69 +44,54 @@ const menuActiveColor = computed(() => (getColorLuma(themeConfig.menuBg) < 100 ?
 const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColor.value, 0.8));
 </script>
 <style lang="scss" scoped>
-//add  class name
-.el-menu-item.is-active .el-menu-item__content {
-  background-color: #07b5bc;
-  color: #fff;
-}
 
 .layout-menu {
   --el-menu-base-level-padding: 12px;
   --el-menu-text-color: v-bind('menuTextColor');
   --el-menu-active-color: v-bind('menuActiveColor');
-  background: #fff;
+  background-color: v-bind('themeConfig.menuBg');
   height: 100%;
   position: relative;
+  padding-top: var(--el-menu-item-height);
+  margin:0 8px;
   .title {
     height: var(--el-menu-item-height);
-
+    line-height: var(--el-menu-item-height);
     font-weight: bold;
-    padding: 12px 24px;
+    padding: 0 12px;
     font-size: 1.25em;
     word-break: break-all;
     overflow-y: hidden;
-    color: #07b5bc;
+    color: var(--el-menu-active-color);
     background-color: inherit;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
-
-    white-space: pre-line;
+    box-shadow: 0 1px v-bind(menuBg1);
   }
-
-  &.collapse {
-    width: 0;
-  }
-
   .menu-box {
     height: 100%;
     :deep(.layout-menu-content) {
       width: v-bind('themeConfig.menuWidth');
       color: var(--el-menu-text-color);
       transition: width 0.5s;
-      border: 0px;
 
       .menu {
         padding-right: 6px;
-        padding-left: 12px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         word-break: break-all;
       }
 
-      .el-menu-item {
-        color: #000;
-      }
-
       .el-menu {
         background-color: unset;
         border: 0;
-        padding: 0 10px;
-
+     
         .el-sub-menu.is-active {
           > .el-sub-menu__title {
+
             background: #07b5bc;
             color: #fff;
             border-radius: 8px;
@@ -117,38 +100,24 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
               color: #fff;
             }
           }
+
         }
         .el-sub-menu__title {
           padding-right: 28px;
-          color: #000;
         }
         .el-sub-menu__title:hover,
         .el-menu-item:hover {
-          background: transparent;
+          background-color: rgba(var(--el-color-primary-rgb), 0.3);
+          color: var(--el-menu-active-color);
         }
 
         .el-menu-item.is-active {
-          color: #07b5bc;
-          font-weight: bold;
+          color: var(--el-color-primary);
+          
         }
 
         .el-menu--inline {
-          background: transparent;
-          position: relative;
-        }
-        .el-menu--inline::before {
-          content: '';
-          position: absolute;
-          top: 15px;
-          left: 10px; /* Set the distance of the line from the left edge */
-          bottom: 15px;
-          width: 0;
-
-          border-left: 2px solid #b7b7b7;
-        }
-
-        .el-sub-menu .el-menu-item {
-          padding-left: 10px;
+          background-color: #fff;
         }
 
         .el-menu-item,
@@ -157,14 +126,12 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
             width: 1em;
             margin-left: -1px;
             margin-right: 12px;
-            color: #000;
           }
         }
       }
     }
   }
 }
-
 .collapse {
   :deep(.layout-menu-content) {
     width: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2) !important;

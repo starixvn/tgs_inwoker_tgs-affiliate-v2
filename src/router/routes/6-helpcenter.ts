@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'index',
         component: () => import('@/views/helpcenter/index.vue'),
-        meta: { title: 'helpcenter', affix: true, icon: 'me-icon-help' },
+        meta: { title: 'helpcenter',  icon: 'me-icon-help' },
       },
     ],
   },

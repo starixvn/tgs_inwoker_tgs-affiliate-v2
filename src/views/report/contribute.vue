@@ -2,21 +2,31 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-        <div>
-          <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
-            <el-radio-button label="today">Today</el-radio-button>
-            <el-radio-button label="yesterday">Yesterday</el-radio-button>
-            <el-radio-button label="thisWeek">This Week</el-radio-button>
-            <el-radio-button label="lastweek">Last Week</el-radio-button>
-            <el-radio-button label="thisMonth">This Month</el-radio-button>
-            <el-radio-button label="lastMonth">Last Month</el-radio-button>
-            <div class="datefrom">
+          <el-form :inline="true" >
+            <el-form-item>
+              <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
+                <el-radio-button label="today">Today</el-radio-button>
+                <el-radio-button label="yesterday">Yesterday</el-radio-button>
+                <el-radio-button label="thisWeek">This Week</el-radio-button>
+                <el-radio-button label="lastweek">Last Week</el-radio-button>
+                <el-radio-button label="thisMonth">This Month</el-radio-button>
+                <el-radio-button label="lastMonth">Last Month</el-radio-button>
+                
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item>
               <el-date-picker v-model="searchForm.From" type="date" size="large" />
+
               <el-date-picker v-model="searchForm.To" type="date" size="large" />
-            </div>
-            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">SEARCH</el-button>
-          </el-radio-group>
-        </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">SEARCH</el-button>
+            </el-form-item>
+          </el-form>
+ 
+  
+           
+   
       </el-col>
     </el-row>
     <el-row>
@@ -105,8 +115,8 @@ export default defineComponent({
       totalRowCount: 0,
       searchForm: reactive<ISearchForm>({
         dateType: 'today',
-        From: '2023-04-01',
-        To: '2023-04-16',
+        From: '',
+        To: '',
         page: 1,
         rows: 10,
         desc: true,
@@ -117,8 +127,11 @@ export default defineComponent({
   },
   methods: {
     async getItems() {
+      let searchForm = {...this.searchForm};
+      searchForm.From = moment(searchForm.From).add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
+      searchForm.To = moment(searchForm.To).add(1,"days").add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
       const response = await agentContribute();
-      const result = await response.runAsync(this.searchForm);
+      const result = await response.runAsync(searchForm);
 
       const total = { username: this.t('total') + ':', ...result.data.total };
 
@@ -185,7 +198,7 @@ export default defineComponent({
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
       this.searchForm.page = 1;
-      this.getItems();
+
     },
 
     handleSizeChange(val: number) {
@@ -199,6 +212,8 @@ export default defineComponent({
     },
   },
   beforeMount() {
+
+    this.onDateTypeChange();
     this.getItems();
   },
   setup() {
@@ -215,10 +230,11 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 .datefrom {
-  margin-left: 10px;
+
+  margin-right: 10px;
 }
 .btnsearch {
-  margin-left: 10px;
+
 }
 .empty-row {
   background-color: #000000;

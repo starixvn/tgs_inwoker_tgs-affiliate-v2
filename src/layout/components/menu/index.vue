@@ -1,6 +1,6 @@
 <template>
   <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
-    <div class="title">M<span>e - Admin</span></div>
+    <div class="title">A<span>gent Admin 2.0</span></div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu

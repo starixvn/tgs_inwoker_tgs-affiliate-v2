@@ -13,14 +13,15 @@
             <div class="title">Wallet Balance</div>
             <div class="data">
               <div>{{ user.balance }}</div>
-              <div class="button">Wallet</div>
+              <el-button type="primary" size="large" :icon="Wallet">Wallet</el-button>
             </div>
           </div>
           <div class="account-container">
             <div class="title">Referral Code</div>
             <div class="data">
               <div>{{ user.invitationCode }}</div>
-              <div class="button">Copy</div>
+              <el-button type="primary" size="large" :icon="CopyDocument">Copy</el-button>
+          
             </div>
           </div>
           <div class="account-container">
@@ -29,9 +30,9 @@
               {{ 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register' }}
             </div>
             <div class="button-container">
-              <div class="button">Copy</div>
-              <div class="button">Add Agent</div>
-              <div class="button">Add Player</div>
+              <el-button type="primary" size="large" :icon="CopyDocument">Copy</el-button>
+              <el-button type="primary" size="large">Add Agent</el-button>
+              <el-button type="primary" size="large">Add Player</el-button>
               <custom-button />
             </div>
           </div>
@@ -43,8 +44,10 @@
                 <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" />
               </div>
               <div class="qrcode-button">
-                <div class="button">Download</div>
-                <div class="button">Copy</div>
+   
+                <el-button type="primary" size="large" :icon="Download" style="width:100%">Download</el-button>
+                <el-button type="primary" size="large" :icon="CopyDocument" style="width:100%">Copy</el-button>
+
               </div>
             </div>
           </div>
@@ -86,7 +89,7 @@
 
 <script setup lang="ts" name="Account">
 import { useUserStore } from '@/store';
-
+import {CopyDocument,Wallet,Download}  from '@element-plus/icons-vue'
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data

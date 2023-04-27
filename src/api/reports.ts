@@ -1,23 +1,17 @@
 import { request, RequestOptions } from '@/utils/request';
 
-export interface PlayerData {
-  areacode: string;
-  phone: string;
-  playercode: string;
-  registeredtime: string;
-  registerhost: string;
-  status: number;
-  username: string;
-  viplevel: number;
-}
-interface PlayeListResult extends BaseResult {
-  data: {
-    items: PlayerData[];
-    totalcount: number;
-  };
+export interface AgentStatusesResult extends BaseResult {
+  data: AgentStatusesData;
 }
 
-interface AgentData {
+export interface AgentStatusesData  {
+  [key: string]: string;
+}
+export interface AgentDetailsResult extends BaseResult {
+  data: AgentDetailsData;
+}
+
+export interface AgentData {
   agentstatus: string;
   balance: number;
   cardgamerebatepercentage: number;
@@ -36,7 +30,25 @@ interface AgentData {
   username: string;
   virtualsportsrebatepercentage: number;
 }
+export interface AgentDetailsData extends AgentData{
+  accumulatedprofitsharing: number;
+  agentdividendtype: string;
+  agentdomains: string;
+  agentlevel: number;
+  brandUrl: string;
+  dividendconditions: string;
+  email: string;
+  invitationCode: string;
+  issetpaypassword: boolean;
+  parentusername: string;
+  phone: string;
+  playernumber: number;
+  qq: string;
+  realname: string;
+  wechat: string;
 
+
+}
 interface AgentListResult extends BaseResult {
   data: {
     items: AgentData[];
@@ -45,38 +57,26 @@ interface AgentListResult extends BaseResult {
     message: string;
   };
 }
-export interface SearchForm extends BasePageParams {
-  BeginRegisteredOn: string;
-  EndRegisteredOn: string;
-  RegisterHost: string;
+
+export interface GetAgentListParams extends BasePageParams {
   Status: string;
   Username: string;
-  VipId: string;
-  desc: boolean;
-  sort: string;
-  all: boolean;
-}
-export interface PlayerStatusData {
-  [key: string | number]: string;
-}
-interface PlayerStatusResult {
-  data: PlayerStatusData;
 }
 
-export function getPlayerList(options: RequestOptions<PlayeListResult, [SearchForm]> = {}) {
+export function getAgentList(options: RequestOptions<AgentListResult, [GetAgentListParams]> = {}) {
   return request(
     (params) => ({
-      url: 'player/list',
+      url: 'agent/list',
       method: 'get',
       params: params,
     }),
-    Object.assign({ noLoading: true }, options),
+    Object.assign({ noLoading: false }, options),
   );
 }
-export function getPlayerStatuses<T extends boolean = false>(returnAxios: T = false as T, noLoading = true) {
-  return request<PlayerStatusResult, [], T>(
+export function getAgentStatusesApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<AgentStatusesResult, [], T>(
     () => ({
-      url: 'player/list/statuses',
+      url: 'agent/list/statuses',
       method: 'get',
     }),
     { noLoading },
@@ -84,24 +84,13 @@ export function getPlayerStatuses<T extends boolean = false>(returnAxios: T = fa
   );
 }
 
-export function getAgentList(options: RequestOptions<AgentListResult, [BasePageParams]> = {}) {
-  return request(
+export function getAgentDetailsApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<AgentDetailsResult, [string], T>(
     (params) => ({
-      url: 'agent/list',
+      url: 'agent/info/' + params,
       method: 'get',
-      params: params,
     }),
-    Object.assign({ noLoading: true }, options),
-  );
-}
-
-export function getAgentStatuses(options: RequestOptions<BaseResult, [string]> = {}) {
-  return request(
-    (params) => ({
-      url: 'agent/list/statuses',
-      method: 'get',
-      params: { params },
-    }),
-    Object.assign({ noLoading: true }, options),
+    { noLoading },
+    returnAxios,
   );
 }

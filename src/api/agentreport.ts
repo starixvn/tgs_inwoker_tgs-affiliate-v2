@@ -54,6 +54,16 @@ interface ContributeResult extends BaseResult {
 export interface AccountChangesParams extends BasePageParams {
   transactiontype: string
   id: string
+  From: string;
+  To: string;
+}
+export interface AgentDividendsParams extends BasePageParams {
+  From: string;
+  To: string;
+}
+export interface AgentContributeParams extends BasePageParams {
+  From: string;
+  To: string;
 }
 export interface AccountChangesItems {
   amount: number;
@@ -74,7 +84,7 @@ export interface TransactionTypeResult extends BaseResult {
 export interface TransactionTypeData  {
   [key: string]: string;
 }
-export function agentDividends(options: RequestOptions<IResult, [BasePageParams]> = {}) {
+export function agentDividends(options: RequestOptions<IResult, [AgentDividendsParams]> = {}) {
   return request(
     (params) => ({
       url: 'agentreport/agentdividends',
@@ -85,7 +95,7 @@ export function agentDividends(options: RequestOptions<IResult, [BasePageParams]
   );
 }
 
-export function agentContribute(options: RequestOptions<ContributeResult, [BasePageParams]> = {}) {
+export function agentContribute(options: RequestOptions<ContributeResult, [AgentContributeParams]> = {}) {
   return request(
     (params) => ({
       url: 'agentreport/contributions',

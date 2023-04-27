@@ -1,7 +1,5 @@
 declare global {
   type BasePageParams<P extends Record<string, any> = unknown> = {
-    From: string;
-    To: string;
     page: number;
     rows: number;
     desc: boolean;

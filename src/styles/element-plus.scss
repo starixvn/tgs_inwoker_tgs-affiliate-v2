@@ -3,7 +3,12 @@
 
 :root {
   --el-menu-item-height: 50px;
+
 }
+.el-table {
+  --el-table-header-bg-color:#eeeeee;
+}
+
 //自定义 element-ui 样式
 .me-large:root {
   //这里强制将font-size-base设置为large

@@ -2,8 +2,10 @@
   <div class="total-panel">
     <el-row :gutter="30">
       <el-col v-for="(item, index) in list" :key="index" :xs="12" :sm="12" :lg="6">
-        <div class="card" :on-click="() => {}">
-          <div class="card-icon">{{ t(item.title) }} icon here</div>
+        <div class="card" @click="navigateTo(item.path)">
+          <div class="card-icon">
+            <img :src="getImgUrl(item.title)" style="width: 50%" />
+          </div>
           <div>
             {{ t(item.title) }}
           </div>
@@ -14,19 +16,29 @@
 </template>
 <script setup lang="ts">
 import { useLocalesI18n } from '@/locales/i18n';
+import { router } from '@/router';
 
 let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'dashboard']);
+
+function getImgUrl(pic: string) {
+  return 'src/assets/images/' + pic + '.svg';
+}
+
+function navigateTo(path: string) {
+  console.log(path);
+  router.push(path);
+}
 
 const list = reactive([
   {
     title: 'addagent',
     icon: 'mel-icon-platform',
-    path: '/dashboard',
+    path: '/team/agent',
   },
   {
     title: 'addplayer',
     icon: 'mel-icon-user-filled',
-    path: '/team/agent',
+    path: '/team/player',
   },
   {
     title: 'dashboard',
@@ -36,12 +48,12 @@ const list = reactive([
   {
     title: 'changepassword',
     icon: 'mel-icon-user-filled',
-    path: '/dashboard',
+    path: '/account/index',
   },
   {
     title: 'wallet',
     icon: 'mel-icon-user-filled',
-    path: '/dashboard',
+    path: '/wallet/withdraw',
   },
   {
     title: 'referrallink',
@@ -51,12 +63,12 @@ const list = reactive([
   {
     title: 'winlossreport',
     icon: 'mel-icon-user-filled',
-    path: '/dashboard',
+    path: '/report/round',
   },
   {
     title: 'helpcenter',
     icon: 'mel-icon-user-filled',
-    path: '/dashboard',
+    path: '/helpcenter/index',
   },
 ]);
 </script>
@@ -83,6 +95,9 @@ const list = reactive([
 .card-icon {
   height: 100px;
   width: 100px;
-  background: rgba(0, 0, 0, 0.02);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

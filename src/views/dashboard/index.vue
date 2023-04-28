@@ -13,14 +13,18 @@
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
               <div>{{ user.balance }}</div>
-              <el-button type="primary" size="large" :icon="Wallet">{{ $t('wallet') }}</el-button>
+              <el-button type="primary" size="large" :icon="Wallet" @click="navigateTo('/wallet/withdrawal')">{{
+                $t('wallet')
+              }}</el-button>
             </div>
           </div>
           <div class="account-container">
             <div class="title">{{ $t('referralCode') }}</div>
             <div class="data">
               <div>{{ user.invitationCode }}</div>
-              <el-button type="primary" size="large" :icon="CopyDocument">{{ $t('copy') }}</el-button>
+              <el-button type="primary" size="large" :icon="CopyDocument" @click="()=>{
+                copyText(user.invitationCode)
+              }">{{ $t('copy') }}</el-button>
             </div>
           </div>
           <div class="account-container">
@@ -91,10 +95,26 @@
 <script setup lang="ts" name="Account">
 import { useUserStore } from '@/store';
 import { CopyDocument, Wallet, Download } from '@element-plus/icons-vue';
+import { router } from '@/router';
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
+
+function navigateTo(path: string) {
+  router.push({ name: path });
+}
+
+function copyText(text: string) {
+  const input = document.createElement('input');
+  input.setAttribute('readonly', 'readonly');
+  input.setAttribute('value', text);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 9999);
+  document.execCommand('copy');
+  document.body.removeChild(input);
+}
 
 const statistic = reactive([
   { name: 'directAgent', data: '29', color: 'blue' },

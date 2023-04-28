@@ -79,7 +79,7 @@ const profileInfo = reactive([
   { name: 'balance', value: user?.balance, editable: false },
   { name: 'status', value: user?.status, editable: false },
   { name: 'type', value: user?.type, editable: false },
-  { name: 'profitsharept', value: user?.dividendpercentage, editable: false },
+  { name: 'profitSharePT', value: user?.dividendpercentage, editable: false },
   { name: 'email', value: user?.email, editable: true },
   { name: 'phone', value: user?.phone, editable: false },
   { name: 'loginpassword', value: '123', editable: true },

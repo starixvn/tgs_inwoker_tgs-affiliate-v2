@@ -44,6 +44,36 @@ interface ContributeSubitems {
   withdrawalAmount: number;
 }
 
+interface RoundSubItems {
+  additionalData: string;
+  betAmount: number;
+  closedOn: string;
+  commission: any;
+  createdOn: string;
+  currencyCode: string;
+  externalClosedOn: string;
+  externalCreatedOn: string;
+  externalPlayerCode: string;
+  externalRoundId: string;
+  gameId: number;
+  gameName: string;
+  gameProviderCode: string;
+  gameProviderId: string;
+  gameProviderName: string;
+  id: string;
+  platformType: number;
+  playerCode: string;
+  playerName: string;
+  settleAmount: number;
+  status: number;
+  subGameProviderName: string;
+  tieBetAdjustment: any;
+  turnover: number;
+  updatedOn: string;
+  validBetAmount: number;
+  winLoss: number;
+}
+
 interface ContributeResult extends BaseResult {
   data: {
     items: ContributeSubitems[];
@@ -51,9 +81,16 @@ interface ContributeResult extends BaseResult {
     totalcount: number;
   };
 }
+
+interface GameProviderResult extends BaseResult {
+  data: {
+    id: string;
+    name: string;
+  };
+}
 export interface AccountChangesParams extends BasePageParams {
-  transactiontype: string
-  id: string
+  transactiontype: string;
+  id: string;
   From: string;
   To: string;
 }
@@ -78,10 +115,17 @@ interface AccountChangesResult extends BaseResult {
     totalcount: number;
   };
 }
+
+interface RoundReportResult extends BaseResult {
+  data: {
+    items: RoundSubItems[];
+    totalcount: number;
+  };
+}
 export interface TransactionTypeResult extends BaseResult {
   data: TransactionTypeData;
 }
-export interface TransactionTypeData  {
+export interface TransactionTypeData {
   [key: string]: string;
 }
 export function agentDividends(options: RequestOptions<IResult, [AgentDividendsParams]> = {}) {
@@ -119,6 +163,28 @@ export function getTransactionTypeApi<T extends boolean = false>(returnAxios: T 
   return request<TransactionTypeResult, [], T>(
     () => ({
       url: 'agentreport/accountchanges/transactiontypes',
+      method: 'get',
+    }),
+    { noLoading },
+    returnAxios,
+  );
+}
+
+export function roundReportApi(options: RequestOptions<RoundReportResult, [BasePageParams]> = {}) {
+  return request(
+    (params) => ({
+      url: 'agentreport/rounds',
+      method: 'get',
+      params: params,
+    }),
+    Object.assign({ noLoading: false }, options),
+  );
+}
+
+export function getGameProviderApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<GameProviderResult, [], T>(
+    () => ({
+      url: 'gameprovider',
       method: 'get',
     }),
     { noLoading },

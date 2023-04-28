@@ -4,7 +4,7 @@
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-input :placeholder="$t('agentUsername')" size="large" v-model="searchForm.Username" clearable/>
+            <el-input :placeholder="$t('agentusername')" size="large" v-model="searchForm.Username" clearable />
           </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
@@ -13,39 +13,44 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{$t('search')}}</el-button>
+            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ $t('search') }}</el-button>
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col :md="6"  :sm="24">
+      <el-col :md="6" :sm="24">
         <el-form :inline="true">
-          <el-form-item style="    margin-right: 0px;float:right">
-            <el-button type="primary" class="btnsearch" size="large" @click="addAgentDialogVisible = true" style="float:right" icon="mel-icon-plus">{{$t('addAgent')}}</el-button> 
+          <el-form-item style="margin-right: 0px; float: right">
+            <el-button
+              type="primary"
+              class="btnsearch"
+              size="large"
+              @click="addAgentDialogVisible = true"
+              style="float: right"
+              icon="mel-icon-plus"
+              >{{ $t('addagent') }}</el-button
+            >
             <!-- <el-button type="primary" icon="mel-icon-filter" size="large"/> -->
           </el-form-item>
-
         </el-form>
       </el-col>
-     
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" border >
+        <el-table :data="tableData" border>
           <el-table-column :label="t('username')" prop="username" />
           <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" />
           <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" />
           <el-table-column :label="t('teamnumber')" prop="teamnumber" />
           <el-table-column align="right" :label="t('balance')" prop="balance" :formatter="formatPrice" />
           <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" />
-          <el-table-column :label="t('setting')" align="center"  >
+          <el-table-column :label="t('setting')" align="center">
             <template #default="scope">
-              <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)"/>
-                <el-button type="primary" icon="mel-icon-edit" size="small" @click="onEditClick(scope.row.id)"/>
+              <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />
+              <el-button type="primary" icon="mel-icon-edit" size="small" @click="onEditClick(scope.row.id)" />
             </template>
-           
           </el-table-column>
           <template #empty>
-            {{ t('No Record') }}
+            {{ t('noRecord') }}
           </template>
         </el-table>
       </el-col>
@@ -63,56 +68,58 @@
         />
       </div>
     </el-row>
-    <el-dialog
-    v-model="addAgentDialogVisible"
-    :title="t('addAgent')"
-    :fullscreen="globalStore.isMobile">
-    <el-form label-position="right" label-width="25%" style="width: 100%">
-      
-      
-      <el-form-item :label="t('username')" >
-        <el-input size="large" :placeholder="$t('enterUsername')" v-model="addAgentParams.userName" clearable />
-      </el-form-item>
-      <el-form-item :label="t('password')">
-        <el-input size="large" :placeholder="$t('enterPassword')" v-model="addAgentParams.password" clearable type="password"/>
-      </el-form-item>
-      <el-form-item :label="t('confirmPassword')">
-        <el-input size="large" :placeholder="$t('reEnterPassword')" v-model="addAgentParams.confirmPassword" clearable type="password"/>
-      </el-form-item>
-      <el-form-item :label="t('realName')">
-        <el-input size="large" :placeholder="$t('enterRealName')" v-model="addAgentParams.realname" clearable />
-      </el-form-item>
-      <el-form-item :label="t('profitSharePT')">
-        <el-input size="large" :placeholder="$t('enterProfitSharePT')" v-model="addAgentParams.dividendPercentage" >
-          <template #append>%</template>
+    <el-dialog v-model="addAgentDialogVisible" :title="t('addagent')" :fullscreen="globalStore.isMobile">
+      <el-form label-position="right" label-width="25%" style="width: 100%">
+        <el-form-item :label="t('username')">
+          <el-input size="large" :placeholder="$t('enterUsername')" v-model="addAgentParams.userName" clearable />
+        </el-form-item>
+        <el-form-item :label="t('password')">
+          <el-input
+            size="large"
+            :placeholder="$t('enterPassword')"
+            v-model="addAgentParams.password"
+            clearable
+            type="password"
+          />
+        </el-form-item>
+        <el-form-item :label="t('confirmPassword')">
+          <el-input
+            size="large"
+            :placeholder="$t('reEnterPassword')"
+            v-model="addAgentParams.confirmPassword"
+            clearable
+            type="password"
+          />
+        </el-form-item>
+        <el-form-item :label="t('realName')">
+          <el-input size="large" :placeholder="$t('enterRealName')" v-model="addAgentParams.realname" clearable />
+        </el-form-item>
+        <el-form-item :label="t('profitSharePT')">
+          <el-input size="large" :placeholder="$t('enterProfitSharePT')" v-model="addAgentParams.dividendPercentage">
+            <template #append>%</template>
           </el-input>
-      </el-form-item>
-      <el-form-item :label="t('remarks')">
-        <el-input size="large" v-model="addAgentParams.remarks" type="textarea" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
+        </el-form-item>
+        <el-form-item :label="t('remarks')">
+          <el-input size="large" v-model="addAgentParams.remarks" type="textarea" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="onRegister()">
+            {{ t('registerNow') }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
 
-        <el-button type="primary" @click="onRegister()">
-          {{t("registerNow")}}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
-
-  <el-dialog
-    v-model="viewAgentDialogVisible"
-    :title="t('addAgent')"
-    width="80%"
-    :fullscreen="globalStore.isMobile">
-    <el-tabs type="card" v-model="activeName">
-      <el-tab-pane :label="t('agent')" name="first" >
-        <el-row>
-          <el-col :lg="12" :md="12" :xs="24">
-            <el-form  label-position="right" label-width="150px" >
-                <el-form-item :label="t('agentUsername') + ':'" >
-                    {{ agentDetails.username }}
+    <el-dialog v-model="viewAgentDialogVisible" :title="t('addagent')" width="80%" :fullscreen="globalStore.isMobile">
+      <el-tabs type="card" v-model="activeName">
+        <el-tab-pane :label="t('agent')" name="first">
+          <el-row>
+            <el-col :lg="12" :md="12" :xs="24">
+              <el-form label-position="right" label-width="150px">
+                <el-form-item :label="t('agentusername') + ':'">
+                  {{ agentDetails.username }}
                 </el-form-item>
                 <el-form-item :label="t('realName') + ':'">
                   {{ agentDetails.realname }}
@@ -132,115 +139,114 @@
                 <el-form-item :label="t('profitSharePT') + ':'">
                   {{ agentDetails.dividendpercentage }}
                 </el-form-item>
-      
-            </el-form>
-          </el-col>
-          <el-col :lg="12" :md="12" :xs="24">
-            <el-form  label-position="right" label-width="150px" >
-                <el-form-item :label="t('email') + ':'" >
-                    {{ agentDetails.email }}
+              </el-form>
+            </el-col>
+            <el-col :lg="12" :md="12" :xs="24">
+              <el-form label-position="right" label-width="150px">
+                <el-form-item :label="t('email') + ':'">
+                  {{ agentDetails.email }}
                 </el-form-item>
                 <el-form-item :label="t('phone') + ':'">
                   {{ agentDetails.phone }}
                 </el-form-item>
                 <el-form-item :label="t('password') + ':'">
-                  <el-button type="primary">Reset Password</el-button>
+                  <el-button type="primary">{{ t('resetPassword') }}</el-button>
                 </el-form-item>
-                
-      
-            </el-form>
-          </el-col>
-        </el-row>
+              </el-form>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane :label="t('balanceChangeRecord')" name="second">
+          <el-row style="margin-bottom: 0px">
+            <el-col :span="24">
+              <el-form :inline="true">
+                <el-form-item>
+                  <el-select
+                    size="large"
+                    v-model="accountChange.searchForm.transactiontype"
+                    style="width: 100%"
+                    :placeholder="$t('transactionType')"
+                  >
+                    <el-option :label="$t('all')" value="" />
+                    <el-option
+                      v-for="(value, propertyName) in accountChange.transactionTypeList"
+                      :key="propertyName"
+                      :label="$t(value)"
+                      :value="propertyName"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form :inline="true">
+                <el-form-item>
+                  <el-radio-group v-model="accountChange.dateType" size="large" @change="onDateTypeChange">
+                    <el-radio-button label="today">{{ t('today') }}</el-radio-button>
+                    <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
+                    <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
+                    <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
+                    <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
+                    <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item>
+                  <el-date-picker v-model="accountChange.searchForm.From" type="date" size="large" />
 
-      </el-tab-pane>
-      <el-tab-pane :label="t('balanceChangeRecord')" name="second">
-        <el-row style="margin-bottom: 0px;">
-        <el-col :span="24">
-          <el-form :inline="true" >
-              <el-form-item>
-  
-                <el-select size="large" v-model="accountChange.searchForm.transactiontype" style="width: 100%" :placeholder="$t('transactionType')">
-                  <el-option
-                    :label="$t('all')"
-                    value=""
-                  />
-                  <el-option
-                    v-for="(value, propertyName) in accountChange.transactionTypeList"
-                    :key="propertyName"
-                    :label="$t(value)"
-                    :value="propertyName"
-                  />
-                </el-select>
-              </el-form-item>
-             
-          </el-form>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-form :inline="true" >
-              <el-form-item>
-                <el-radio-group v-model="accountChange.dateType" size="large" @change="onDateTypeChange">
-              <el-radio-button label="today">Today</el-radio-button>
-              <el-radio-button label="yesterday">Yesterday</el-radio-button>
-              <el-radio-button label="thisWeek">This Week</el-radio-button>
-              <el-radio-button label="lastweek">Last Week</el-radio-button>
-              <el-radio-button label="thisMonth">This Month</el-radio-button>
-              <el-radio-button label="lastMonth">Last Month</el-radio-button>
-    
-            
-            </el-radio-group>
-              </el-form-item>
-              <el-form-item>
-                <el-date-picker v-model="accountChange.searchForm.From" type="date" size="large" />
+                  <el-date-picker v-model="accountChange.searchForm.To" type="date" size="large" />
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" class="btnsearch" size="large" @click="onSearchAccountChange()">{{
+                    t('search')
+                  }}</el-button>
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-table :data="accountChange.tableData" stripe>
+                <el-table-column
+                  :label="t('time')"
+                  prop="recordedOn"
+                  align="center"
+                  :formatter="formatAgentChangeDateTime"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="transactionType"
+                  :label="t('transactionType')"
+                  align="center"
+                  :formatter="formatTransactionType"
+                />
 
-                <el-date-picker v-model="accountChange.searchForm.To" type="date" size="large" />
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" class="btnsearch" size="large" @click="onSearchAccountChange()">SEARCH</el-button>
-              </el-form-item>
-            </el-form>
-  
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-table :data="accountChange.tableData" stripe>
-            <el-table-column :label="t('time')" prop="recordedOn" align="center" :formatter="formatAgentChangeDateTime"> 
-              
-            </el-table-column>
-            <el-table-column prop="transactionType" :label="t('transactionType')" align="center" :formatter="formatTransactionType"/>
-            
-  
-          
-            <el-table-column prop="amount" :label="t('amount')" align="right" :formatter="formatPrice" />
-            <el-table-column prop="balance" :label="t('balance')" align="right" :formatter="formatPrice" />
-           
-         
-            <template #empty>
-              {{ t('No Record') }}
-            </template>
-          </el-table>
-        </el-col>
-      </el-row>
-      <el-row>
-        <div class="demo-pagination-block">
-          <el-pagination
-            v-model:current-page="accountChange.searchForm.page"
-            v-model:page-size="accountChange.searchForm.rows"
-            :page-sizes="[10, 50, 200]"
-            layout="sizes, prev, pager, next"
-            :total="accountChange.totalRowCount"
-            @size-change="handleAccountChangeSizeChange"
-            @current-change="handleAccountChangeCurrentChange"
-          />
-        </div>
-      </el-row>
-      </el-tab-pane>
+                <el-table-column prop="amount" :label="t('amount')" align="right" :formatter="formatPrice" />
+                <el-table-column prop="balance" :label="t('balance')" align="right" :formatter="formatPrice" />
 
-    </el-tabs>
-    
-  </el-dialog>
+                <template #empty>
+                  {{ t('noRecord') }}
+                </template>
+              </el-table>
+            </el-col>
+          </el-row>
+          <el-row>
+            <div class="demo-pagination-block">
+              <el-pagination
+                v-model:current-page="accountChange.searchForm.page"
+                v-model:page-size="accountChange.searchForm.rows"
+                :page-sizes="[10, 50, 200]"
+                layout="sizes, prev, pager, next"
+                :total="accountChange.totalRowCount"
+                @size-change="handleAccountChangeSizeChange"
+                @current-change="handleAccountChangeCurrentChange"
+              />
+            </div>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </el-card>
 </template>
 <script lang="ts">
@@ -249,10 +255,23 @@ import { useI18n } from 'vue-i18n';
 import moment from 'moment';
 import { useGlobalStore } from '@/store';
 import type { TableColumnCtx } from 'element-plus';
-import { getAgentList, getAgentStatusesApi,AgentStatusesData, GetAgentListParams,AgentData,getAgentDetailsApi,AgentDetailsData } from '@/api/reports';
-import { accountChangesApi, AccountChangesItems,AccountChangesParams,getTransactionTypeApi,TransactionTypeData } from '@/api/agentreport';
+import {
+  getAgentList,
+  getAgentStatusesApi,
+  AgentStatusesData,
+  GetAgentListParams,
+  AgentData,
+  getAgentDetailsApi,
+  AgentDetailsData,
+} from '@/api/reports';
+import {
+  accountChangesApi,
+  AccountChangesItems,
+  AccountChangesParams,
+  getTransactionTypeApi,
+  TransactionTypeData,
+} from '@/api/agentreport';
 import { AddAgentParams, addAgentApi } from '@/api/agent';
-
 
 export default defineComponent({
   name: 'MyComponent',
@@ -260,15 +279,16 @@ export default defineComponent({
     const { t } = useI18n();
     const globalStore = useGlobalStore();
     return {
-      t,globalStore
+      t,
+      globalStore,
     };
   },
 
   data() {
     return {
-      accountChange : {
+      accountChange: {
         tableData: reactive<AccountChangesItems[]>([]),
-        transactionTypeList:reactive<TransactionTypeData>({}),
+        transactionTypeList: reactive<TransactionTypeData>({}),
         totalRowCount: 0,
         searchForm: reactive<AccountChangesParams>({
           From: '',
@@ -278,20 +298,19 @@ export default defineComponent({
           desc: true,
           sort: 'recordedOn',
           all: false,
-          transactiontype: "",
-          id: ''
+          transactiontype: '',
+          id: '',
         }),
         dateType: 'today',
-
       },
       showAgent: false,
       tableData: reactive<AgentData[]>([]),
       statuses: reactive<AgentStatusesData>({}),
       totalRowCount: 0,
-      activeName:"first",
-      addAgentDialogVisible:false,
-      viewAgentDialogVisible:false,
-      agentDetails:reactive<AgentDetailsData>({
+      activeName: 'first',
+      addAgentDialogVisible: false,
+      viewAgentDialogVisible: false,
+      agentDetails: reactive<AgentDetailsData>({
         accumulatedprofitsharing: 0,
         agentdividendtype: '',
         agentdomains: '',
@@ -323,9 +342,9 @@ export default defineComponent({
         teamnumber: 1,
         type: '',
         username: '',
-        virtualsportsrebatepercentage: 0
-        }),
-      addAgentParams:reactive(new AddAgentParams()),
+        virtualsportsrebatepercentage: 0,
+      }),
+      addAgentParams: reactive(new AddAgentParams()),
       searchForm: reactive<GetAgentListParams>({
         page: 1,
         rows: 10,
@@ -333,7 +352,7 @@ export default defineComponent({
         sort: '',
         all: false,
         Status: '',
-        Username: ''
+        Username: '',
       }),
     };
   },
@@ -358,12 +377,11 @@ export default defineComponent({
 
       this.statuses = statusResult.data;
     },
-    async getTransactionType(){
-        const response = await getTransactionTypeApi();
-        const result = await response.runAsync();
-        this.accountChange.transactionTypeList = result.data;
-
-      },
+    async getTransactionType() {
+      const response = await getTransactionTypeApi();
+      const result = await response.runAsync();
+      this.accountChange.transactionTypeList = result.data;
+    },
     formatStatus(row: any, column: TableColumnCtx<AgentData>) {
       return this.t(row[column.property]);
     },
@@ -378,8 +396,8 @@ export default defineComponent({
       return this.formatDateTime2(row[column.property]);
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
-        const transactionType = this.accountChange.transactionTypeList[row[column.property]];
-        return this.$t(transactionType.toString());
+      const transactionType = this.accountChange.transactionTypeList[row[column.property]];
+      return this.$t(transactionType.toString());
     },
     formatDateTime2(value: string) {
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
@@ -396,69 +414,60 @@ export default defineComponent({
       }
     },
     onDateTypeChange() {
-        if (this.accountChange.dateType == 'today') {
-          this.accountChange.searchForm.From = moment().format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'yesterday') {
-          this.accountChange.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'thisWeek') {
-          this.accountChange.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'lastWeek') {
-          this.accountChange.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'thisMonth') {
-          this.accountChange.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().endOf('month').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'lastMonth') {
-          this.accountChange.searchForm.From = moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'thisYear') {
-          this.accountChange.searchForm.From = moment().startOf('year').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().endOf('year').format('YYYY-MM-DD');
-        } else if (this.accountChange.dateType == 'lastYear') {
-          this.accountChange.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
-          this.accountChange.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
-        }
-        this.accountChange.searchForm.page = 1;
-        //this.getItems();
-      },
+      if (this.accountChange.dateType == 'today') {
+        this.accountChange.searchForm.From = moment().format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'yesterday') {
+        this.accountChange.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'thisWeek') {
+        this.accountChange.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'lastWeek') {
+        this.accountChange.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'thisMonth') {
+        this.accountChange.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().endOf('month').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'lastMonth') {
+        this.accountChange.searchForm.From = moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'thisYear') {
+        this.accountChange.searchForm.From = moment().startOf('year').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().endOf('year').format('YYYY-MM-DD');
+      } else if (this.accountChange.dateType == 'lastYear') {
+        this.accountChange.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
+        this.accountChange.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
+      }
+      this.accountChange.searchForm.page = 1;
+      //this.getItems();
+    },
     onStatusChange(value: string) {
       this.searchForm.Status = value;
-
     },
     onSearch() {
       this.getItems();
     },
-    onSearchAccountChange(){
+    onSearchAccountChange() {
       this.getAccountChange();
-
     },
-    async onViewClick(id: string){
-
-
+    async onViewClick(id: string) {
       const response = await getAgentDetailsApi();
       const result = await response.runAsync(id);
       this.agentDetails = result.data;
       this.viewAgentDialogVisible = true;
-
     },
-    onEditClick(id: string){
-
-    },
+    onEditClick(id: string) {},
     async onRegister() {
       const res = await addAgentApi()(this.addAgentParams);
-      if(res.err === 0){
-
+      if (res.err === 0) {
       }
       this.getItems();
       this.resetAddAgent();
       this.addAgentDialogVisible = false;
     },
-    resetAddAgent(){
+    resetAddAgent() {
       this.addAgentParams = new AddAgentParams();
-      
     },
     handleSizeChange(val: number) {
       this.searchForm.rows = val;
@@ -479,17 +488,17 @@ export default defineComponent({
       this.getAccountChange();
     },
     async getAccountChange() {
-        this.accountChange.searchForm.id = this.agentDetails.id;
-        let searchForm = {...this.accountChange.searchForm};
-        searchForm.From = moment(searchForm.From).add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
+      this.accountChange.searchForm.id = this.agentDetails.id;
+      let searchForm = { ...this.accountChange.searchForm };
+      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
-        searchForm.To = moment(searchForm.To).add(1,"days").add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
-        const response = await accountChangesApi();
-        const result = await response.runAsync(searchForm);
-        this.accountChange.tableData = result.data.items;
-        console.log( this.accountChange.tableData)
-        this.accountChange.totalRowCount = result.data.totalcount;
-      },
+      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      const response = await accountChangesApi();
+      const result = await response.runAsync(searchForm);
+      this.accountChange.tableData = result.data.items;
+      console.log(this.accountChange.tableData);
+      this.accountChange.totalRowCount = result.data.totalcount;
+    },
   },
 });
 </script>

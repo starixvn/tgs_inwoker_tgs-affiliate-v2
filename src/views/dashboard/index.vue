@@ -3,51 +3,52 @@
     <div class="big-title">{{ $t('dashboard') }}</div>
     <div class="content-wrapper">
       <div class="">
-        <div class="another-big-title">Account Overview</div>
+        <div class="another-big-title">{{ $t('accountOverview') }}</div>
         <div class="content">
           <div class="account-container">
-            <div class="title">Account</div>
+            <div class="title">{{ $t('account') }}</div>
             <div class="data">{{ user.username }}</div>
           </div>
           <div class="account-container">
-            <div class="title">Wallet Balance</div>
+            <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
               <div>{{ user.balance }}</div>
-              <el-button type="primary" size="large" :icon="Wallet">Wallet</el-button>
+              <el-button type="primary" size="large" :icon="Wallet">{{ $t('wallet') }}</el-button>
             </div>
           </div>
           <div class="account-container">
-            <div class="title">Referral Code</div>
+            <div class="title">{{ $t('referralCode') }}</div>
             <div class="data">
               <div>{{ user.invitationCode }}</div>
-              <el-button type="primary" size="large" :icon="CopyDocument">Copy</el-button>
-          
+              <el-button type="primary" size="large" :icon="CopyDocument">{{ $t('copy') }}</el-button>
             </div>
           </div>
           <div class="account-container">
-            <div class="title">Referral Link</div>
+            <div class="title">{{ $t('referralLink') }}</div>
             <div class="affiliate-link-container">
               {{ 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register' }}
             </div>
             <div class="button-container">
-              <el-button type="primary" size="large" :icon="CopyDocument">Copy</el-button>
-              <el-button type="primary" size="large">Add Agent</el-button>
-              <el-button type="primary" size="large">Add Player</el-button>
+              <el-button type="primary" size="large" :icon="CopyDocument">{{ $t('copy') }}</el-button>
+              <el-button type="primary" size="large">{{ $t('addagent') }}</el-button>
+              <el-button type="primary" size="large">{{ $t('addplayer') }}</el-button>
               <custom-button />
             </div>
           </div>
 
           <div>
-            <div>Referral QR Code</div>
+            <div>{{ $t('referralQRCode') }}</div>
             <div class="qrcode-container">
               <div>
                 <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" />
               </div>
               <div class="qrcode-button">
-   
-                <el-button type="primary" size="large" :icon="Download" style="width:100%">Download</el-button>
-                <el-button type="primary" size="large" :icon="CopyDocument" style="width:100%">Copy</el-button>
-
+                <el-button type="primary" size="large" :icon="Download" style="width: 100%">{{
+                  $t('download')
+                }}</el-button>
+                <el-button type="primary" size="large" :icon="CopyDocument" style="width: 100%">{{
+                  $t('copy')
+                }}</el-button>
               </div>
             </div>
           </div>
@@ -55,11 +56,11 @@
       </div>
       <div class="right-content">
         <div>
-          <div class="another-big-title">Team Overview</div>
+          <div class="another-big-title">{{ $t('teamOverview') }}</div>
           <div class="content">
             <div class="statistic-container">
               <div v-for="item in statistic" :key="item.name" class="statistic" :class="`${item.color}-gradient`">
-                <div class="name">{{ item.name }}</div>
+                <div class="name">{{ $t(item.name) }}</div>
                 <div class="data">{{ item.data }}</div>
               </div>
             </div>
@@ -67,16 +68,16 @@
         </div>
         <div>
           <div class="title-wrapper">
-            <div class="another-big-title">Stats Overview</div>
+            <div class="another-big-title">{{ $t('statsOverview') }}</div>
             <div>
               2022/09/01 00:00 ~ 2022/09/30 23:59 (GMT+8) <br />
-              updated hourly
+              {{ $t('updatedHourly') }}
             </div>
           </div>
           <div class="content">
             <div class="overview-container">
               <div v-for="item in overview" :key="item.name" class="overview">
-                <div class="name" :class="`${item.color}`">{{ item.name }}</div>
+                <div class="name" :class="`${item.color}`">{{ $t(item.name) }}</div>
                 <div class="data">{{ item.data }}</div>
               </div>
             </div>
@@ -89,28 +90,28 @@
 
 <script setup lang="ts" name="Account">
 import { useUserStore } from '@/store';
-import {CopyDocument,Wallet,Download}  from '@element-plus/icons-vue'
+import { CopyDocument, Wallet, Download } from '@element-plus/icons-vue';
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
 
 const statistic = reactive([
-  { name: 'Direct Agent', data: '29', color: 'blue' },
-  { name: 'Indirect Agent', data: '76', color: 'purple' },
-  { name: 'Direct Player', data: '12', color: 'yellow' },
-  { name: 'Indirect Player', data: '133', color: 'pink' },
+  { name: 'directAgent', data: '29', color: 'blue' },
+  { name: 'indirectAgent', data: '76', color: 'purple' },
+  { name: 'directPlayer', data: '12', color: 'yellow' },
+  { name: 'indirectPlayer', data: '133', color: 'pink' },
 ]);
 
 const overview = reactive([
-  { name: 'Estimated Profit Share', data: '123456', color: 'blue' },
-  { name: 'Total Net Worth', data: '123456', color: 'purple' },
-  { name: 'total Expense', data: '123456', color: 'green' },
-  { name: 'Total Company Winloss', data: '123456', color: 'orange' },
-  { name: 'Total Turnover', data: '123456', color: 'black' },
-  { name: 'Total Valid Bet', data: '123456', color: 'darkblue' },
-  { name: 'Total Deposit', data: '123456', color: 'darkgreen' },
-  { name: 'Total Withdraw', data: '123456', color: 'maroon' },
+  { name: 'estimatedProfitShare', data: '123456', color: 'blue' },
+  { name: 'totalNetWorth', data: '123456', color: 'purple' },
+  { name: 'totalExpense', data: '123456', color: 'green' },
+  { name: 'totalCompanyWinloss', data: '123456', color: 'orange' },
+  { name: 'totalTurnover', data: '123456', color: 'black' },
+  { name: 'totalValidBet', data: '123456', color: 'darkblue' },
+  { name: 'totalDeposit', data: '123456', color: 'darkgreen' },
+  { name: 'totalWithdraw', data: '123456', color: 'maroon' },
 ]);
 </script>
 

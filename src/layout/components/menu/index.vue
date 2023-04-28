@@ -52,7 +52,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
   height: 100%;
   position: relative;
   padding-top: var(--el-menu-item-height);
-  margin: 0 8px;
+
   .title {
     height: var(--el-menu-item-height);
     line-height: var(--el-menu-item-height);
@@ -92,7 +92,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
           > .el-sub-menu__title {
             background: #07b5bc;
             color: #fff;
-            border-radius: 8px;
 
             .el-icon {
               color: #fff;
@@ -110,10 +109,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-menu-item.is-active {
           color: var(--el-color-primary);
-        }
-
-        .el-menu--inline {
-          background-color: #fff;
         }
 
         .el-menu-item,

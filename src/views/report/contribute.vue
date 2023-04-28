@@ -2,31 +2,26 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-          <el-form :inline="true" >
-            <el-form-item>
-              <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
-                <el-radio-button label="today">Today</el-radio-button>
-                <el-radio-button label="yesterday">Yesterday</el-radio-button>
-                <el-radio-button label="thisWeek">This Week</el-radio-button>
-                <el-radio-button label="lastweek">Last Week</el-radio-button>
-                <el-radio-button label="thisMonth">This Month</el-radio-button>
-                <el-radio-button label="lastMonth">Last Month</el-radio-button>
-                
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item>
-              <el-date-picker v-model="searchForm.From" type="date" size="large" />
+        <el-form :inline="true">
+          <el-form-item>
+            <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
+              <el-radio-button label="today">{{ t('today') }}</el-radio-button>
+              <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
+              <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
+              <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
+              <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
+              <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker v-model="searchForm.From" type="date" size="large" />
 
-              <el-date-picker v-model="searchForm.To" type="date" size="large" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">SEARCH</el-button>
-            </el-form-item>
-          </el-form>
- 
-  
-           
-   
+            <el-date-picker v-model="searchForm.To" type="date" size="large" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
     <el-row>
@@ -46,7 +41,7 @@
           <el-table-column :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" />
 
           <template #empty>
-            {{ t('No Record') }}
+            {{ t('noRecord') }}
           </template>
         </el-table>
       </el-col>
@@ -127,9 +122,9 @@ export default defineComponent({
   },
   methods: {
     async getItems() {
-      let searchForm = {...this.searchForm};
-      searchForm.From = moment(searchForm.From).add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
-      searchForm.To = moment(searchForm.To).add(1,"days").add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
+      let searchForm = { ...this.searchForm };
+      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
 
@@ -198,7 +193,6 @@ export default defineComponent({
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
       this.searchForm.page = 1;
-
     },
 
     handleSizeChange(val: number) {
@@ -212,7 +206,6 @@ export default defineComponent({
     },
   },
   beforeMount() {
-
     this.onDateTypeChange();
     this.getItems();
   },
@@ -230,11 +223,9 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 .datefrom {
-
   margin-right: 10px;
 }
 .btnsearch {
-
 }
 .empty-row {
   background-color: #000000;

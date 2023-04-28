@@ -2,35 +2,32 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-        <el-form :inline="true" >
-            <el-form-item>
-              <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
-            <el-radio-button label="today">Today</el-radio-button>
-            <el-radio-button label="yesterday">Yesterday</el-radio-button>
-            <el-radio-button label="thisWeek">This Week</el-radio-button>
-            <el-radio-button label="lastweek">Last Week</el-radio-button>
-            <el-radio-button label="thisMonth">This Month</el-radio-button>
-            <el-radio-button label="lastMonth">Last Month</el-radio-button>
-  
-           
-          </el-radio-group>
-            </el-form-item>
-            <el-form-item>
-              <el-date-picker v-model="searchForm.From" type="date" size="large" />
-              <el-date-picker v-model="searchForm.To" type="date" size="large" />
-            </el-form-item>
-     
-            <el-form-item>
-              <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">SEARCH</el-button>
-            </el-form-item>
-          </el-form>
- 
+        <el-form :inline="true">
+          <el-form-item>
+            <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
+              <el-radio-button label="today">{{ t('today') }}</el-radio-button>
+              <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
+              <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
+              <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
+              <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
+              <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker v-model="searchForm.From" type="date" size="large" />
+            <el-date-picker v-model="searchForm.To" type="date" size="large" />
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
         <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe>
-          <el-table-column :label="t('agent')" prop="username"> </el-table-column>
+          <el-table-column :label="t('agent')" prop="username" :formatter="customRowFormatter"> </el-table-column>
           <el-table-column prop="agentDividendPercentage" :label="t('p/t')" align="right" :formatter="formatPrice" />
           <el-table-column :label="t('bonus')" align="center">
             <el-table-column prop="bonusAmount" :label="t('total')" align="right" :formatter="formatPrice" />
@@ -75,7 +72,7 @@
             :formatter="formatPrice"
           />
           <template #empty>
-            {{ t('No Record') }}
+            {{ t('noRecord') }}
           </template>
         </el-table>
       </el-col>
@@ -157,13 +154,13 @@ export default defineComponent({
   },
   methods: {
     async getItems() {
-      let searchForm = {...this.searchForm};
-      searchForm.From = moment(searchForm.From).add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
-      searchForm.To = moment(searchForm.To).add(1,"days").add(-8,"hours").format('YYYY-MM-DD HH:mm:ss');
+      let searchForm = { ...this.searchForm };
+      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await agentDividends();
       const result = await response.runAsync(searchForm);
 
-      const emptyRow = { username: 'Direct Agent', id: '' } as ISubitems;
+      const emptyRow = { username: 'directAgent', id: '' } as ISubitems;
       const subtotalRow = result.data.subtotal;
       subtotalRow.username = 'Total';
       this.tableData = [...result.data.mainitems, ...[emptyRow], ...result.data.subitems, ...[subtotalRow]];
@@ -197,7 +194,9 @@ export default defineComponent({
         if (column.property !== 'agentDividendPercentage') {
           percentage = '';
         }
-        return row[column.property].toFixed(2) + percentage;
+
+        //return check if column.property can be .toFixed(2) or not
+        return (row[column.property] as number).toFixed(2) + percentage;
       } else {
         return '';
       }
@@ -233,6 +232,17 @@ export default defineComponent({
     onSearch() {
       this.getItems();
     },
+
+    customRowFormatter(row: any, column: TableColumnCtx<ISubitems>) {
+      if (row.username === 'directAgent') {
+        return this.$t('directAgent');
+      } else if (row.username === 'Total') {
+        return this.$t('total');
+      } else {
+        return row[column.property];
+      }
+    },
+
     handleSizeChange(val: number) {
       this.searchForm.rows = val;
       this.searchForm.page = 1;
@@ -244,7 +254,6 @@ export default defineComponent({
     },
   },
   beforeMount() {
-
     this.onDateTypeChange();
     this.getItems();
   },

@@ -128,6 +128,15 @@ export interface TransactionTypeResult extends BaseResult {
 export interface TransactionTypeData {
   [key: string]: string;
 }
+
+export interface RoundReportStatus extends BaseResult {
+  data: RoundReportStatusData;
+}
+
+export interface RoundReportStatusData {
+  [key: string]: string;
+}
+
 export function agentDividends(options: RequestOptions<IResult, [AgentDividendsParams]> = {}) {
   return request(
     (params) => ({
@@ -185,6 +194,17 @@ export function getGameProviderApi<T extends boolean = false>(returnAxios: T = f
   return request<GameProviderResult, [], T>(
     () => ({
       url: 'gameprovider',
+      method: 'get',
+    }),
+    { noLoading },
+    returnAxios,
+  );
+}
+
+export function getRoundReportStatusDataApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<RoundReportStatus, [], T>(
+    () => ({
+      url: 'agentreport/rounds/status',
       method: 'get',
     }),
     { noLoading },

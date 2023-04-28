@@ -193,5 +193,10 @@
   "currency": "币种",
   "effectiveBet": "有效投注",
   "payout": "派彩",
-  "winLose": "玩家输赢金额"
+  "winLose": "玩家输赢金额",
+  "Open": "未结算",
+  "Void": "作废",
+  "Win": "赢",
+  "Loss": "输",
+  "Draw": "和"
 }

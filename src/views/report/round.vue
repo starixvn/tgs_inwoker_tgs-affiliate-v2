@@ -3,73 +3,89 @@
     <el-row>
       <el-col :span="24">
         <el-form :inline="true">
-          <el-form-item>
-            <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
-              <el-radio-button label="today">{{ t('today') }}</el-radio-button>
-              <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
-              <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
-              <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
-              <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
-              <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-date-picker v-model="searchForm.ClosedFrom" type="date" size="large" />
-            <el-date-picker v-model="searchForm.ClosedTo" type="date" size="large" />
-          </el-form-item>
-          <el-form-item>
-            <el-form-item>
-              <el-input v-model="searchForm.Username" size="large" :placeholder="$t('username')" clearable />
-            </el-form-item>
-            <el-form-item>
-              <el-input v-model="searchForm.RoundId" size="large" :placeholder="$t('roundId')" clearable
-            /></el-form-item>
-          </el-form-item>
-          <el-form-item>
-            <el-input
-              v-model="searchForm.ExternalRoundId"
-              size="large"
-              :placeholder="$t('externalRoundId')"
-              clearable
-            />
-          </el-form-item>
+          <el-row :gutter="20">
+            <el-col>
+              <el-form-item>
+                <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
+                  <el-radio-button label="today">{{ t('today') }}</el-radio-button>
+                  <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
+                  <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
+                  <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
+                  <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
+                  <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item>
+                <el-date-picker v-model="searchForm.ClosedFrom" type="date" size="large" />
+              </el-form-item>
+              <el-form-item>
+                <el-date-picker v-model="searchForm.ClosedTo" type="date" size="large" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-row :gutter="20">
+                <el-col>
+                  <el-form-item>
+                    <el-input v-model="searchForm.Username" size="large" :placeholder="$t('username')" clearable />
+                  </el-form-item>
+                  <el-form-item>
+                    <el-input v-model="searchForm.RoundId" size="large" :placeholder="$t('roundId')" clearable />
+                  </el-form-item>
+                  <el-form-item>
+                    <el-input
+                      v-model="searchForm.ExternalRoundId"
+                      size="large"
+                      :placeholder="$t('externalRoundId')"
+                      clearable
+                    />
+                  </el-form-item>
+                  <el-form-item>
+                    <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
+                      <el-option :label="t('all')" value="" />
+                      <el-option
+                        v-for="(item, key) in gameproviders"
+                        :key="key"
+                        :label="t(item.name)"
+                        :value="item.id"
+                      />
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
+                      <el-option :label="t('all')" value="" />
+                      <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
+                    </el-select>
+                  </el-form-item>
 
-          <el-form-item>
-            <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-              <el-option :label="t('all')" value="" />
-              <el-option v-for="(item, key) in gameproviders" :key="key" :label="t(item.name)" :value="item.id" />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-              <el-option :label="t('all')" value="" />
-              <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
-          </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
+                      t('search')
+                    }}</el-button>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
         </el-form>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" :row-class-name="getRowClassName" stripe>
-          <el-table-column :label="t('username')" prop="username"> </el-table-column>
+        <el-table :data="tableData" stripe scrollbar-always-on>
+          <el-table-column :label="t('username')" prop="playerName"> </el-table-column>
           <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right" />
-          <el-table-column prop="roundId" :label="t('roundId')" align="right" />
-          <el-table-column prop="betTime" :label="t('betTime')" align="right" />
-          <el-table-column prop="closeTime" :label="t('closeTime')" align="right" />
-          <el-table-column prop="brandProvider" :label="t('brandProvider')" align="right" />
-          <el-table-column prop="childBrandProvider" :label="t('childBrandProvider')" align="right" />
-          <el-table-column prop="status" :label="t('status')" align="right" />
-          <el-table-column prop="currency" :label="t('currency')" align="right" />
-          <el-table-column prop="betAmount" :label="t('betAmount')" align="right" />
-          <el-table-column prop="effectiveBet" :label="t('effectiveBet')" align="right" />
-          <el-table-column prop="turnover" :label="t('turnover')" align="right" />
-          <el-table-column prop="payout" :label="t('payout')" align="right" />
-          <el-table-column prop="winLose" :label="t('winLose')" align="right" />
+          <el-table-column prop="id" :label="t('roundId')" align="right" />
+          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime" />
+          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" />
+          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right" />
+          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right" />
+          <el-table-column prop="status" :label="t('status')" align="right" :formatter="formatStatus" />
+          <el-table-column prop="currencyCode" :label="t('currency')" align="right" />
+          <el-table-column prop="betAmount" :label="t('betAmount')" align="right" :formatter="formatPrice" />
+          <el-table-column prop="validBetAmount" :label="t('effectiveBet')" align="right" :formatter="formatPrice" />
+          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" />
+          <el-table-column prop="settleAmount" :label="t('payout')" align="right" :formatter="formatPrice" />
+          <el-table-column prop="winLoss" :label="t('winLose')" align="right" :formatter="formatPrice" />
 
           <template #empty>
             {{ t('noRecord') }}
@@ -95,7 +111,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getGameProviderApi, roundReportApi } from '@/api/agentreport';
+import { getGameProviderApi, roundReportApi, getRoundReportStatusDataApi } from '@/api/agentreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
 interface ISubitems {
@@ -124,7 +140,6 @@ interface SpanMethodProps {
   columnIndex: number;
 }
 interface ISearchForm {
-  dateType: string;
   page: number;
   rows: number;
   desc: boolean;
@@ -143,29 +158,43 @@ interface ISearchForm {
 export default defineComponent({
   name: 'MyComponent',
 
+  setup() {
+    const { t } = useI18n();
+
+    return {
+      t,
+    };
+  },
+
   data() {
     return {
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
-      gameproviders: [],
+      gameproviders: reactive<any[]>([]),
+      dateType: 'today',
+      statuses: reactive<any[]>([]),
       searchForm: reactive<ISearchForm>({
-        dateType: 'today',
         page: 1,
         rows: 10,
         desc: true,
         sort: '',
         all: false,
-        Username: '1101test',
+        Username: '',
         RoundId: '',
         ExternalRoundId: '',
         GameProviderId: '',
         Status: '',
         From: '',
         To: '',
-        ClosedFrom: '2022-10-27T16:00:00.000Z',
-        ClosedTo: '2023-04-28T16:00:00.000Z',
+        ClosedFrom: '',
+        ClosedTo: '',
       }),
     };
+  },
+  beforeMount() {
+    this.getItems();
+    this.getGameProviderId();
+    this.getRoundReportStatus();
   },
   methods: {
     async getGameProviderId() {
@@ -174,24 +203,23 @@ export default defineComponent({
       this.gameproviders = result.data;
     },
 
+    async getRoundReportStatus() {
+      const res = await getRoundReportStatusDataApi();
+      const result = await res.runAsync();
+      this.statuses = result.data;
+    },
+
     async getItems() {
       let searchForm = { ...this.searchForm };
-      searchForm.ClosedFrom = moment(searchForm.ClosedFrom).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-      searchForm.ClosedTo = moment(searchForm.ClosedTo).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      searchForm.ClosedFrom = moment(searchForm.ClosedFrom).add(-8, 'hours').toISOString();
+      searchForm.ClosedTo = moment(searchForm.ClosedTo).add(1, 'days').add(-8, 'hours').toISOString();
       const response = await roundReportApi();
       const result = await response.runAsync(searchForm);
+      this.totalRowCount = result.data.totalcount;
 
-      const emptyRow = { username: 'directAgent', id: '' } as ISubitems;
+      this.tableData = result.data.items;
     },
 
-    getRowClassName({ row, rowIndex }: { row: any; rowIndex: number }) {
-      if (rowIndex === 1) {
-        return 'empty-row';
-      }
-      if (row.username == 'Total') {
-        return 'subtotal-row';
-      }
-    },
     formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
       if (!isNaN(row[column.property])) {
         let percentage = '%' as string;
@@ -205,30 +233,38 @@ export default defineComponent({
         return '';
       }
     },
-    onDateTypeChange() {
-      if (this.searchForm.dateType == 'today') {
-        this.searchForm.ClosedFrom = moment().toISOString();
 
+    formatStatus(row: any, column: TableColumnCtx<ISubitems>) {
+      return this.$t(this.statuses[row[column.property]]);
+    },
+
+    formatTime(row: any, column: TableColumnCtx<ISubitems>) {
+      return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
+    },
+
+    onDateTypeChange() {
+      if (this.dateType == 'today') {
+        this.searchForm.ClosedFrom = moment().toISOString();
         this.searchForm.ClosedTo = moment().toISOString();
-      } else if (this.searchForm.dateType == 'yesterday') {
+      } else if (this.dateType == 'yesterday') {
         this.searchForm.ClosedFrom = moment().subtract(1, 'days').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'days').toISOString();
-      } else if (this.searchForm.dateType == 'thisWeek') {
+      } else if (this.dateType == 'thisWeek') {
         this.searchForm.ClosedFrom = moment().startOf('week').toISOString();
         this.searchForm.ClosedTo = moment().endOf('week').toISOString();
-      } else if (this.searchForm.dateType == 'lastWeek') {
+      } else if (this.dateType == 'lastWeek') {
         this.searchForm.ClosedFrom = moment().subtract(1, 'weeks').startOf('week').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'weeks').endOf('week').toISOString();
-      } else if (this.searchForm.dateType == 'thisMonth') {
+      } else if (this.dateType == 'thisMonth') {
         this.searchForm.ClosedFrom = moment().startOf('month').toISOString();
         this.searchForm.ClosedTo = moment().endOf('month').toISOString();
-      } else if (this.searchForm.dateType == 'lastMonth') {
+      } else if (this.dateType == 'lastMonth') {
         this.searchForm.ClosedFrom = moment().subtract(1, 'months').startOf('month').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'months').endOf('month').toISOString();
-      } else if (this.searchForm.dateType == 'thisYear') {
+      } else if (this.dateType == 'thisYear') {
         this.searchForm.ClosedFrom = moment().startOf('year').toISOString();
         this.searchForm.ClosedTo = moment().endOf('year').toISOString();
-      } else if (this.searchForm.dateType == 'lastYear') {
+      } else if (this.dateType == 'lastYear') {
         this.searchForm.ClosedFrom = moment().subtract(1, 'years').startOf('year').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'years').endOf('year').toISOString();
       }
@@ -257,17 +293,6 @@ export default defineComponent({
       this.searchForm.page = val;
       this.getItems();
     },
-  },
-  beforeMount() {
-    this.getItems();
-    this.getGameProviderId();
-  },
-  setup() {
-    const { t } = useI18n();
-
-    return {
-      t,
-    };
   },
 });
 </script>

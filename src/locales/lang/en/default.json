@@ -187,5 +187,10 @@
   "currency": "Currency",
   "effectiveBet": "Effective Bet",
   "payout": "Settle Amount",
-  "winLose": "Player Win Lose"
+  "winLose": "Player Win Lose",
+  "Open": "Open",
+  "Void": "Void",
+  "Win": "Win",
+  "Loss": "Loss",
+  "Draw": "Draw"
 }

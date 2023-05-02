@@ -205,5 +205,11 @@
   "rl_profitSharingAmount": "Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount.",
   "settlementDate": "Settlement Date",
   "settlementDateFromTo": "Settlement interval",
-  "goBack": "Go Back"
+  "goBack": "Go Back",
+  "logout": "Logout",
+  "iForgotMyPassword": "I forgot my password",
+  "login": "Login",
+  "requestCode": "Request code",
+  "nextStep": "Next step",
+  "resend": "Resend"
 }

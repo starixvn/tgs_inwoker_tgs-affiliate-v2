@@ -41,7 +41,7 @@
                         /></el-col>
                       </el-row>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="9" :xs="24">
                       <el-form-item>
                         <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
                           <el-option :label="t('all')" value="" />
@@ -214,6 +214,7 @@ export default defineComponent({
     async getRoundReportStatus() {
       const res = await getRoundReportStatusDataApi();
       const result = await res.runAsync();
+
       this.statuses = result.data;
     },
 

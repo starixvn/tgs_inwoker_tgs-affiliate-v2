@@ -9,6 +9,8 @@ const enum Api {
 export class LoginParams {
   username = 'jennhong2';
   password = 'abc123456';
+  phone = '';
+  email = '';
   platformtype = 1;
 }
 export interface LoginResult {

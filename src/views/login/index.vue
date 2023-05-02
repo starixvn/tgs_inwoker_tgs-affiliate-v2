@@ -25,8 +25,38 @@
             />
           </el-form-item>
 
-          <el-button class="submit" type="primary" @click="login">{{ t('登录') }}</el-button>
+          <el-button class="submit" type="primary" @click="login">{{ t('login') }}</el-button>
         </el-form>
+      </div>
+
+      <div>
+        <el-button text @click="dialogVisible = true">
+          {{ $t('iForgotMyPassword') }}
+        </el-button>
+        <el-dialog v-model="dialogVisible" width="30%">
+          <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="'Phone'" clearable>
+          </el-input>
+          <el-input v-model="forgotPassword.code" class="textInput" :maxlength="6" autofocus clearable>
+            <template #append>
+              <div :v-show="forgotPassword.timer === 60">
+                <el-button @click="startTimer">
+                  {{ t('requestCode') }}
+                </el-button>
+              </div>
+              <div :v-show="forgotPassword.timer <= 59">
+                <el-button>
+                  {{ t('resend') }}
+                  {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
+                </el-button>
+              </div>
+            </template></el-input
+          >
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button type="primary"> {{ t('nextStep') }} </el-button>
+            </span>
+          </template>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -43,6 +73,26 @@ const route = useRoute();
 const router = useRouter();
 let loginParams = reactive(new LoginParams());
 let { t } = useLocalesI18n();
+
+let forgotPassword = reactive({
+  phone: '',
+  email: '',
+  code: '',
+  timer: 60,
+});
+
+const dialogVisible = ref(false);
+
+//start the timer counting down
+const startTimer = () => {
+  const timer = setInterval(() => {
+    forgotPassword.timer--;
+    if (forgotPassword.timer <= 0) {
+      clearInterval(timer);
+    }
+  }, 1000);
+};
+
 const rules = computed<FormRules>(() => ({
   username: [
     {
@@ -81,6 +131,11 @@ const login = async () => {
       console.log('提交错误', fields);
     }
   });
+};
+
+const performRequestCode = async () => {
+  // await userStore.login(loginParams);
+  // await router.replace((route.query.redirect as string) || '/');
 };
 </script>
 <style lang="scss" scoped>

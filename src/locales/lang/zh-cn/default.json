@@ -198,5 +198,18 @@
   "Void": "作废",
   "Win": "赢",
   "Loss": "输",
-  "Draw": "和"
+  "Draw": "和",
+
+  "usernameCannotBeEmpty": "用户名不能为空",
+  "dateCannotBeEmpty": "结算时间不能为空",
+  "rl_bonusAmount": "红利金额 = VIP福利 + VIP反水 + 活动的优惠金额。",
+  "rl_agentCoveredBonus": "代理承担红利 = 红利金额 * 分红比例。",
+  "rl_agentCoveredBonusAdjust": "代理承担优惠调帐 = 优惠调帐 * 分红比例。",
+  "rl_netProfit": "净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。",
+  "rl_directPlayerContribution": "直属玩家贡献 = 净盈利 * 分红比例。",
+  "rl_teamContribution": "团队贡献 = 下级代理净盈利 * (代理分红% - 下级代理分红%)。",
+  "rl_profitSharingAmount": "分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐。",
+  "settlementDate": "结算日期",
+  "settlementDateFromTo": "结算区间",
+  "goBack": "返回"
 }

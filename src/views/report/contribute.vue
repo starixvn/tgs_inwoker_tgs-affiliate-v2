@@ -102,6 +102,13 @@ interface ISearchForm {
 }
 export default defineComponent({
   name: 'MyComponent',
+  setup() {
+    const { t } = useI18n();
+
+    return {
+      t,
+    };
+  },
 
   data() {
     return {
@@ -120,6 +127,11 @@ export default defineComponent({
       }),
     };
   },
+  beforeMount() {
+    this.onDateTypeChange();
+    this.getItems();
+  },
+
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };
@@ -205,17 +217,6 @@ export default defineComponent({
       this.getItems();
     },
   },
-  beforeMount() {
-    this.onDateTypeChange();
-    this.getItems();
-  },
-  setup() {
-    const { t } = useI18n();
-
-    return {
-      t,
-    };
-  },
 });
 </script>
 <style lang="scss" scoped>
@@ -225,8 +226,7 @@ export default defineComponent({
 .datefrom {
   margin-right: 10px;
 }
-.btnsearch {
-}
+
 .empty-row {
   background-color: #000000;
 }

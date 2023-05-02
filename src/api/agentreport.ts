@@ -82,7 +82,7 @@ interface ContributeResult extends BaseResult {
   };
 }
 
-interface GameProviderResult extends BaseResult {
+export interface GameProviderResult extends BaseResult {
   data: {
     id: string;
     name: string;
@@ -137,10 +137,38 @@ export interface RoundReportStatusData {
   [key: string]: string;
 }
 
+interface DividendDetailsItems {
+  agentDividendAmount: number;
+  expenditureAmount: number;
+  id: string;
+  settlementDate: string;
+  settlementDateFrom: string;
+  settlementDateTo: string;
+  username: string;
+}
+
+interface DividendDetailsResult extends BaseResult {
+  data: {
+    items: DividendDetailsItems[];
+    totalcount: number;
+  };
+}
+
 export function agentDividends(options: RequestOptions<IResult, [AgentDividendsParams]> = {}) {
   return request(
     (params) => ({
       url: 'agentreport/agentdividends',
+      method: 'get',
+      params: params,
+    }),
+    Object.assign({ noLoading: false }, options),
+  );
+}
+
+export function agentDividendDetails(options: RequestOptions<DividendDetailsResult, [AgentDividendsParams]> = {}) {
+  return request(
+    (params) => ({
+      url: 'agentreport/dividenddetails',
       method: 'get',
       params: params,
     }),

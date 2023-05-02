@@ -42,8 +42,8 @@
 
           <el-form-item :label="t('withdrawpassword')">
             <el-input
-              size="large"
               v-model="withdrawalParams.paypassword"
+              size="large"
               :placeholder="$t('enterWithdrawPassword')"
               clearable
               type="password"
@@ -381,7 +381,6 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  box-shadow: 3px 3px #c9c9c9;
 }
 .subtitle {
   font-weight: bold;
@@ -408,12 +407,17 @@ export default defineComponent({
   background: rgb(181, 181, 181);
   border: solid 1px transparent;
   background: linear-gradient(146deg, rgba(181, 181, 181, 1) 0%, rgba(255, 255, 255, 1) 65%);
+
   > .user-balance {
     width: 100%;
     text-align: right;
     padding: 50px 10px 0 0;
     font-weight: bold;
     font-size: 30px;
+    background-image: url('../src/assets/images/userbalance.jpg');
+    background-size: cover;
+    height: inherit;
+    border-radius: 20px;
   }
 }
 .bank-card-container {

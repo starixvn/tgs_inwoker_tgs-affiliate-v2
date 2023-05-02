@@ -54,7 +54,7 @@ interface ITransferLimit extends BaseResult {
   from: number;
   to: number;
 }
-export interface IAddCardInfoData  {
+export interface IAddCardInfoData {
   banktype: string;
   id: string;
   channelcode: string;
@@ -66,7 +66,6 @@ export interface IAddCardInfoData  {
   paymentcode: string;
   paymentid: string;
   transferlimit: ITransferLimit;
-
 }
 interface IAddCardInfoResult extends BaseResult {
   data: IAddCardInfoData[];
@@ -116,7 +115,7 @@ export function addCardApi<T extends boolean = true>(returnAxios: T = true as T,
 export function deleteCardApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<IDeleteCardResult, [string], T>(
     (params) => ({
-      url: Api.BANK_INFO + "/" + params,
+      url: Api.BANK_INFO + '/' + params,
       method: 'delete',
       data: params,
     }),

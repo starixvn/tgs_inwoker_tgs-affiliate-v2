@@ -17,51 +17,55 @@
               </el-form-item>
               <el-form-item>
                 <el-date-picker v-model="searchForm.ClosedFrom" type="date" size="large" />
-              </el-form-item>
-              <el-form-item>
                 <el-date-picker v-model="searchForm.ClosedTo" type="date" size="large" />
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col>
               <el-row :gutter="20">
-                <el-col>
-                  <el-form-item>
-                    <el-input v-model="searchForm.Username" size="large" :placeholder="$t('username')" clearable />
-                  </el-form-item>
-                  <el-form-item>
-                    <el-input v-model="searchForm.RoundId" size="large" :placeholder="$t('roundId')" clearable />
-                  </el-form-item>
-                  <el-form-item>
-                    <el-input
-                      v-model="searchForm.ExternalRoundId"
-                      size="large"
-                      :placeholder="$t('externalRoundId')"
-                      clearable
-                    />
-                  </el-form-item>
-                  <el-form-item>
-                    <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
-                      <el-option :label="t('all')" value="" />
-                      <el-option
-                        v-for="(item, key) in gameproviders"
-                        :key="key"
-                        :label="t(item.name)"
-                        :value="item.id"
-                      />
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-                      <el-option :label="t('all')" value="" />
-                      <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
-                    </el-select>
-                  </el-form-item>
+                <el-col :span="24">
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-row>
+                        <el-col :span="8">
+                          <el-input v-model="searchForm.Username" size="large" :placeholder="$t('username')" clearable
+                        /></el-col>
+                        <el-col :span="8">
+                          <el-input v-model="searchForm.RoundId" size="large" :placeholder="$t('roundId')" clearable />
+                        </el-col>
+                        <el-col :span="8">
+                          <el-input
+                            v-model="searchForm.ExternalRoundId"
+                            size="large"
+                            :placeholder="$t('externalRoundId')"
+                            clearable
+                        /></el-col>
+                      </el-row>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item>
+                        <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
+                          <el-option :label="t('all')" value="" />
+                          <el-option
+                            v-for="(item, key) in gameproviders"
+                            :key="key"
+                            :label="t(item.name)"
+                            :value="item.id"
+                          />
+                        </el-select>
 
-                  <el-form-item>
-                    <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
-                      t('search')
-                    }}</el-button>
-                  </el-form-item>
+                        <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
+                          <el-option :label="t('all')" value="" />
+                          <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
+                        </el-select>
+                      </el-form-item>
+
+                      <el-form-item>
+                        <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
+                          t('search')
+                        }}</el-button>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
                 </el-col>
               </el-row>
             </el-col>
@@ -111,7 +115,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getGameProviderApi, roundReportApi, getRoundReportStatusDataApi } from '@/api/agentreport';
+import { getGameProviderApi, roundReportApi, getRoundReportStatusDataApi, GameProviderResult } from '@/api/agentreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
 interface ISubitems {
@@ -167,10 +171,14 @@ export default defineComponent({
   },
 
   data() {
+    interface GameProvider {
+      id: string;
+      name: string;
+    }
     return {
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
-      gameproviders: reactive<any[]>([]),
+      gameproviders: [] as GameProvider[],
       dateType: 'today',
       statuses: reactive<any[]>([]),
       searchForm: reactive<ISearchForm>({
@@ -192,14 +200,13 @@ export default defineComponent({
     };
   },
   beforeMount() {
-    this.getItems();
     this.getGameProviderId();
     this.getRoundReportStatus();
   },
   methods: {
     async getGameProviderId() {
       const res = await getGameProviderApi();
-      const result = await res.runAsync();
+      const result: GameProviderResult = await res.runAsync();
       this.gameproviders = result.data;
     },
 
@@ -210,6 +217,23 @@ export default defineComponent({
     },
 
     async getItems() {
+      //check if username is null
+      if (this.searchForm.Username === '') {
+        ElNotification({
+          message: this.t('usernameCannotBeEmpty'),
+          type: 'error',
+        });
+        return;
+      }
+
+      if (!this.searchForm.ClosedFrom || !this.searchForm.ClosedTo) {
+        ElNotification({
+          message: this.t('dateCannotBeEmpty'),
+          type: 'error',
+        });
+        return;
+      }
+
       let searchForm = { ...this.searchForm };
       searchForm.ClosedFrom = moment(searchForm.ClosedFrom).add(-8, 'hours').toISOString();
       searchForm.ClosedTo = moment(searchForm.ClosedTo).add(1, 'days').add(-8, 'hours').toISOString();

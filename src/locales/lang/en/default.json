@@ -192,5 +192,18 @@
   "Void": "Void",
   "Win": "Win",
   "Loss": "Loss",
-  "Draw": "Draw"
+  "Draw": "Draw",
+
+  "usernameCannotBeEmpty": "Username cannot be empty",
+  "dateCannotBeEmpty": "Date cannot be empty",
+  "rl_bonusAmount": "Bonus Amount = VIP Bonus + VIP Rebate + Promotion Bonus Amount.",
+  "rl_agentCoveredBonus": "Agent-Covered Bonus = Bonus Amount * Profit Sharing Percentage.",
+  "rl_agentCoveredBonusAdjust": "Agent-Covered Bonus Adjust = Bonus Adjustment Amount * Profit Sharing Percentage.",
+  "rl_netProfit": "Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount.",
+  "rl_directPlayerContribution": "Direct-Player Contribution = Net Profit * Profit Sharing Percentage.",
+  "rl_teamContribution": "Team Contribution = Net Profit from Sub Agent * (Agent Profit Sharing Percentage - Sub Agent Profit Sharing Percentage).",
+  "rl_profitSharingAmount": "Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount.",
+  "settlementDate": "Settlement Date",
+  "settlementDateFromTo": "Settlement interval",
+  "goBack": "Go Back"
 }

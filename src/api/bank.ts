@@ -25,7 +25,7 @@ export class DeleteCardParams {
   id = '';
 }
 export class WithdrawalParams {
-  amount = '';
+  amount = 0;
   bankinfoid = '';
   paypassword = '';
 }

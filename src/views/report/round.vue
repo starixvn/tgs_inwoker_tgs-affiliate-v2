@@ -175,6 +175,7 @@ export default defineComponent({
       id: string;
       name: string;
     }
+
     return {
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
@@ -207,7 +208,7 @@ export default defineComponent({
     async getGameProviderId() {
       const res = await getGameProviderApi();
       const result: GameProviderResult = await res.runAsync();
-      this.gameproviders = result.data;
+      this.gameproviders = [...result.data];
     },
 
     async getRoundReportStatus() {

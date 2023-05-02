@@ -283,7 +283,7 @@ export default defineComponent({
       this.totalRowCount = result.data.subtotalcount;
     },
 
-    async getDividendDetails(row: any, column: TableColumnCtx<ISubitems>) {
+    async getDividendDetails(row: any) {
       this.scene = 'detail';
       this.selectedUserId = row.id || row.AgentId;
       this.selecterUserDividend = row.agentDividendPercentage;
@@ -397,10 +397,7 @@ export default defineComponent({
       if (this.scene === 'total') {
         this.getItems();
       } else if (this.scene === 'detail') {
-        this.getDividendDetails(
-          { AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend },
-          '',
-        );
+        this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
       }
     },
 

@@ -139,8 +139,9 @@ export default defineComponent({
       searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
+      const totalPlaceholder = { username: this.t('total') + ':' };
 
-      const total = { username: this.t('total') + ':', ...result.data.total };
+      const total = { ...totalPlaceholder, ...result.data.total };
 
       this.tableData = [total, ...result.data.items];
       this.totalRowCount = result.data.totalcount;

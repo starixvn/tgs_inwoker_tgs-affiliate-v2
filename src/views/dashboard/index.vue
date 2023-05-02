@@ -13,18 +13,26 @@
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
               <div>{{ user.balance }}</div>
-              <el-button type="primary" size="large" :icon="Wallet" @click="navigateTo('/wallet/withdrawal')">{{
-                $t('wallet')
-              }}</el-button>
+              <router-link :to="'/wallet/withdraw'">
+                <el-button type="primary" size="large" :icon="Wallet"> {{ $t('wallet') }} </el-button>
+              </router-link>
             </div>
           </div>
           <div class="account-container">
             <div class="title">{{ $t('referralCode') }}</div>
             <div class="data">
               <div>{{ user.invitationCode }}</div>
-              <el-button type="primary" size="large" :icon="CopyDocument" @click="()=>{
-                copyText(user.invitationCode)
-              }">{{ $t('copy') }}</el-button>
+              <el-button
+                size="large"
+                type="primary"
+                :icon="CopyDocument"
+                @click="
+                  () => {
+                    copyText(user.invitationCode);
+                  }
+                "
+                >{{ $t('copy') }}</el-button
+              >
             </div>
           </div>
           <div class="account-container">
@@ -34,8 +42,13 @@
             </div>
             <div class="button-container">
               <el-button type="primary" size="large" :icon="CopyDocument">{{ $t('copy') }}</el-button>
-              <el-button type="primary" size="large">{{ $t('addagent') }}</el-button>
-              <el-button type="primary" size="large">{{ $t('addplayer') }}</el-button>
+              <router-link :to="{ name: 'agent', path: '/team/agent', params: { perform: 'addagent' } }">
+                <el-button type="primary" size="large"> {{ $t('addagent') }} </el-button>
+              </router-link>
+              <router-link :to="{ name: 'player', path: '/team/player', params: { perform: 'addplayer' } }">
+                <el-button type="primary" size="large"> {{ $t('addplayer') }} </el-button>
+              </router-link>
+
               <custom-button />
             </div>
           </div>
@@ -105,6 +118,9 @@ function navigateTo(path: string) {
   router.push({ name: path });
 }
 
+function navigateToAddPlayer() {
+  router.push({ name: 'player' });
+}
 function copyText(text: string) {
   const input = document.createElement('input');
   input.setAttribute('readonly', 'readonly');
@@ -326,6 +342,10 @@ const overview = reactive([
     padding: 20px;
 
     max-width: fit-content;
+
+    .el-button + .el-button {
+      margin: 0;
+    }
   }
 }
 </style>

@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('@/views/landing/index.vue'),
-        meta: { hideMenu: true,title: 'Agent Admin 2.0', affix: true, icon: 'mel-icon-Avatar' },
+        meta: { hideMenu: true, title: 'Agent Admin 2.0', affix: true, icon: 'mel-icon-Avatar' },
       },
     ],
   },

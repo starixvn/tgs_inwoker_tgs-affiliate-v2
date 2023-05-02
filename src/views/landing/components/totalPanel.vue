@@ -1,8 +1,8 @@
 <template>
   <div class="total-panel">
     <el-row :gutter="30">
-      <el-col v-for="(item, index) in list" :key="index" :xs="12" :sm="12" :lg="6">
-        <div class="card" @click="navigateTo(item.path)">
+      <el-col v-for="(item, index) in list" :key="index" :xs="12" :sm="12" :lg="5">
+        <div class="card" @click="navigateTo(item.path, item.params)">
           <div class="card-icon">
             <img :src="getImgUrl(item.title)" style="width: 50%" />
           </div>
@@ -24,9 +24,11 @@ function getImgUrl(pic: string) {
   return 'src/assets/images/' + pic + '.svg';
 }
 
-function navigateTo(path: string) {
-  console.log(path);
-  router.push(path);
+function navigateTo(path: string, params: any = {}) {
+  router.push({
+    path: path,
+    params: params,
+  });
 }
 
 const list = reactive([
@@ -39,6 +41,9 @@ const list = reactive([
     title: 'addplayer',
     icon: 'mel-icon-user-filled',
     path: '/team/player',
+    params: {
+      perform: 'add',
+    },
   },
   {
     title: 'dashboard',
@@ -89,6 +94,13 @@ const list = reactive([
   &:hover {
     background-color: #07b5bc;
     color: #fff;
+
+    &:hover {
+      > .card-icon img {
+        //convert to white
+        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+      }
+    }
   }
 }
 

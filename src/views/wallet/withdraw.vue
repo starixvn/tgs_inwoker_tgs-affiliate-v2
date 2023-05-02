@@ -11,9 +11,9 @@
       </el-col>
       <el-col :xl="12" :lg="12" :md="8" :sm="16" :xs="24">
         <div class="sub-title">{{ $t('withdraw') }}</div>
-        <el-form :model="formWithdraw" label-width="auto" label-position="left" style="margin-top: 10px">
+        <el-form label-width="auto" label-position="left" style="margin-top: 10px">
           <el-form-item :label="t('bankCard')">
-            <el-select size="large" v-model="withdrawalParams.bankinfoid" style="width: 100%" @change="onCardChange()">
+            <el-select v-model="withdrawalParams.bankinfoid" size="large" style="width: 100%" @change="onCardChange()">
               <el-option
                 v-for="(bankInfo, key) in bankInfoList"
                 :key="key"

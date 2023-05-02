@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'index',
         component: () => import('@/views/account/index.vue'),
-        meta: { title: 'account',  icon: 'me-icon-account' },
+        meta: { title: 'account', icon: 'me-icon-account' },
       },
     ],
   },

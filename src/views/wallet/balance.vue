@@ -5,8 +5,8 @@
         <el-form :inline="true">
           <el-form-item>
             <el-select
-              size="large"
               v-model="searchForm.transactiontype"
+              size="large"
               style="width: 100%"
               :placeholder="$t('transactionType')"
             >
@@ -99,7 +99,15 @@ import { useUserStore } from '@/store';
 
 export default defineComponent({
   name: 'MyComponent',
-
+  setup() {
+    const { t } = useI18n();
+    const userStore = useUserStore();
+    return {
+      t,
+      formatNumber,
+      userStore,
+    };
+  },
   data() {
     return {
       tableData: reactive<AccountChangesItems[]>([]),
@@ -119,6 +127,12 @@ export default defineComponent({
       dateType: 'today',
     };
   },
+  beforeMount() {
+    this.onDateTypeChange();
+    this.getItems();
+    this.getTransactionType();
+  },
+
   methods: {
     async getItems() {
       this.searchForm.id = this.userStore.user.id;
@@ -187,20 +201,6 @@ export default defineComponent({
       this.searchForm.page = val;
       this.getItems();
     },
-  },
-  beforeMount() {
-    this.onDateTypeChange();
-    this.getItems();
-    this.getTransactionType();
-  },
-  setup() {
-    const { t } = useI18n();
-    const userStore = useUserStore();
-    return {
-      t,
-      formatNumber,
-      userStore,
-    };
   },
 });
 </script>

@@ -4,7 +4,7 @@
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-input :placeholder="$t('playerUsername')" size="large" v-model="searchForm.Username" clearable />
+            <el-input v-model="searchForm.Username" :placeholder="$t('playerUsername')" size="large" clearable />
           </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
@@ -24,9 +24,9 @@
               type="primary"
               class="btnsearch"
               size="large"
-              @click="addPlayerDialogVisible = true"
               style="float: right"
               icon="mel-icon-plus"
+              @click="addPlayerDialogVisible = true"
               >{{ $t('addPlayer') }}</el-button
             >
             <el-button type="primary" icon="mel-icon-filter" size="large" />
@@ -97,28 +97,28 @@
     <el-dialog v-model="addPlayerDialogVisible" :title="t('addPlayer')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
         <el-form-item :label="t('username')">
-          <el-input size="large" :placeholder="$t('enterUsername')" v-model="addPlayerParams.username" clearable />
+          <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('enterUsername')" clearable />
         </el-form-item>
         <el-form-item :label="t('password')">
           <el-input
+            v-model="addPlayerParams.password"
             size="large"
             :placeholder="$t('enterPassword')"
-            v-model="addPlayerParams.password"
             clearable
             type="password"
           />
         </el-form-item>
         <el-form-item :label="t('confirmPassword')">
           <el-input
+            v-model="addPlayerParams.confirmPassword"
             size="large"
             :placeholder="$t('reEnterPassword')"
-            v-model="addPlayerParams.confirmPassword"
             clearable
             type="password"
           />
         </el-form-item>
         <el-form-item :label="t('phone')">
-          <el-input size="large" v-model="addPlayerParams.phone" :placeholder="t('enterPhoneNumber')">
+          <el-input v-model="addPlayerParams.phone" size="large" :placeholder="t('enterPhoneNumber')">
             <template #prepend>
               <el-select v-model="addPlayerParams.areaCode" placeholder="Select" style="width: 100px" size="large">
                 <el-option label="+86" value="86" />
@@ -128,7 +128,7 @@
           </el-input>
         </el-form-item>
         <el-form-item :label="t('email')">
-          <el-input size="large" :placeholder="$t('enterEmail')" v-model="addPlayerParams.email" clearable />
+          <el-input v-model="addPlayerParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
         </el-form-item>
         <div class="tnc">
           <div class="tnc-checkbox">
@@ -144,7 +144,6 @@
         <span class="dialog-footer">
           <el-button
             type="primary"
-            @click="onAddPlayer()"
             :disabled="
               addPlayerParams.username === '' ||
               addPlayerParams.password === '' ||
@@ -152,6 +151,7 @@
               addPlayerParams.phone === '' ||
               addPlayerParams.tnc === false
             "
+            @click="onAddPlayer()"
           >
             {{ t('registerNow') }}
           </el-button>
@@ -182,6 +182,7 @@ import {
 } from '@/api/player';
 import formatNumber from 'format-number';
 import { useGlobalStore } from '@/store';
+import { router } from '@/router';
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -223,6 +224,11 @@ export default defineComponent({
       }),
     };
   },
+
+  created() {
+    console.log(this.$route.params);
+  },
+
   beforeMount() {
     this.getItems();
     this.getStatuses();
@@ -337,6 +343,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .tnc {
   display: flex;
+  align-items: center;
   .tnc-checkbox {
     padding-right: 16px;
     width: 25%;
@@ -345,7 +352,6 @@ export default defineComponent({
     align-items: flex-start;
   }
   .tnc-content {
-    width: 75%;
     display: inline-flex;
     justify-content: flex-end;
     align-items: flex-start;

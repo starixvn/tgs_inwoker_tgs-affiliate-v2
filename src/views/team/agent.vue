@@ -4,7 +4,7 @@
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-input :placeholder="$t('agentusername')" size="large" v-model="searchForm.Username" clearable />
+            <el-input v-model="searchForm.Username" :placeholder="$t('agentusername')" size="large" clearable />
           </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
@@ -24,9 +24,9 @@
               type="primary"
               class="btnsearch"
               size="large"
-              @click="addAgentDialogVisible = true"
               style="float: right"
               icon="mel-icon-plus"
+              @click="addAgentDialogVisible = true"
               >{{ $t('addagent') }}</el-button
             >
             <!-- <el-button type="primary" icon="mel-icon-filter" size="large"/> -->
@@ -71,36 +71,36 @@
     <el-dialog v-model="addAgentDialogVisible" :title="t('addagent')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
         <el-form-item :label="t('username')">
-          <el-input size="large" :placeholder="$t('enterUsername')" v-model="addAgentParams.userName" clearable />
+          <el-input v-model="addAgentParams.userName" size="large" :placeholder="$t('enterUsername')" clearable />
         </el-form-item>
         <el-form-item :label="t('password')">
           <el-input
+            v-model="addAgentParams.password"
             size="large"
             :placeholder="$t('enterPassword')"
-            v-model="addAgentParams.password"
             clearable
             type="password"
           />
         </el-form-item>
         <el-form-item :label="t('confirmPassword')">
           <el-input
+            v-model="addAgentParams.confirmPassword"
             size="large"
             :placeholder="$t('reEnterPassword')"
-            v-model="addAgentParams.confirmPassword"
             clearable
             type="password"
           />
         </el-form-item>
         <el-form-item :label="t('realName')">
-          <el-input size="large" :placeholder="$t('enterRealName')" v-model="addAgentParams.realname" clearable />
+          <el-input v-model="addAgentParams.realname" size="large" :placeholder="$t('enterRealName')" clearable />
         </el-form-item>
         <el-form-item :label="t('profitSharePT')">
-          <el-input size="large" :placeholder="$t('enterProfitSharePT')" v-model="addAgentParams.dividendPercentage">
+          <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
             <template #append>%</template>
           </el-input>
         </el-form-item>
         <el-form-item :label="t('remarks')">
-          <el-input size="large" v-model="addAgentParams.remarks" type="textarea" />
+          <el-input v-model="addAgentParams.remarks" size="large" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -113,7 +113,7 @@
     </el-dialog>
 
     <el-dialog v-model="viewAgentDialogVisible" :title="t('addagent')" width="80%" :fullscreen="globalStore.isMobile">
-      <el-tabs type="card" v-model="activeName">
+      <el-tabs v-model="activeName" type="card">
         <el-tab-pane :label="t('agent')" name="first">
           <el-row>
             <el-col :lg="12" :md="12" :xs="24">
@@ -162,8 +162,8 @@
               <el-form :inline="true">
                 <el-form-item>
                   <el-select
-                    size="large"
                     v-model="accountChange.searchForm.transactiontype"
+                    size="large"
                     style="width: 100%"
                     :placeholder="$t('transactionType')"
                   >
@@ -457,11 +457,11 @@ export default defineComponent({
       this.agentDetails = result.data;
       this.viewAgentDialogVisible = true;
     },
-    onEditClick(id: string) {},
+    onEditClick(id: string) {
+      return '';
+    },
     async onRegister() {
       const res = await addAgentApi()(this.addAgentParams);
-      if (res.err === 0) {
-      }
       this.getItems();
       this.resetAddAgent();
       this.addAgentDialogVisible = false;

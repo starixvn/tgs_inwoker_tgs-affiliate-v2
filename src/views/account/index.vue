@@ -17,17 +17,20 @@
         </div>
       </div>
       <div class="right-content">
-        <div class="contents">
-          <div class="another-big-title">{{ $t('mydomain') }}</div>
-          <div class="content-inside-content">
-            <div v-for="item in user.agentdomains" :key="item">
-              <div class="links">
-                <div>{{ item }}</div>
-                <div>bunch of icons here</div>
+        <div v-show="user.agentdomains.length">
+          <div class="contents">
+            <div class="another-big-title">{{ $t('mydomain') }}</div>
+            <div class="content-inside-content">
+              <div v-for="item in user.agentdomains" :key="item">
+                <div class="links">
+                  <div>{{ item }}</div>
+                  <div>bunch of icons here</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="contents">
           <div class="another-big-title">{{ $t('profitshare') }}</div>
           <div class="content-inside-content">

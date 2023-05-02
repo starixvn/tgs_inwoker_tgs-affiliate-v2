@@ -5,12 +5,8 @@
       <el-col :xl="6" :lg="6" :md="8" :sm="8" :xs="24">
         <div class="balance boxshadow">
           <div class="user-balance">
-            {{formatNumber({ truncate: 2, padRight: 2 })(userStore.user.balance)}}
-
-            
+            {{ formatNumber({ truncate: 2, padRight: 2 })(userStore.user.balance) }}
           </div>
-            
-
         </div>
       </el-col>
       <el-col :xl="12" :lg="12" :md="8" :sm="16" :xs="24">
@@ -29,18 +25,18 @@
           <el-space fill style="width: 100%">
             <el-form-item :label="t('amount')" class="withdraw-amount-item">
               <el-input-number
+                v-model="withdrawalParams.amount"
                 :precision="2"
                 :step="1"
                 :max="maxWithdrawal"
                 :min="minWithdrawal"
                 size="large"
-                v-model="withdrawalParams.amount"
                 :placeholder="'Enter withdraw amount'"
                 style="width: 100%"
               />
             </el-form-item>
             <el-alert type="info" show-icon :closable="false" class="withdraw-amount-alert">
-              <p>{{ t('withdrawalRange', [minWithdrawal,maxWithdrawal])}}</p>
+              <p>{{ t('withdrawalRange', [minWithdrawal, maxWithdrawal]) }}</p>
             </el-alert>
           </el-space>
 
@@ -55,7 +51,7 @@
             >
             </el-input>
           </el-form-item>
-          <el-button type="primary" @click="onSubmit" size="large" style="width: 100%">{{ $t('submit') }}</el-button>
+          <el-button type="primary" style="width: 100%" size="large" @click="onSubmit">{{ $t('submit') }}</el-button>
         </el-form>
       </el-col>
       <el-col :xl="6" :lg="6" :md="8" :sm="24" :xs="24">
@@ -63,19 +59,19 @@
           <el-form-item :label="t('type')" class="label-bold">
             <span>{{ t(selectedbankInfo.banktype) }}</span>
           </el-form-item>
-          <el-form-item :label="t('bank')" v-if="selectedbankInfo.banktype === 'Bank'" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Bank'" :label="t('bank')" class="label-bold">
             <span>{{ selectedbankInfo.detail.bankName }}</span>
           </el-form-item>
-          <el-form-item :label="t('branch')" v-if="selectedbankInfo.banktype === 'Bank'" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Bank'" :label="t('branch')" class="label-bold">
             <span>{{ selectedbankInfo.detail.bankBranch }}</span>
           </el-form-item>
-          <el-form-item :label="t('accountName')" v-if="selectedbankInfo.banktype === 'Bank'" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Bank'" :label="t('accountName')" class="label-bold">
             <span>{{ selectedbankInfo.detail.name }}</span>
           </el-form-item>
-          <el-form-item :label="t('accountNumber')" v-if="selectedbankInfo.banktype === 'Bank'" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Bank'" :label="t('accountNumber')" class="label-bold">
             <span>{{ selectedbankInfo.detail.bankAccount }}</span>
           </el-form-item>
-          <el-form-item :label="t('Address')" v-if="selectedbankInfo.banktype === 'Crypto'" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Crypto'" :label="t('Address')" class="label-bold">
             <span>{{ selectedbankInfo.detail.address }}</span>
           </el-form-item>
         </el-form>
@@ -87,10 +83,10 @@
       </el-col>
     </el-row>
     <el-space wrap style="margin-top: 10px">
-      <div v-for="bankInfo in bankInfoList" class="bank-card boxshadow">
+      <div v-for="(bankInfo, key) in bankInfoList" :key="key" class="bank-card boxshadow">
         <div class="bank-card-header">
           <span>{{ t(bankInfo.banktype) }}</span>
-          <el-button class="delete-btn" type="danger" icon="mel-icon-delete" @click="onDeleteCard(bankInfo)" circle />
+          <el-button class="delete-btn" type="danger" icon="mel-icon-delete" circle @click="onDeleteCard(bankInfo)" />
         </div>
         <div class="bank-card-body">
           <div v-if="bankInfo.banktype === 'Bank'">
@@ -130,57 +126,82 @@
         </div>
       </div>
     </el-space>
-    <el-dialog
-    v-model="addCardDialogVisible"
-    :title="t('addBankCard')"
-    :fullscreen="globalStore.isMobile"
-
-  >
-    <el-form label-position="right" label-width="25%" style="width: 100%">
-      <el-form-item :label="t('type')">
-        <el-select size="large" style="width: 100%" v-model="addCardParams.banktype" @change="resetAddCard()">
-            <el-option v-for="(bankType, key) in bankTypeList" :label="t(bankType)" :value="bankType" />
-
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="t('channel')">
-        <el-select size="large" style="width: 100%" v-model="addCardParams.paymentchannelid">
-          <el-option v-for="(addCardInfo, key) in addCardInfoList.filter(a=> a.banktype === addCardParams.banktype)" 
-            :label="addCardInfo.channelcode" :value="addCardInfo.channelid" />
-        </el-select>
-      </el-form-item>
-      <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('bankName')" >
-        <el-input size="large" :placeholder="$t('enterBankName')" v-model="addCardParams.detail.bankName" clearable />
-      </el-form-item>
-      <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('branchName')">
-        <el-input size="large" :placeholder="$t('enterBranchName')" v-model="addCardParams.detail.bankBranch" clearable />
-      </el-form-item>
-      <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('accountName')">
-        <el-input size="large" :placeholder="$t('enterAccountName')" v-model="addCardParams.detail.name" clearable />
-      </el-form-item>
-      <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('accountNumber')">
-        <el-input size="large" :placeholder="$t('enterAccountNumber')" v-model="addCardParams.detail.bankAccount" clearable />
-      </el-form-item>
-      <el-form-item v-if="addCardParams.banktype !== 'Bank'" :label="t('walletAddress')">
-        <el-input size="large" :placeholder="$t('enterWalletAddress')" v-model="addCardParams.detail.address" clearable />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="addCardDialogVisible = false"> {{t("cancel")}}</el-button>
-        <el-button type="primary" @click="onSaveCard()">
-          {{t("save")}}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+    <el-dialog v-model="addCardDialogVisible" :title="t('addBankCard')" :fullscreen="globalStore.isMobile">
+      <el-form label-position="right" label-width="25%" style="width: 100%">
+        <el-form-item :label="t('type')">
+          <el-select v-model="addCardParams.banktype" size="large" style="width: 100%" @change="resetAddCard()">
+            <el-option v-for="(bankType, key) in bankTypeList" :key="key" :label="t(bankType)" :value="bankType" />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t('channel')">
+          <el-select v-model="addCardParams.paymentchannelid" size="large" style="width: 100%">
+            <el-option
+              v-for="(addCardInfo, key) in addCardInfoList.filter((a) => a.banktype === addCardParams.banktype)"
+              :key="key"
+              :label="addCardInfo.channelcode"
+              :value="addCardInfo.channelid"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('bankName')">
+          <el-input v-model="addCardParams.detail.bankName" size="large" :placeholder="$t('enterBankName')" clearable />
+        </el-form-item>
+        <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('branchName')">
+          <el-input
+            v-model="addCardParams.detail.bankBranch"
+            size="large"
+            :placeholder="$t('enterBranchName')"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('accountName')">
+          <el-input v-model="addCardParams.detail.name" size="large" :placeholder="$t('enterAccountName')" clearable />
+        </el-form-item>
+        <el-form-item v-if="addCardParams.banktype === 'Bank'" :label="t('accountNumber')">
+          <el-input
+            v-model="addCardParams.detail.bankAccount"
+            size="large"
+            :placeholder="$t('enterAccountNumber')"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item v-if="addCardParams.banktype !== 'Bank'" :label="t('walletAddress')">
+          <el-input
+            v-model="addCardParams.detail.address"
+            size="large"
+            :placeholder="$t('enterWalletAddress')"
+            clearable
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addCardDialogVisible = false"> {{ t('cancel') }}</el-button>
+          <el-button type="primary" @click="onSaveCard()">
+            {{ t('save') }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { addCardInfoApi,addCardApi,  bankInfoApi, withdrawalApi,deleteCardApi, IBankInfoData, IAddCardInfoData, WithdrawalParams, AddCardParams,AddCardDetailParams, IBankInfoDataDetails } from '@/api/bank';
+import {
+  addCardInfoApi,
+  addCardApi,
+  bankInfoApi,
+  withdrawalApi,
+  deleteCardApi,
+  IBankInfoData,
+  IAddCardInfoData,
+  WithdrawalParams,
+  AddCardParams,
+  AddCardDetailParams,
+  IBankInfoDataDetails,
+} from '@/api/bank';
 
 import { useGlobalStore, useUserStore } from '@/store';
 
@@ -189,10 +210,23 @@ import formatNumber from 'format-number';
 export default defineComponent({
   name: 'MyComponent',
 
+  setup() {
+    const globalStore = useGlobalStore();
+    const userStore = useUserStore();
+
+    const { t } = useI18n();
+
+    return {
+      t,
+      globalStore,
+      userStore,
+      formatNumber,
+    };
+  },
   data() {
     return {
-      addCardDialogVisible:false,
-      addCardParams:reactive(new AddCardParams()),
+      addCardDialogVisible: false,
+      addCardParams: reactive(new AddCardParams()),
       bankInfoList: reactive<IBankInfoData[]>([]),
       bankTypeList: reactive<string[]>([]),
       addCardInfoList: reactive<IAddCardInfoData[]>([]),
@@ -208,11 +242,39 @@ export default defineComponent({
           bankName: '--',
           name: '--',
           address: '--',
-        })
+        }),
       }),
       withdrawalParams: reactive(new WithdrawalParams()),
     };
   },
+  beforeMount() {
+    this.getItems();
+  },
+
+  async mounted() {
+    const response = await addCardInfoApi();
+    const result = await response.runAsync();
+    this.addCardInfoList = result.data;
+    let min = 9999;
+    let max = 0;
+    for (var i = 0; i < this.addCardInfoList.length; i++) {
+      if (this.bankTypeList.indexOf(this.addCardInfoList[i].banktype) < 0) {
+        this.bankTypeList.push(this.addCardInfoList[i].banktype);
+      }
+      if (this.addCardInfoList[i].transferlimit.from < min) {
+        min = this.addCardInfoList[i].transferlimit.from;
+      }
+      if (this.addCardInfoList[i].transferlimit.to > max) {
+        max = this.addCardInfoList[i].transferlimit.to;
+      }
+    }
+    this.minWithdrawal = min;
+    this.maxWithdrawal = max;
+    if (this.bankTypeList.length > 0) {
+      this.addCardParams.banktype = this.bankTypeList[0];
+    }
+  },
+
   methods: {
     async getItems() {
       const response = await bankInfoApi();
@@ -247,13 +309,12 @@ export default defineComponent({
       }
     },
     async onAddNewBankCard() {
-    
       this.addCardDialogVisible = true;
     },
     onSearch() {
       this.getItems();
     },
-    async onSaveCard(){
+    async onSaveCard() {
       const res = await addCardApi()(this.addCardParams);
       // TODO: add dialog message
       this.getItems();
@@ -262,109 +323,60 @@ export default defineComponent({
     },
     async onSubmit() {
       const res = await withdrawalApi()(this.withdrawalParams);
-      if(res.err === 0){
-        ElMessageBox.alert(
-        this.$t("withdrawalSuccessMsg"),
-        this.$t("withdrawalSuccessTitle"),
-        {
+      if (res.err === 0) {
+        ElMessageBox.alert(this.$t('withdrawalSuccessMsg'), this.$t('withdrawalSuccessTitle'), {
           dangerouslyUseHTMLString: true,
-          confirmButtonText: this.$t("withdrawalSuccessButton"),
+          confirmButtonText: this.$t('withdrawalSuccessButton'),
           type: 'success',
           center: true,
-        }
-      )
-        .then(() => {
-         
         })
-        .catch(() => {
-         
-        })
-
+          .then(() => {
+            return '';
+          })
+          .catch(() => {
+            return '';
+          });
       }
-      
     },
-    async onDeleteCard(bankInfo : IBankInfoData){
-      let ending = bankInfo.banktype === 'Bank' ? bankInfo.detail.bankAccount.substring(bankInfo.detail.bankAccount.length - 4) : bankInfo.detail.address.substring(bankInfo.detail.address.length - 4)
-      ElMessageBox.confirm(
-        this.$t("deleteCardMsg",[ending]),
-        this.$t("deleteCardTitle"),
-        {
-          customClass:'delete-dialog',
-          confirmButtonText: this.$t("deleteButton"),
-          confirmButtonClass: 'confirm-button',
-          cancelButtonText: this.$t("cancel")
-        }
-      )
+    async onDeleteCard(bankInfo: IBankInfoData) {
+      let ending =
+        bankInfo.banktype === 'Bank'
+          ? bankInfo.detail.bankAccount.substring(bankInfo.detail.bankAccount.length - 4)
+          : bankInfo.detail.address.substring(bankInfo.detail.address.length - 4);
+      ElMessageBox.confirm(this.$t('deleteCardMsg', [ending]), this.$t('deleteCardTitle'), {
+        customClass: 'delete-dialog',
+        confirmButtonText: this.$t('deleteButton'),
+        confirmButtonClass: 'confirm-button',
+        cancelButtonText: this.$t('cancel'),
+      })
         .then(async () => {
           const res = await deleteCardApi()(bankInfo.id);
           this.getItems();
         })
         .catch(() => {
-
-        })
-
+          return '';
+        });
     },
     onCardChange() {
       this.selectedbankInfo = this.bankInfoList.filter((a) => a.id == this.withdrawalParams.bankinfoid)[0];
     },
-    resetAddCard(){
+    resetAddCard() {
       this.addCardParams.paymentchannelid = '';
       this.addCardParams.detail = new AddCardDetailParams();
-    }
-  },
-  beforeMount() {
-    this.getItems();
-  },
-  async mounted(){
-    const response = await addCardInfoApi();
-    const result = await response.runAsync();
-    this.addCardInfoList = result.data;
-    let min = 9999;
-    let max = 0;
-    for(var i =0;i<this.addCardInfoList.length;i++){
-      if(this.bankTypeList.indexOf(this.addCardInfoList[i].banktype) < 0){
-        this.bankTypeList.push(this.addCardInfoList[i].banktype);
-      }
-      if(this.addCardInfoList[i].transferlimit.from < min){
-        min = this.addCardInfoList[i].transferlimit.from;
-      }
-      if(this.addCardInfoList[i].transferlimit.to > max){
-        max = this.addCardInfoList[i].transferlimit.to;
-      }
-    }
-    this.minWithdrawal = min;
-    this.maxWithdrawal = max;
-    if(this.bankTypeList.length > 0){
-      this.addCardParams.banktype = this.bankTypeList[0];
-    }
-
-  },
-  setup() {
-    const globalStore = useGlobalStore();
-    const userStore = useUserStore();
-    
-    const { t } = useI18n();
-
-    return {
-      t,globalStore,userStore,formatNumber
-    };
+    },
   },
 });
 </script>
 <style>
-
 .label-bold > .el-form-item__label {
   font-weight: bold !important;
 }
-.delete-dialog .confirm-button{
+.delete-dialog .confirm-button {
   background-color: #f56c6c;
-  border:none;
+  border: none;
 }
-
 </style>
 <style lang="scss" scoped>
-
-
 .balance {
   width: 100%;
   height: 100%;
@@ -396,10 +408,10 @@ export default defineComponent({
   background: rgb(181, 181, 181);
   border: solid 1px transparent;
   background: linear-gradient(146deg, rgba(181, 181, 181, 1) 0%, rgba(255, 255, 255, 1) 65%);
-  > .user-balance{
-    width:100%;
+  > .user-balance {
+    width: 100%;
     text-align: right;
-    padding:50px 10px 0 0;
+    padding: 50px 10px 0 0;
     font-weight: bold;
     font-size: 30px;
   }

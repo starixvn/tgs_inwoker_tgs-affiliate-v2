@@ -96,28 +96,47 @@
                       <el-col :span="24">
                         <div class="input-row-no-label">
                           <el-input
-                            v-model="updatePassword.oldpwd"
+                            v-model="state.email"
                             class="textInput"
-                            type="password"
-                            :placeholder="t('currentPassword')"
+                            disabled
+                            :placeholder="t('email')"
                             clearable
-                            show-password
                           />
                         </div>
                         <div class="input-row-no-label">
                           <el-input
-                            v-model="updatePassword.oldpwd"
+                            v-model="updateWithdrawalPassword.validatecode"
                             class="textInput"
-                            type="password"
-                            :placeholder="t('currentPassword')"
+                            :placeholder="t('verificationCode')"
                             clearable
-                            show-password
-                          />
+                          >
+                            <template #append>
+                              <div v-if="state.timer === 60">
+                                <el-button
+                                  type="primary"
+                                  :disabled="state.email === ''"
+                                  @click="getVerificationCodeForWithdrawalPassword"
+                                >
+                                  {{ t('requestCode') }}
+                                </el-button>
+                              </div>
+                              <div v-else>
+                                <el-button>
+                                  {{ t('resend') }}
+                                  {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
+                                </el-button>
+                              </div>
+                            </template></el-input
+                          >
                         </div>
                       </el-col>
                       <el-col :span="24">
                         <el-row justify="end"
-                          ><el-button type="primary" @click="state.scene = 2">
+                          ><el-button
+                            type="primary"
+                            :disabled="updateWithdrawalPassword.validatecode === ''"
+                            @click="state.scene = 2"
+                          >
                             {{ t('nextStep') }}
                           </el-button></el-row
                         >
@@ -131,21 +150,9 @@
                       </el-col>
                       <el-col :span="24">
                         <div class="input-row">
-                          <div class="label">{{ t('currentPassword') }}</div>
-                          <el-input
-                            v-model="updatePassword.oldpwd"
-                            class="textInput"
-                            type="password"
-                            :placeholder="t('currentPassword')"
-                            clearable
-                            show-password
-                          />
-                        </div>
-
-                        <div class="input-row">
                           <div class="label">{{ t('newPassword') }}</div>
                           <el-input
-                            v-model="updatePassword.newpwd"
+                            v-model="updateWithdrawalPassword.newpwd"
                             class="textInput"
                             type="password"
                             :placeholder="t('newPassword')"
@@ -157,7 +164,7 @@
                         <div class="input-row">
                           <div class="label">{{ t('confirmPassword') }}</div>
                           <el-input
-                            v-model="state.confirmpassword"
+                            v-model="state.confirmwithdrawpassword"
                             class="textInput"
                             type="password"
                             :placeholder="t('confirmPassword')"
@@ -173,7 +180,7 @@
                           ><el-button @click="state.scene = 1">
                             {{ t('back') }}
                           </el-button>
-                          <el-button type="primary" @click="updateNewPassword">
+                          <el-button type="primary" @click="updateTheWithdrawalPassword">
                             {{ t('submit') }}
                           </el-button></el-row
                         >
@@ -220,7 +227,11 @@
 </template>
 
 <script setup lang="ts" name="Account">
-import { performUpdatePassword } from '@/api/agent';
+import {
+  performUpdatePassword,
+  performGetChangeWithdrawalPasswordVerificationCode,
+  performUpdateWithdrawalPassword,
+} from '@/api/agent';
 import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
 
@@ -233,15 +244,21 @@ let { t } = useLocalesI18n();
 
 const state = reactive({
   confirmpassword: '',
+  confirmwithdrawpassword: '',
   timer: 60,
   scene: 1,
-  email: '',
-  verificationCode: '',
+  email: user?.email,
 });
 
 const updatePassword = reactive({
   oldpwd: '',
   newpwd: '',
+});
+
+const updateWithdrawalPassword = reactive({
+  newpwd: '',
+  securitykey: '',
+  validatecode: '',
 });
 
 const profitShare = reactive([
@@ -265,6 +282,33 @@ const convertDate = (date: string) => {
 const translate = (value: any) => {
   var altered = value.toString().replace(/,/g, '');
   return t(altered);
+};
+
+const startTimer = () => {
+  const timer = setInterval(() => {
+    if (state.timer === 0) {
+      clearInterval(timer);
+      state.timer = 60;
+    } else {
+      state.timer--;
+    }
+  }, 1000);
+};
+
+const getVerificationCodeForWithdrawalPassword = async () => {
+  const res = await performGetChangeWithdrawalPasswordVerificationCode()();
+  if (res) {
+    updateWithdrawalPassword.securitykey = res.data;
+    startTimer();
+  }
+};
+
+const updateTheWithdrawalPassword = async () => {
+  if (updateWithdrawalPassword.newpwd !== state.confirmwithdrawpassword) {
+    ElMessage.error(t('passwordNotSame'));
+    return;
+  }
+  const res = await performUpdateWithdrawalPassword()(updateWithdrawalPassword);
 };
 
 const profileInfo = reactive([

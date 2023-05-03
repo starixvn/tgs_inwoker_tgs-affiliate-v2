@@ -54,6 +54,20 @@ export interface UpdatePasswordResult extends BaseResult {
   data: string;
 }
 
+export interface GetWithdrawalPasswordVerificationCodeResult extends BaseResult {
+  data: string;
+}
+
+export interface UpdateWithdrawalPasswordParams {
+  newpwd: string;
+  securitykey: string;
+  validatecode: string;
+}
+
+export interface UpdateWithdrawalPasswordResult extends BaseResult {
+  data: string;
+}
+
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddAgentResult, [AddAgentParams], T>(
     (params) => ({
@@ -96,6 +110,36 @@ export function performUpdatePassword<T extends boolean = true>(returnAxios: T =
   return request<UpdatePasswordResult, [UpdatePasswordParams], T>(
     (params) => ({
       url: 'agent/password',
+      method: 'post',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+
+export function performGetChangeWithdrawalPasswordVerificationCode<T extends boolean = true>(
+  returnAxios: T = true as T,
+  noLoading = false,
+) {
+  return request<GetWithdrawalPasswordVerificationCodeResult, [], T>(
+    () => ({
+      url: 'pay/password/validate-code',
+      method: 'post',
+      data: {},
+    }),
+    { noLoading },
+    returnAxios,
+  );
+}
+
+export function performUpdateWithdrawalPassword<T extends boolean = true>(
+  returnAxios: T = true as T,
+  noLoading = false,
+) {
+  return request<UpdateWithdrawalPasswordResult, [UpdateWithdrawalPasswordParams], T>(
+    (params) => ({
+      url: 'pay/password',
       method: 'post',
       data: params,
     }),

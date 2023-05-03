@@ -211,5 +211,9 @@
   "login": "Login",
   "requestCode": "Request code",
   "nextStep": "Next step",
-  "resend": "Resend"
+  "resend": "Resend",
+  "back": "Back",
+  "verificationCode": "Verification code",
+  "reset": "Reset",
+  "passwordNotSame": "Password not same"
 }

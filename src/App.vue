@@ -7,7 +7,8 @@
   </el-config-provider>
 </template>
 <script setup lang="ts">
-import { useSettingStore } from '@/store';
+import { useGlobalStore, useSettingStore } from '@/store';
+import { getLocalization } from '@/api/misc';
 import { SizeEnum } from '@/dict/configEnum';
 import SetElGlobel from './setElGlobel';
 const settingStore = useSettingStore();
@@ -26,6 +27,17 @@ watch(
     new Promise<void>((reactive) => reactive()).then(() => (showSetElGlobel.value = !showSetElGlobel.value));
   },
 );
+
+var globalStore = useGlobalStore();
+
+const init = async () => {
+  const res = await getLocalization()();
+  globalStore.setLocalization(res.data);
+};
+
+onMounted(() => {
+  init();
+});
 </script>
 <style lang="scss" scoped>
 .fade-enter-active,

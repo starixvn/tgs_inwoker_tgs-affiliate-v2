@@ -28,6 +28,13 @@ export default defineStore('global', {
       }),
       isMobile,
       layoutLoaded: false,
+      localization: {},
     };
+  },
+  actions: {
+    //store data into localization
+    setLocalization: function (localization: any) {
+      this.localization = localization;
+    },
   },
 });

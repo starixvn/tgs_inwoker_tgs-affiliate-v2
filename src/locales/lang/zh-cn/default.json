@@ -217,5 +217,10 @@
   "login": "登录",
   "requestCode": "发送验证码",
   "nextStep": "下一步",
-  "resend": "重新发送"
+  "resend": "重新发送",
+  "back": "返回",
+
+  "verificationCode": "验证码",
+  "reset": "重置",
+  "passwordNotSame": "密码不一致"
 }

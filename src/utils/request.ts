@@ -44,7 +44,12 @@ service.interceptors.response.use(
       useUserStore().logOut();
     }
     log.error(error); // for debug
-    throw Error(t('操作失败，请稍后重试'));
+
+    //match error.response.data.errmsgid with data in globalstore localization
+
+    throw ElMessage.error({
+      message: useGlobalStore().localization[error.response.data.errmsgid],
+    }); // 改写错误信息
   },
 );
 
@@ -106,10 +111,7 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       return options?.needAll ? res : res;
     } catch (e) {
       !options?.noLoading && closeLoading();
-      !options?.noError &&
-        ElMessage.error({
-          message: e instanceof Error ? e.message : String(e),
-        });
+
       throw e;
     }
   };

@@ -34,26 +34,67 @@
           {{ $t('iForgotMyPassword') }}
         </el-button>
         <el-dialog v-model="dialogVisible" width="30%">
-          <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="'Phone'" clearable>
-          </el-input>
-          <el-input v-model="forgotPassword.code" class="textInput" :maxlength="6" autofocus clearable>
-            <template #append>
-              <div :v-show="forgotPassword.timer === 60">
-                <el-button @click="startTimer">
-                  {{ t('requestCode') }}
-                </el-button>
-              </div>
-              <div :v-show="forgotPassword.timer <= 59">
-                <el-button>
-                  {{ t('resend') }}
-                  {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
-                </el-button>
-              </div>
-            </template></el-input
-          >
+          <div v-if="forgotPassword.scene === 1">
+            <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
+            </el-input>
+            <el-input
+              v-model="resetPassword.validatecode"
+              class="textInput"
+              :placeholder="t('verificationCode')"
+              :maxlength="6"
+              autofocus
+              clearable
+            >
+              <template #append>
+                <div v-if="forgotPassword.timer === 60">
+                  <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
+                    {{ t('requestCode') }}
+                  </el-button>
+                </div>
+                <div v-else>
+                  <el-button>
+                    {{ t('resend') }}
+                    {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
+                  </el-button>
+                </div>
+              </template></el-input
+            >
+          </div>
+          <div v-else>
+            <div>
+              <el-input
+                v-model="resetPassword.newpwd"
+                class="textInput"
+                type="password"
+                :placeholder="t('password')"
+                clearable
+                show-password
+              />
+              <el-input
+                v-model="forgotPassword.confirmpass"
+                class="textInput"
+                type="password"
+                :placeholder="t('confirmPassword')"
+                clearable
+                show-password
+              />
+            </div>
+          </div>
           <template #footer>
             <span class="dialog-footer">
-              <el-button type="primary"> {{ t('nextStep') }} </el-button>
+              <div v-if="forgotPassword.scene === 1">
+                <el-button
+                  type="primary"
+                  :disabled="forgotPassword.email === '' || resetPassword.validatecode === ''"
+                  @click="forgotPassword.scene = 2"
+                >
+                  {{ t('nextStep') }}
+                </el-button>
+              </div>
+              <div v-else>
+                <el-button type="text" @click="forgotPassword.scene = 1"> {{ t('back') }} </el-button>
+                <el-button type="primary" @click="performResetPassword"> {{ t('resetPassword') }} </el-button>
+              </div>
             </span>
           </template>
         </el-dialog>
@@ -64,6 +105,7 @@
 <script setup lang="ts" name="Login">
 import LoginHeader from './components/header.vue';
 import { LoginParams } from '@/api/user';
+import { requestVerificationCode, performChangePassword } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
@@ -77,20 +119,53 @@ let { t } = useLocalesI18n();
 let forgotPassword = reactive({
   phone: '',
   email: '',
-  code: '',
+  confirmpass: '',
   timer: 60,
+
+  scene: 1,
+});
+
+let resetPassword = reactive({
+  newpwd: '',
+  securitykey: '',
+  validatecode: '',
 });
 
 const dialogVisible = ref(false);
 
-//start the timer counting down
 const startTimer = () => {
   const timer = setInterval(() => {
-    forgotPassword.timer--;
-    if (forgotPassword.timer <= 0) {
+    if (forgotPassword.timer === 0) {
       clearInterval(timer);
+      forgotPassword.timer = 60;
+    } else {
+      forgotPassword.timer--;
     }
   }, 1000);
+};
+
+const performRequestCode = async () => {
+  if (forgotPassword.email) {
+    const res = await requestVerificationCode()({
+      email: forgotPassword.email,
+    });
+    if (res) {
+      resetPassword.securitykey = res.data;
+      startTimer();
+    }
+  }
+};
+
+const performResetPassword = async () => {
+  if (forgotPassword.confirmpass !== resetPassword.newpwd) {
+    ElMessage.error(t('passwordNotSame'));
+    return;
+  } else {
+    const res = await performChangePassword()(resetPassword);
+    if (res) {
+      dialogVisible.value = false;
+    }
+  }
 };
 
 const rules = computed<FormRules>(() => ({
@@ -131,11 +206,6 @@ const login = async () => {
       console.log('提交错误', fields);
     }
   });
-};
-
-const performRequestCode = async () => {
-  // await userStore.login(loginParams);
-  // await router.replace((route.query.redirect as string) || '/');
 };
 </script>
 <style lang="scss" scoped>

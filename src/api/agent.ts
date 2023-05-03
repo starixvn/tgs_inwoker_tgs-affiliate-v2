@@ -45,6 +45,15 @@ export interface ChangePasswordResult extends BaseResult {
   data: string;
 }
 
+export interface UpdatePasswordParams {
+  newpwd: string;
+  oldpwd: string;
+}
+
+export interface UpdatePasswordResult extends BaseResult {
+  data: string;
+}
+
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddAgentResult, [AddAgentParams], T>(
     (params) => ({
@@ -69,10 +78,24 @@ export function requestVerificationCode<T extends boolean = true>(returnAxios: T
   );
 }
 
+//this one is forgot password
 export function performChangePassword<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<ChangePasswordResult, [ChangePasswordParams], T>(
     (params) => ({
       url: 'agent/password/reset',
+      method: 'post',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+
+//this one is for change password
+export function performUpdatePassword<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<UpdatePasswordResult, [UpdatePasswordParams], T>(
+    (params) => ({
+      url: 'agent/password',
       method: 'post',
       data: params,
     }),

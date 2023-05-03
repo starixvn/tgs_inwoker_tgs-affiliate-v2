@@ -4,6 +4,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { ElMessage } from 'element-plus';
 import log from './log';
 import { useRequest, Options, setGlobalOptions } from 'vue-request';
+import { localeConfig } from '@/config';
 import qs from 'qs';
 const t = (...args: [string | number]) => useGlobalStore().i18n.t(...args);
 
@@ -22,6 +23,8 @@ service.interceptors.request.use(
     const userStore = useUserStore();
     if (userStore.token) {
       config.headers['token'] = userStore.token;
+      config.headers['accept-language'] =
+        localStorage.getItem('me-config-locale') ?? localeConfig.localeSetting.locale ?? 'zh-cn';
     }
     return config;
   },

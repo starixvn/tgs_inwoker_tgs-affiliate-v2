@@ -215,5 +215,11 @@
   "back": "Back",
   "verificationCode": "Verification code",
   "reset": "Reset",
-  "passwordNotSame": "Password not same"
+  "passwordNotSame": "Password not same",
+  "usernameCannotEmpty": "Username cannot be empty",
+  "passwordCannotEmpty": "Password cannot be empty",
+  "usernameOrPasswordEmpty": "Username or password cannot be empty",
+  "setPassword": "Set password",
+  "currentPassword": "Current password",
+  "newPassword": "New password"
 }

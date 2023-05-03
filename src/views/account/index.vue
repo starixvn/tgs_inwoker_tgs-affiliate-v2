@@ -13,11 +13,181 @@
                 <div class="data">{{ item.value }}</div>
               </div>
             </div>
+            <div class="profile-info">
+              <div class="title">{{ $t('loginpassword') }}:</div>
+
+              <div class="data">
+                <el-popover trigger="click" placement="right" :width="400">
+                  <template #reference>
+                    <el-button type="primary">{{ t('resetPassword') }}</el-button>
+                  </template>
+                  <div>
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <div class="popover-title">{{ t('loginpassword') }}</div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="input-row">
+                          <div class="label">{{ t('currentPassword') }}</div>
+                          <el-input
+                            v-model="updatePassword.oldpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('currentPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+
+                        <div class="input-row">
+                          <div class="label">{{ t('newPassword') }}</div>
+                          <el-input
+                            v-model="updatePassword.newpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('newPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+
+                        <div class="input-row">
+                          <div class="label">{{ t('confirmPassword') }}</div>
+                          <el-input
+                            v-model="state.confirmpassword"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('confirmPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <el-form :label-width="80" label-position="left"> </el-form>
+                      </el-col>
+                      <el-col :span="24">
+                        <el-row justify="end"
+                          ><el-button type="primary" @click="updateNewPassword">
+                            {{ t('submit') }}
+                          </el-button></el-row
+                        >
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-popover>
+              </div>
+            </div>
+            <div class="profile-info">
+              <div class="title">{{ $t('withdrawpassword') }}:</div>
+
+              <div class="data">
+                <el-popover trigger="click" placement="right" :width="400">
+                  <template #reference>
+                    <el-button>{{ t('withdrawpassword') }}</el-button>
+                  </template>
+                  <div v-if="state.scene === 1">
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <div class="popover-title">{{ t('withdrawpassword') }}</div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="input-row-no-label">
+                          <el-input
+                            v-model="updatePassword.oldpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('currentPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+                        <div class="input-row-no-label">
+                          <el-input
+                            v-model="updatePassword.oldpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('currentPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+                      </el-col>
+                      <el-col :span="24">
+                        <el-row justify="end"
+                          ><el-button type="primary" @click="state.scene = 2">
+                            {{ t('nextStep') }}
+                          </el-button></el-row
+                        >
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div v-else>
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <div class="popover-title">{{ t('withdrawpassword') }}</div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="input-row">
+                          <div class="label">{{ t('currentPassword') }}</div>
+                          <el-input
+                            v-model="updatePassword.oldpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('currentPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+
+                        <div class="input-row">
+                          <div class="label">{{ t('newPassword') }}</div>
+                          <el-input
+                            v-model="updatePassword.newpwd"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('newPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+
+                        <div class="input-row">
+                          <div class="label">{{ t('confirmPassword') }}</div>
+                          <el-input
+                            v-model="state.confirmpassword"
+                            class="textInput"
+                            type="password"
+                            :placeholder="t('confirmPassword')"
+                            clearable
+                            show-password
+                          />
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <el-row justify="end"
+                          ><el-button @click="state.scene = 1">
+                            {{ t('back') }}
+                          </el-button>
+                          <el-button type="primary" @click="updateNewPassword">
+                            {{ t('submit') }}
+                          </el-button></el-row
+                        >
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-popover>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="right-content">
-        <div v-show="user.agentdomains.length">
+        <div>
           <div class="contents">
             <div class="another-big-title">{{ $t('mydomain') }}</div>
             <div class="content-inside-content">
@@ -50,12 +220,29 @@
 </template>
 
 <script setup lang="ts" name="Account">
+import { performUpdatePassword } from '@/api/agent';
+import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
 
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
+
+let { t } = useLocalesI18n();
+
+const state = reactive({
+  confirmpassword: '',
+  timer: 60,
+  scene: 1,
+  email: '',
+  verificationCode: '',
+});
+
+const updatePassword = reactive({
+  oldpwd: '',
+  newpwd: '',
+});
 
 const profitShare = reactive([
   { name: 'live', value: 70 },
@@ -75,6 +262,11 @@ const convertDate = (date: string) => {
   return newDate.toLocaleString();
 };
 
+const translate = (value: any) => {
+  var altered = value.toString().replace(/,/g, '');
+  return t(altered);
+};
+
 const profileInfo = reactive([
   { name: 'agentusername', value: user?.username, editable: false },
   { name: 'realname', value: user?.realname, editable: false },
@@ -85,9 +277,15 @@ const profileInfo = reactive([
   { name: 'profitSharePT', value: user?.dividendpercentage, editable: false },
   { name: 'email', value: user?.email, editable: true },
   { name: 'phone', value: user?.phone, editable: false },
-  { name: 'loginpassword', value: '123', editable: true },
-  { name: 'withdrawpassword', value: '123', editable: true },
 ]);
+
+const updateNewPassword = async () => {
+  if (updatePassword.newpwd !== state.confirmpassword) {
+    ElMessage.error(t('passwordNotSame'));
+    return;
+  }
+  const res = await performUpdatePassword()(updatePassword);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -95,6 +293,11 @@ const profileInfo = reactive([
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 1px;
+}
+
+.popover-title {
+  font-weight: bold;
+  padding-bottom: 10px;
 }
 
 .big-title {
@@ -159,6 +362,21 @@ const profileInfo = reactive([
   }
 }
 
+.input-row {
+  display: grid;
+  grid-template-columns: 30% auto;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  .label {
+    text-align: right;
+  }
+}
+
+.input-row-no-label {
+  padding-bottom: 10px;
+}
+
 .table-background {
   background: #efefef;
   padding: 1px;
@@ -181,7 +399,9 @@ const profileInfo = reactive([
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  align-items: center;
   margin-bottom: 20px;
+  max-height: 30px;
 
   .title {
     text-align: right;

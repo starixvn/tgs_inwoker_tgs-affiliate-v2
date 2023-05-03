@@ -4,13 +4,13 @@
     <div id="wrapper">
       <div class="title">Agent Admin 2.0</div>
       <div class="form" @keyup.enter.exact="login">
-        <el-form ref="formRef" :rules="rules" :model="loginParams" class="EPForm">
+        <el-form ref="formRef" :model="loginParams" class="EPForm">
           <el-form-item prop="username">
             <el-input
               v-model="loginParams.username"
               class="textInput"
               autofocus
-              :placeholder="t('用户名') + '(示例：admin、editor、viewer)'"
+              :placeholder="t('username')"
               clearable
             />
           </el-form-item>
@@ -19,7 +19,7 @@
               v-model="loginParams.password"
               class="textInput"
               type="password"
-              :placeholder="t('密码') + '(任意填写即可)'"
+              :placeholder="t('password')"
               clearable
               show-password
             />
@@ -168,42 +168,23 @@ const performResetPassword = async () => {
   }
 };
 
-const rules = computed<FormRules>(() => ({
-  username: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('用户名'),
-      trigger: 'blur',
-    },
-    {
-      min: 6,
-      max: 30,
-      message: t('长度必须在 {0} 到 {1}个字符之间', [3, 8]),
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('密码'),
-      trigger: 'blur',
-    },
-    {
-      min: 6,
-      max: 50,
-      message: t('长度必须在 {0} 到 {1}个字符之间', [6, 12]),
-      trigger: 'blur',
-    },
-  ],
-}));
-
 const login = async () => {
+  if (loginParams.username === '' && loginParams.password === '') {
+    ElMessage.error(t('usernameOrPasswordEmpty'));
+    return;
+  }
+  if (loginParams.username === '') {
+    ElMessage.error(t('usernameCannotEmpty'));
+    return;
+  }
+  if (loginParams.password === '') {
+    ElMessage.error(t('passwordCannotEmpty'));
+    return;
+  }
   formRef.value?.validate(async (valid, fields) => {
     if (valid) {
       await userStore.login(loginParams);
       await router.replace((route.query.redirect as string) || '/');
-    } else {
-      console.log('提交错误', fields);
     }
   });
 };

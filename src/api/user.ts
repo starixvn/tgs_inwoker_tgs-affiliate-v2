@@ -7,8 +7,8 @@ const enum Api {
 
 // 登录
 export class LoginParams {
-  username = 'jennhong2';
-  password = 'abc123456';
+  username = '';
+  password = '';
   phone = '';
   email = '';
   platformtype = 1;
@@ -20,6 +20,7 @@ export interface LoginResult {
   logintime: number;
   token: string;
 }
+
 export function loginApi<T extends boolean = true>(returnAxios: T = true as T) {
   return request<LoginResult, [LoginParams], T>(
     (params) => ({

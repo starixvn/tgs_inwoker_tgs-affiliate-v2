@@ -71,7 +71,7 @@ export default async (configEnv: ConfigEnv): Promise<UserConfigExport> => {
               'axios',
             ],
             elIcon: ['@element-plus/icons-vue'],
-            mock: [pathResolve('./mock')],
+       //     mock: [pathResolve('./mock')],
           },
         },
       },

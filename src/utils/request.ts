@@ -8,6 +8,10 @@ import { localeConfig } from '@/config';
 import qs from 'qs';
 const t = (...args: [string | number]) => useGlobalStore().i18n.t(...args);
 
+function matchErrorType(errorType: string) {
+  return useGlobalStore().localization[errorType];
+}
+
 const service = axios.create({
   baseURL: import.meta.env.ME_API_URL + '/api/', // url = base url + request url
   timeout: 10000, // request timeout
@@ -51,7 +55,7 @@ service.interceptors.response.use(
     //match error.response.data.errmsgid with data in globalstore localization
 
     throw ElMessage.error({
-      message: useGlobalStore().localization[error.response.data.errmsgid],
+      message: matchErrorType(error.response.data.errmsgid),
     }); // 改写错误信息
   },
 );

@@ -133,7 +133,13 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getGameProviderApi, roundReportApi, getRoundReportStatusDataApi, GameProviderResult } from '@/api/agentreport';
+import {
+  getGameProviderApi,
+  roundReportApi,
+  getRoundReportStatusDataApi,
+  GameProviderResult,
+  RoundReportStatus,
+} from '@/api/agentreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
 interface ISubitems {
@@ -177,6 +183,7 @@ interface ISearchForm {
   ClosedFrom: string;
   ClosedTo: string;
 }
+
 export default defineComponent({
   name: 'MyComponent',
 
@@ -226,16 +233,18 @@ export default defineComponent({
     async getGameProviderId() {
       const res = await getGameProviderApi();
       const result: GameProviderResult = await res.runAsync();
-      this.gameproviders = [...result.data];
+      const data = result.data;
+      if (Array.isArray(data)) {
+        this.gameproviders = data.map((provider) => ({ id: provider.id, name: provider.name }));
+      } else {
+        console.error('Invalid data format:', data);
+      }
     },
-
     async getRoundReportStatus() {
       const res = await getRoundReportStatusDataApi();
       const result = await res.runAsync();
-
       this.statuses = result.data;
     },
-
     async getItems() {
       //check if username is null
       if (this.searchForm.Username === '') {

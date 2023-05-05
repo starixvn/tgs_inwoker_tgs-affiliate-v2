@@ -8,6 +8,10 @@ mitter.on(event.RESIZE, () => {
   isMobile.value = window.document.body.offsetWidth < WIDTH;
 });
 
+interface Localization {
+  [key: string]: string;
+}
+
 export default defineStore('global', {
   state: () => {
     let _i18n: Composer<unknown, unknown, unknown>;
@@ -29,7 +33,7 @@ export default defineStore('global', {
       }),
       isMobile,
       layoutLoaded: false,
-      localization: {},
+      localization: {} as Localization,
       features: {},
     };
   },

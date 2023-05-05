@@ -1,7 +1,11 @@
 import request from '@/utils/request';
 
+interface Localization {
+  [key: string]: string;
+}
+
 export interface LocalizationResult extends BaseResult {
-  data: object;
+  data: Localization;
 }
 
 export interface FeatureData {

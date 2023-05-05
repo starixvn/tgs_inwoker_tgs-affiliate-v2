@@ -243,8 +243,11 @@ export default defineComponent({
     async getRoundReportStatus() {
       const res = await getRoundReportStatusDataApi();
       const result = await res.runAsync();
-      this.statuses = result.data;
+      this.statuses = Object.keys(result.data).map((key) => ({
+        data: result.data[key],
+      }));
     },
+
     async getItems() {
       //check if username is null
       if (this.searchForm.Username === '') {

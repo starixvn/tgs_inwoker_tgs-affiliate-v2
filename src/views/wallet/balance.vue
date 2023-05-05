@@ -56,6 +56,7 @@
             :label="t('transactionType')"
             align="center"
             :formatter="formatTransactionType"
+            width="150"
           />
 
           <el-table-column prop="amount" :label="t('amount')" align="right" :formatter="formatPrice" />

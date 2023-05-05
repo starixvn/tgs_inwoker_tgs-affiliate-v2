@@ -47,8 +47,14 @@
             stripe
             @row-click="getDividendDetails"
           >
-            <el-table-column :label="t('agent')" prop="username" :formatter="customRowFormatter" />
-            <el-table-column prop="agentDividendPercentage" :label="t('p/t')" align="right" :formatter="formatPrice" />
+            <el-table-column :label="t('agent')" prop="username" :formatter="customRowFormatter" min-width="150" />
+            <el-table-column
+              prop="agentDividendPercentage"
+              :label="t('p/t')"
+              align="right"
+              :formatter="formatPrice"
+              width="170"
+            />
             <el-table-column :label="t('bonus')" align="center">
               <el-table-column prop="bonusAmount" :label="t('total')" align="right" :formatter="formatPrice" />
               <el-table-column prop="agentCoveredBonus" :label="t('agent')" align="right" :formatter="formatPrice" />
@@ -64,15 +70,34 @@
               >
               </el-table-column>
             </el-table-column>
-            <el-table-column prop="betAmount" :label="t('betAmount')" align="right" :formatter="formatPrice" />
+            <el-table-column
+              prop="betAmount"
+              :label="t('betAmount')"
+              align="right"
+              :formatter="formatPrice"
+              width="120"
+            />
             <el-table-column
               prop="validBetAmount"
               :label="t('validBetAmount')"
               align="right"
               :formatter="formatPrice"
+              width="120"
             />
-            <el-table-column prop="winLossAmount" :label="t('winloss')" align="right" :formatter="formatPrice" />
-            <el-table-column prop="netProfit" :label="t('netProfit')" align="right" :formatter="formatPrice" />
+            <el-table-column
+              prop="winLossAmount"
+              :label="t('winloss')"
+              align="right"
+              :formatter="formatPrice"
+              width="120"
+            />
+            <el-table-column
+              prop="netProfit"
+              :label="t('netProfit')"
+              align="right"
+              :formatter="formatPrice"
+              width="120"
+            />
             <el-table-column :label="t('contribution')" align="center">
               <el-table-column
                 prop="fromPlayerAgentDividendAmount"
@@ -93,12 +118,14 @@
               :label="t('agentAdjustAmount')"
               align="right"
               :formatter="formatPrice"
+              width="150"
             />
             <el-table-column
               prop="agentDividendAmount"
               :label="t('agentDividendAmount')"
               align="right"
               :formatter="formatPrice"
+              width="150"
             />
             <template #empty>
               {{ t('noRecord') }}

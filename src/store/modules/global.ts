@@ -7,6 +7,7 @@ const isMobile = ref(window.document.body.offsetWidth < WIDTH);
 mitter.on(event.RESIZE, () => {
   isMobile.value = window.document.body.offsetWidth < WIDTH;
 });
+
 export default defineStore('global', {
   state: () => {
     let _i18n: Composer<unknown, unknown, unknown>;
@@ -29,12 +30,16 @@ export default defineStore('global', {
       isMobile,
       layoutLoaded: false,
       localization: {},
+      features: {},
     };
   },
   actions: {
     //store data into localization
     setLocalization: function (localization: any) {
       this.localization = localization;
+    },
+    setFeatures: function (features: any) {
+      this.features = features;
     },
   },
 });

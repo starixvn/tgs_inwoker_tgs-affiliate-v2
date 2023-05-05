@@ -7,5 +7,6 @@ const settingConfig = {
   version: '1.0.3', //版本当版本改变时会清空localStorage和sessionStorage
   openKeepAlive: true, // 是否开启KeepAlive缓存
   menuMode: MenuModeEnum.STATIC, // 菜单模式
+  brands: 'PGG',
 };
 export { loginConfig, localeConfig, themeConfig, settingKey, settingConfig };

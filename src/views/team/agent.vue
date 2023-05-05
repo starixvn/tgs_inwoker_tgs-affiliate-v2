@@ -36,14 +36,14 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" border>
-          <el-table-column :label="t('username')" prop="username" />
+        <el-table :data="tableData" border resizable fit>
+          <el-table-column :label="t('username')" prop="username" min-width="150" />
           <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" />
-          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" />
-          <el-table-column :label="t('teamnumber')" prop="teamnumber" />
+          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" width="150" />
+          <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" />
           <el-table-column align="right" :label="t('balance')" prop="balance" :formatter="formatPrice" />
           <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" />
-          <el-table-column :label="t('setting')" align="center">
+          <el-table-column :label="t('setting')" align="center" width="150">
             <template #default="scope">
               <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />
               <el-button type="primary" icon="mel-icon-edit" size="small" @click="onEditClick(scope.row.id)" />

@@ -17,10 +17,12 @@
           </el-form-item>
         </el-form>
       </el-col>
+
       <el-col :md="6" :sm="24">
         <el-form :inline="true">
           <el-form-item style="margin-right: 0px; float: right">
-            <div v-if="globalStore.features.Agent_CreatePlayer === true">
+            <div v-show="globalStore.features.Agent_CreatePlayer">
+              {{ console.log(globalStore.features) }}
               <el-button
                 type="primary"
                 class="btnsearch"
@@ -39,14 +41,9 @@
       <el-col :span="24">
         <el-table :data="tableData" border>
           <el-table-column :label="t('username')" prop="username" min-width="150" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" min-width="90" />
-          <el-table-column
-            :label="t('registeredtime')"
-            prop="registeredtime"
-            :formatter="formatDateTime"
-            min-width="180"
-          />
-          <el-table-column :label="t('balance')" align="center" min-width="150">
+          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" />
+          <el-table-column :label="t('registeredtime')" prop="registeredtime" :formatter="formatDateTime" width="180" />
+          <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="200">
                 <template #reference>
@@ -194,7 +191,7 @@ export default defineComponent({
   setup() {
     const globalStore = useGlobalStore();
     const { t } = useI18n();
-
+    console.log(globalStore.features);
     return {
       t,
       globalStore,

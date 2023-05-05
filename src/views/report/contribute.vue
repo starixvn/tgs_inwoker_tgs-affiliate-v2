@@ -26,19 +26,34 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe>
-          <el-table-column :label="t('username')" prop="username" />
+        <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
+          <el-table-column :label="t('username')" prop="username" min-width="150" />
           <el-table-column :label="t('type')" prop="type" />
           <el-table-column :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('withdrawalAmount')" prop="withdrawalAmount" :formatter="formatPrice" />
+          <el-table-column
+            :label="t('withdrawalAmount')"
+            prop="withdrawalAmount"
+            :formatter="formatPrice"
+            width="110"
+          />
           <el-table-column :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('bonusAdjustAmount')" prop="bonusAdjustAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('agentAdjustAmount')" prop="agentAdjustAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('betAmount')" prop="betAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('validBetAmount')" prop="validBetAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('turnover')" prop="turnover" :formatter="formatPrice" />
+          <el-table-column
+            :label="t('bonusAdjustAmount')"
+            prop="bonusAdjustAmount"
+            :formatter="formatPrice"
+            width="150"
+          />
+          <el-table-column
+            :label="t('agentAdjustAmount')"
+            prop="agentAdjustAmount"
+            :formatter="formatPrice"
+            width="150"
+          />
+          <el-table-column :label="t('betAmount')" prop="betAmount" :formatter="formatPrice" width="120" />
+          <el-table-column :label="t('validBetAmount')" prop="validBetAmount" :formatter="formatPrice" width="120" />
+          <el-table-column :label="t('turnover')" prop="turnover" :formatter="formatPrice" width="120" />
           <el-table-column :label="t('winLossAmount')" prop="winLossAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" />
+          <el-table-column :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" width="120" />
 
           <template #empty>
             {{ t('noRecord') }}

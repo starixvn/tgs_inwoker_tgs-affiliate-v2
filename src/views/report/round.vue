@@ -75,21 +75,39 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" stripe scrollbar-always-on>
-          <el-table-column :label="t('username')" prop="playerName"> </el-table-column>
-          <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right" />
+        <el-table :data="tableData" stripe scrollbar-always-on resizable>
+          <el-table-column :label="t('username')" prop="playerName" width="150" />
+          <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right" width="120" />
           <el-table-column prop="id" :label="t('roundId')" align="right" />
-          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime" />
-          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" />
-          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right" />
-          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right" />
+          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime" width="130" />
+          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" width="130" />
+          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right" width="130" />
+          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right" width="160" />
           <el-table-column prop="status" :label="t('status')" align="right" :formatter="formatStatus" />
-          <el-table-column prop="currencyCode" :label="t('currency')" align="right" />
-          <el-table-column prop="betAmount" :label="t('betAmount')" align="right" :formatter="formatPrice" />
-          <el-table-column prop="validBetAmount" :label="t('effectiveBet')" align="right" :formatter="formatPrice" />
-          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" />
-          <el-table-column prop="settleAmount" :label="t('payout')" align="right" :formatter="formatPrice" />
-          <el-table-column prop="winLoss" :label="t('winLose')" align="right" :formatter="formatPrice" />
+          <el-table-column prop="currencyCode" :label="t('currency')" align="right" width="130" />
+          <el-table-column
+            prop="betAmount"
+            :label="t('betAmount')"
+            align="right"
+            :formatter="formatPrice"
+            width="130"
+          />
+          <el-table-column
+            prop="validBetAmount"
+            :label="t('effectiveBet')"
+            align="right"
+            :formatter="formatPrice"
+            width="130"
+          />
+          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" width="130" />
+          <el-table-column
+            prop="settleAmount"
+            :label="t('payout')"
+            align="right"
+            :formatter="formatPrice"
+            width="130"
+          />
+          <el-table-column prop="winLoss" :label="t('winLose')" align="right" :formatter="formatPrice" width="130" />
 
           <template #empty>
             {{ t('noRecord') }}

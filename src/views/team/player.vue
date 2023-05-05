@@ -21,8 +21,7 @@
       <el-col :md="6" :sm="24">
         <el-form :inline="true">
           <el-form-item style="margin-right: 0px; float: right">
-            <div v-show="globalStore.features.Agent_CreatePlayer">
-              {{ console.log(globalStore.features) }}
+            <div>
               <el-button
                 type="primary"
                 class="btnsearch"
@@ -191,7 +190,6 @@ export default defineComponent({
   setup() {
     const globalStore = useGlobalStore();
     const { t } = useI18n();
-    console.log(globalStore.features);
     return {
       t,
       globalStore,

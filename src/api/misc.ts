@@ -4,8 +4,12 @@ export interface LocalizationResult extends BaseResult {
   data: object;
 }
 
-interface FeaturesResult {
-  [key: string]: boolean;
+export interface FeatureData {
+  [key: string | number]: string;
+}
+
+interface FeatureResult {
+  data: FeatureData;
 }
 
 export function getLocalization<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
@@ -20,7 +24,7 @@ export function getLocalization<T extends boolean = true>(returnAxios: T = true 
 }
 
 export function getFeatures<T extends boolean = true>(brands: string, returnAxios: T = true as T, noLoading = false) {
-  return request<FeaturesResult, [], T>(
+  return request<FeatureResult, [], T>(
     () => ({
       url: 'https://app12.s3.ap-east-1.amazonaws.com/features_' + brands + '.json',
       method: 'get',

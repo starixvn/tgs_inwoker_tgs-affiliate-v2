@@ -9,7 +9,7 @@ export class AddPlayerParams {
   tnc = false;
 }
 export interface AddPlayerResult extends BaseResult {
-  data: string
+  data: string;
 }
 
 export class AddPlayerPhoneParams {
@@ -17,9 +17,7 @@ export class AddPlayerPhoneParams {
   phone = '';
   playercode = '';
 }
-export interface AddPlayerPhoneResult extends BaseResult {
-
-}
+export interface AddPlayerPhoneResult extends BaseResult {}
 export interface PlayerData {
   areacode: string;
   phone: string;
@@ -55,9 +53,9 @@ export interface PlayerBalanceResult {
 }
 export class CheckConditionParams {
   data = {
-    email: "", 
-    areacode: "", 
-    phone: ""
+    email: '',
+    areacode: '',
+    phone: '',
   };
   username = '';
 }
@@ -67,7 +65,7 @@ export interface CheckConditionResult {
 export function checkConditionApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<CheckConditionResult, [CheckConditionParams], T>(
     (params) => ({
-      url: "player/check/registrationconditions",
+      url: 'player/check/registrationconditions',
       method: 'post',
       data: params,
     }),
@@ -78,7 +76,7 @@ export function checkConditionApi<T extends boolean = true>(returnAxios: T = tru
 export function addPlayerApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddPlayerResult, [AddPlayerParams], T>(
     (params) => ({
-      url: "player/create",
+      url: 'player/create',
       method: 'post',
       data: params,
     }),
@@ -89,7 +87,7 @@ export function addPlayerApi<T extends boolean = true>(returnAxios: T = true as 
 export function addPlayerPhoneApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddPlayerPhoneResult, [AddPlayerPhoneParams], T>(
     (params) => ({
-      url: "player/phone",
+      url: 'player/phone',
       method: 'put',
       data: params,
     }),

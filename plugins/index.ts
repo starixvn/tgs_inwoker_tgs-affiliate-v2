@@ -3,7 +3,7 @@ import autoComponents from './autoComponents';
 import autoImport from './autoImport';
 import autoImportApi from './autoImportApi';
 import babel from './babel';
-import mock from './mock';
+//import mock from './mock';
 import svgLoader from './svgLoader';
 import vueSetUpExtend from './vueSetUpExtend';
 import { visualizer } from 'rollup-plugin-visualizer'; //打包大小分析（stats.html）
@@ -27,7 +27,7 @@ export default (configEnv: ConfigEnv) => {
     autoImport(),
     autoImportApi(),
     babel(),
-    mock(configEnv),
+    // mock(configEnv),
     svgLoader(),
     vueSetUpExtend(),
   ];

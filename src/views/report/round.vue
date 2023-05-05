@@ -55,7 +55,12 @@
 
                         <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
                           <el-option :label="t('all')" value="" />
-                          <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
+                          <el-option
+                            v-for="(item, key) in statuses"
+                            :key="key"
+                            :label="t(item.data)"
+                            :value="item.id"
+                          />
                         </el-select>
                       </el-form-item>
 
@@ -243,11 +248,15 @@ export default defineComponent({
     async getRoundReportStatus() {
       const res = await getRoundReportStatusDataApi();
       const result = await res.runAsync();
-      this.statuses = Object.keys(result.data).map((key) => ({
-        data: result.data[key],
-      }));
+      this.statuses = Object.entries(result.data).map(([key, value]) => {
+        console.log(key, value);
+        return {
+          id: key,
+          name: key,
+          data: value,
+        };
+      });
     },
-
     async getItems() {
       //check if username is null
       if (this.searchForm.Username === '') {

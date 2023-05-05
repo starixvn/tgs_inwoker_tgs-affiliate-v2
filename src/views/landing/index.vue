@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <div class="title-holder">
-      <div class="title">Welcome back!</div>
+      <div class="title">{{ $t('welcomeback') }}</div>
       <div class="subtitle">{{ user.username }}</div>
     </div>
     <total-panel></total-panel>

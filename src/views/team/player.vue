@@ -20,16 +20,17 @@
       <el-col :md="6" :sm="24">
         <el-form :inline="true">
           <el-form-item style="margin-right: 0px; float: right">
-            <el-button
-              type="primary"
-              class="btnsearch"
-              size="large"
-              style="float: right"
-              icon="mel-icon-plus"
-              @click="addPlayerDialogVisible = true"
-              >{{ $t('addPlayer') }}</el-button
-            >
-            <el-button type="primary" icon="mel-icon-filter" size="large" />
+            <div v-if="globalStore.features.Agent_CreatePlayer === true">
+              <el-button
+                type="primary"
+                class="btnsearch"
+                size="large"
+                style="float: right"
+                icon="mel-icon-plus"
+                @click="addPlayerDialogVisible = true"
+                >{{ $t('addPlayer') }}</el-button
+              >
+            </div>
           </el-form-item>
         </el-form>
       </el-col>
@@ -37,10 +38,15 @@
     <el-row>
       <el-col :span="24">
         <el-table :data="tableData" border>
-          <el-table-column :label="t('username')" prop="username" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" />
-          <el-table-column :label="t('registeredtime')" prop="registeredtime" :formatter="formatDateTime" />
-          <el-table-column :label="t('balance')" align="center">
+          <el-table-column :label="t('username')" prop="username" min-width="150" />
+          <el-table-column :label="t('viplevel')" prop="viplevel" min-width="90" />
+          <el-table-column
+            :label="t('registeredtime')"
+            prop="registeredtime"
+            :formatter="formatDateTime"
+            min-width="180"
+          />
+          <el-table-column :label="t('balance')" align="center" min-width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="200">
                 <template #reference>
@@ -223,10 +229,6 @@ export default defineComponent({
         all: false,
       }),
     };
-  },
-
-  created() {
-    console.log(this.$route.params);
   },
 
   beforeMount() {

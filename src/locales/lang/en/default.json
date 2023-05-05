@@ -221,5 +221,8 @@
   "usernameOrPasswordEmpty": "Username or password cannot be empty",
   "setPassword": "Set password",
   "currentPassword": "Current password",
-  "newPassword": "New password"
+  "newPassword": "New password",
+  "welcomeback": "Welcome back!",
+  "copied": "Copied",
+  "downloaded": "Downloaded"
 }

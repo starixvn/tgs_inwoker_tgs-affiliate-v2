@@ -228,5 +228,8 @@
   "usernameOrPasswordEmpty": "用户名或密码不能为空",
   "setPassword": "设置密码",
   "currentPassword": "当前密码",
-  "newPassword": "新密码"
+  "newPassword": "新密码",
+  "welcomeback": "欢迎回来!",
+  "copied": "已复制",
+  "downloaded": "已下载"
 }

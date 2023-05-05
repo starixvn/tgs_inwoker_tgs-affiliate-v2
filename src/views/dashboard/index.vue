@@ -28,7 +28,7 @@
                 :icon="CopyDocument"
                 @click="
                   () => {
-                    copyText(user.invitationCode);
+                    performCopyText(user.invitationCode);
                   }
                 "
                 >{{ $t('copy') }}</el-button
@@ -38,10 +38,12 @@
           <div class="account-container">
             <div class="title">{{ $t('referralLink') }}</div>
             <div class="affiliate-link-container">
-              {{ 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register' }}
+              {{ affiliatelink }}
             </div>
             <div class="button-container">
-              <el-button type="primary" size="large" :icon="CopyDocument">{{ $t('copy') }}</el-button>
+              <el-button type="primary" size="large" :icon="CopyDocument" @click="performCopyText(affiliatelink)">{{
+                $t('copy')
+              }}</el-button>
               <router-link :to="{ name: 'agent', path: '/team/agent', params: { perform: 'addagent' } }">
                 <el-button type="primary" size="large"> {{ $t('addagent') }} </el-button>
               </router-link>
@@ -57,15 +59,25 @@
             <div>{{ $t('referralQRCode') }}</div>
             <div class="qrcode-container">
               <div>
-                <img src="https://www.imgonline.com.ua/examples/qr-code-url.png" />
+                <vue-qrcode id="testonly" :value="affiliatelink" :options="{ width: 250 }"></vue-qrcode>
               </div>
               <div class="qrcode-button">
-                <el-button type="primary" size="large" :icon="Download" style="width: 100%">{{
-                  $t('download')
-                }}</el-button>
-                <el-button type="primary" size="large" :icon="CopyDocument" style="width: 100%">{{
-                  $t('copy')
-                }}</el-button>
+                <el-button
+                  type="primary"
+                  size="large"
+                  :icon="Download"
+                  style="width: 100%"
+                  @click="performDownloadQRCode"
+                  >{{ $t('download') }}</el-button
+                >
+                <el-button
+                  type="primary"
+                  size="large"
+                  :icon="CopyDocument"
+                  style="width: 100%"
+                  @click="performCopyQRCode"
+                  >{{ $t('copy') }}</el-button
+                >
               </div>
             </div>
           </div>
@@ -109,19 +121,62 @@
 import { useUserStore } from '@/store';
 import { CopyDocument, Wallet, Download } from '@element-plus/icons-vue';
 import { router } from '@/router';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+import { useLocalesI18n } from '@/locales/hooks';
+
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
 const { user } = $state;
 
-function navigateTo(path: string) {
-  router.push({ name: path });
+let { t } = useLocalesI18n();
+
+const affiliatelink = 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register';
+
+function performCopyQRCode() {
+  const element = document.getElementById('testonly') as HTMLCanvasElement;
+
+  const url = element.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+  // create a temporary image element to hold the image data
+  const img = new Image();
+  img.src = url;
+
+  // wait for the image to load before copying it to the clipboard
+  img.onload = () => {
+    // create a canvas element to hold the image data
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.drawImage(img, 0, 0);
+
+    // copy the image data to the clipboard
+    canvas.toBlob((blob: any) => {
+      navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob,
+        }),
+      ]);
+    }, 'image/png');
+  };
+  ElMessage.success(t('copied'));
 }
 
-function navigateToAddPlayer() {
-  router.push({ name: 'player' });
+function performDownloadQRCode() {
+  const element = document.getElementById('testonly') as HTMLCanvasElement;
+
+  const url = element.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+  const link = document.createElement('a');
+  link.download = 'QRCode.png';
+  link.href = url;
+  link.click();
+
+  ElMessage.success(t('downloaded'));
 }
-function copyText(text: string) {
+
+function performCopyText(text: string) {
   const input = document.createElement('input');
   input.setAttribute('readonly', 'readonly');
   input.setAttribute('value', text);
@@ -130,6 +185,8 @@ function copyText(text: string) {
   input.setSelectionRange(0, 9999);
   document.execCommand('copy');
   document.body.removeChild(input);
+
+  ElMessage.success(t('copied'));
 }
 
 const statistic = reactive([

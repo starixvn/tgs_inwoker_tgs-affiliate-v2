@@ -201,7 +201,11 @@
               <div v-for="item in user.agentdomains" :key="item">
                 <div class="links">
                   <div>{{ item }}</div>
-                  <div>bunch of icons here</div>
+                  <div>
+                    <el-button @click="performCopyText(item)">
+                      <el-icon><Link /></el-icon>
+                    </el-button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -234,6 +238,7 @@ import {
 } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
+import { Link } from '@element-plus/icons-vue';
 
 //get data from userStore
 const { $state } = useUserStore();
@@ -241,6 +246,19 @@ const { $state } = useUserStore();
 const { user } = $state;
 
 let { t } = useLocalesI18n();
+
+function performCopyText(text: string) {
+  const input = document.createElement('input');
+  input.setAttribute('readonly', 'readonly');
+  input.setAttribute('value', text);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 9999);
+  document.execCommand('copy');
+  document.body.removeChild(input);
+
+  ElMessage.success(t('copied'));
+}
 
 const state = reactive({
   confirmpassword: '',
@@ -393,6 +411,7 @@ const updateNewPassword = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 30px;
 
   //on mobile
   @media (max-width: 768px) {

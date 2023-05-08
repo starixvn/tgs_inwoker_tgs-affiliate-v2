@@ -21,7 +21,7 @@ import { router } from '@/router';
 let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'dashboard']);
 
 function getImgUrl(pic: string) {
-  return 'src/assets/images/' + pic + '.svg';
+  return '../public/assets/images/' + pic + '.svg';
 }
 
 function navigateTo(path: string, params: any = {}) {

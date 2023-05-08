@@ -51,9 +51,11 @@ const init = async () => {
   const res = await getLocalization()();
   globalStore.setLocalization(res.data);
 
-  const res2 = await getFeatures(settingConfig.brands)();
+  //const res2 = await getFeatures(settingConfig.brands)();
 
-  console.log(res2);
+  // console.log(res2);
+
+  getJsonData();
 };
 
 onMounted(() => {

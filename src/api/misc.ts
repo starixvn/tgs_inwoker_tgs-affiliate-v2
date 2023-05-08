@@ -9,7 +9,7 @@ export interface LocalizationResult extends BaseResult {
 }
 
 export interface FeatureData {
-  [key: string | number]: string;
+  [key: string]: any;
 }
 
 interface FeatureResult {

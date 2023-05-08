@@ -21,7 +21,7 @@
       <el-col :md="6" :sm="24">
         <el-form :inline="true">
           <el-form-item style="margin-right: 0px; float: right">
-            <div>
+            <div v-show="globalStore.features.Agent_CreatePlayer === true">
               <el-button
                 type="primary"
                 class="btnsearch"

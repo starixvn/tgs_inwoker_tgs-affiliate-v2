@@ -414,7 +414,7 @@ export default defineComponent({
     padding: 50px 10px 0 0;
     font-weight: bold;
     font-size: 30px;
-    background-image: url('../public/assets/images/userbalance.jpg');
+    background-image: url('src/assets/images/userbalance.jpg');
     background-size: cover;
     height: inherit;
     border-radius: 20px;

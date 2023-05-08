@@ -1,42 +1,111 @@
 <template>
   <div class="login">
-    <img src="/logo.svg?url" class="bg" />
     <login-header class="header"></login-header>
-    <div class="form" @keyup.enter.exact="login">
-      <div class="title">ME-Admin</div>
-      <el-form ref="formRef" :rules="rules" :model="loginParams">
-        <el-form-item prop="username">
-          <el-input
-            v-model="loginParams.username"
-            autofocus
-            :placeholder="t('用户名') + '(示例：admin、editor、viewer)'"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="loginParams.password"
-            type="password"
-            :placeholder="t('密码') + '(任意填写即可)'"
-            clearable
-            show-password
-          />
-        </el-form-item>
-        <el-form-item prop="captcha">
-          <el-input v-model="loginParams.captcha" :placeholder="t('验证码') + '(任意填写即可)'" clearable>
-            <template #append>
-              <img src="@/assets/images/captcha.png" class="captcha" />
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-button class="submit" type="primary" @click="login">{{ t('登录') }}</el-button>
-      </el-form>
+    <div id="wrapper">
+      <div class="title">Agent Admin 2.0</div>
+      <div class="form" @keyup.enter.exact="login">
+        <el-form ref="formRef" :model="loginParams" class="EPForm">
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginParams.username"
+              class="textInput"
+              autofocus
+              :placeholder="t('username')"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item prop="password" class="textInput">
+            <el-input
+              v-model="loginParams.password"
+              class="textInput"
+              type="password"
+              :placeholder="t('password')"
+              clearable
+              show-password
+            />
+          </el-form-item>
+
+          <el-button class="submit" type="primary" @click="login">{{ t('login') }}</el-button>
+        </el-form>
+      </div>
+
+      <div>
+        <el-button text @click="dialogVisible = true">
+          {{ $t('iForgotMyPassword') }}
+        </el-button>
+        <el-dialog v-model="dialogVisible" width="30%">
+          <div v-if="forgotPassword.scene === 1">
+            <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
+            </el-input>
+            <el-input
+              v-model="resetPassword.validatecode"
+              class="textInput"
+              :placeholder="t('verificationCode')"
+              :maxlength="6"
+              autofocus
+              clearable
+            >
+              <template #append>
+                <div v-if="forgotPassword.timer === 60">
+                  <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
+                    {{ t('requestCode') }}
+                  </el-button>
+                </div>
+                <div v-else>
+                  <el-button>
+                    {{ t('resend') }}
+                    {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
+                  </el-button>
+                </div>
+              </template></el-input
+            >
+          </div>
+          <div v-else>
+            <div>
+              <el-input
+                v-model="resetPassword.newpwd"
+                class="textInput"
+                type="password"
+                :placeholder="t('password')"
+                clearable
+                show-password
+              />
+              <el-input
+                v-model="forgotPassword.confirmpass"
+                class="textInput"
+                type="password"
+                :placeholder="t('confirmPassword')"
+                clearable
+                show-password
+              />
+            </div>
+          </div>
+          <template #footer>
+            <span class="dialog-footer">
+              <div v-if="forgotPassword.scene === 1">
+                <el-button
+                  type="primary"
+                  :disabled="forgotPassword.email === '' || resetPassword.validatecode === ''"
+                  @click="forgotPassword.scene = 2"
+                >
+                  {{ t('nextStep') }}
+                </el-button>
+              </div>
+              <div v-else>
+                <el-button type="text" @click="forgotPassword.scene = 1"> {{ t('back') }} </el-button>
+                <el-button type="primary" @click="performResetPassword"> {{ t('resetPassword') }} </el-button>
+              </div>
+            </span>
+          </template>
+        </el-dialog>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts" name="Login">
 import LoginHeader from './components/header.vue';
 import { LoginParams } from '@/api/user';
+import { requestVerificationCode, performChangePassword } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
@@ -46,54 +115,76 @@ const route = useRoute();
 const router = useRouter();
 let loginParams = reactive(new LoginParams());
 let { t } = useLocalesI18n();
-const rules = computed<FormRules>(() => ({
-  username: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('用户名'),
-      trigger: 'blur',
-    },
-    {
-      min: 3,
-      max: 8,
-      message: t('长度必须在 {0} 到 {1}个字符之间', [3, 8]),
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('密码'),
-      trigger: 'blur',
-    },
-    {
-      min: 6,
-      max: 12,
-      message: t('长度必须在 {0} 到 {1}个字符之间', [6, 12]),
-      trigger: 'blur',
-    },
-  ],
-  captcha: [
-    {
-      required: true,
-      message: t('请填写') + ' ' + t('验证码'),
-      trigger: 'blur',
-    },
-    {
-      len: 4,
-      message: t('验证码') + ' ' + t('长度必须为 {0} 个字符', [4]),
-      trigger: 'blur',
-    },
-  ],
-}));
+
+let forgotPassword = reactive({
+  phone: '',
+  email: '',
+  confirmpass: '',
+  timer: 60,
+
+  scene: 1,
+});
+
+let resetPassword = reactive({
+  newpwd: '',
+  securitykey: '',
+  validatecode: '',
+});
+
+const dialogVisible = ref(false);
+
+const startTimer = () => {
+  const timer = setInterval(() => {
+    if (forgotPassword.timer === 0) {
+      clearInterval(timer);
+      forgotPassword.timer = 60;
+    } else {
+      forgotPassword.timer--;
+    }
+  }, 1000);
+};
+
+const performRequestCode = async () => {
+  if (forgotPassword.email) {
+    const res = await requestVerificationCode()({
+      email: forgotPassword.email,
+    });
+    if (res) {
+      resetPassword.securitykey = res.data;
+      startTimer();
+    }
+  }
+};
+
+const performResetPassword = async () => {
+  if (forgotPassword.confirmpass !== resetPassword.newpwd) {
+    ElMessage.error(t('passwordNotSame'));
+    return;
+  } else {
+    const res = await performChangePassword()(resetPassword);
+    if (res) {
+      dialogVisible.value = false;
+    }
+  }
+};
 
 const login = async () => {
+  if (loginParams.username === '' && loginParams.password === '') {
+    ElMessage.error(t('usernameOrPasswordEmpty'));
+    return;
+  }
+  if (loginParams.username === '') {
+    ElMessage.error(t('usernameCannotEmpty'));
+    return;
+  }
+  if (loginParams.password === '') {
+    ElMessage.error(t('passwordCannotEmpty'));
+    return;
+  }
   formRef.value?.validate(async (valid, fields) => {
     if (valid) {
       await userStore.login(loginParams);
       await router.replace((route.query.redirect as string) || '/');
-    } else {
-      console.log('提交错误', fields);
     }
   });
 };
@@ -124,27 +215,45 @@ const login = async () => {
     width: 100%;
   }
 
+  .EPForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
+    width: 100%;
+  }
+
+  #wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 80%;
+  }
+
+  .title {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    color: #07b5bc;
+    font-size: 25px;
+  }
+
   .form {
     z-index: 1;
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 500px;
-    margin: auto;
-    padding: 30px 20px;
-    background-color: var(--el-mask-color);
-    border-radius: 4px;
-    box-shadow: 0px 0px 4px var(--el-border-color);
+    width: 100%;
 
-    .title {
-      text-align: center;
-      width: 100%;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+    max-width: 500px;
+    padding: 30px 50px;
+    background-color: var(--el-mask-color);
+    border-radius: 12px;
+    box-shadow: 0 9px 28px rgba(0, 0, 0, 0.1), 0 15px 12px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     :deep(.el-input) {
       .captcha {
         margin: 0 -19px;
@@ -162,9 +271,12 @@ const login = async () => {
         height: calc(var(--el-component-size-small) - 2px);
       }
     }
-    .submit {
+    .el-form-item {
       width: 100%;
-      margin: auto;
+    }
+    .submit {
+      width: fit-content;
+      padding: 10px 20px;
       display: block;
     }
   }

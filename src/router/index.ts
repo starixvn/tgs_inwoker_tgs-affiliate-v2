@@ -99,7 +99,7 @@ export const flatteningRoutes2 = (routes: RouteRecordRaw[], startIndex = 0) => {
 };
 
 export const router = createRouter({
-  history: createWebHashHistory(), //createWebHistory(),
+  history: createWebHistory(), //createWebHistory(),
   routes: flatteningRoutes2(constantRoutes),
 });
 

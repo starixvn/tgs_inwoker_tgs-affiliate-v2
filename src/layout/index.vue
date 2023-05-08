@@ -52,8 +52,7 @@ onMounted(() => {
 
   .right-main {
     padding: 0;
-    // background-color: rgb(240, 242, 245);
-    background-color: var(--el-bg-color-page);
+    background-color: #fbfbfb;
   }
 }
 

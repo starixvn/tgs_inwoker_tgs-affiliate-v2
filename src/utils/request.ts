@@ -4,10 +4,16 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { ElMessage } from 'element-plus';
 import log from './log';
 import { useRequest, Options, setGlobalOptions } from 'vue-request';
+import { localeConfig } from '@/config';
 import qs from 'qs';
 const t = (...args: [string | number]) => useGlobalStore().i18n.t(...args);
+
+function matchErrorType(errorType: string) {
+  return useGlobalStore().localization[errorType];
+}
+
 const service = axios.create({
-  baseURL: '/api/', // url = base url + request url
+  baseURL: import.meta.env.ME_API_URL + '/api/', // url = base url + request url
   timeout: 10000, // request timeout
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true }), // 数组query参数转换为repeat a=1&a=2,null值会被删除
 });
@@ -20,7 +26,9 @@ service.interceptors.request.use(
     }
     const userStore = useUserStore();
     if (userStore.token) {
-      config.headers['Auth-Token'] = userStore.token;
+      config.headers['token'] = userStore.token;
+      config.headers['accept-language'] =
+        localStorage.getItem('me-config-locale') ?? localeConfig.localeSetting.locale ?? 'zh-cn';
     }
     return config;
   },
@@ -39,8 +47,16 @@ service.interceptors.response.use(
   (error) => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    if (error.response.data.err === 401 || error.response.data.err === 900) {
+      useUserStore().logOut();
+    }
     log.error(error); // for debug
-    throw Error(t('操作失败，请稍后重试'));
+
+    //match error.response.data.errmsgid with data in globalstore localization
+
+    throw ElMessage.error({
+      message: matchErrorType(error.response.data.errmsgid),
+    }); // 改写错误信息
   },
 );
 
@@ -83,28 +99,26 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       //loading放到微任务中去执行以确保在自动调用请求时等待所有的宏任务中的生命周期函数执行完再创建loading实例 以规避currentInstance的相关警告
       !options?.noLoading && Promise.resolve(undefined).then(loading);
       const { data: res } = await service(await axiosConfig(...args));
-      if (!res || res.code === undefined) {
+      if (!res || res.err === undefined) {
         throw Error(t('返回值解析失败'));
       }
       // 401：认证失败
-      if (res.code === '401') {
+      if (res.err === 401) {
         await useUserStore().logOut();
         return res;
       }
-      if (res.code !== '200') {
-        throw Error(res.msg);
+      if (res.err !== 0) {
+        throw Error(res.errmsg);
       }
+
       if (options?.success) {
-        ElMessage.success({ message: res.msg });
+        ElMessage.success({ message: res.errmsg });
       }
       !options?.noLoading && closeLoading();
-      return options?.needAll ? res : res.data;
+      return options?.needAll ? res : res;
     } catch (e) {
       !options?.noLoading && closeLoading();
-      !options?.noError &&
-        ElMessage.error({
-          message: e instanceof Error ? e.message : String(e),
-        });
+
       throw e;
     }
   };

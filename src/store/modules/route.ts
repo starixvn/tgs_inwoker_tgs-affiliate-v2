@@ -1,10 +1,9 @@
 import MenuModeEnum from '@/dict/menuModeEnum';
 import { filterAsyncRoutes, initDynamicViewsModules } from '@/utils/permission';
-import useUserStore from './user';
 import { router, constantRoutes, asyncRoutes, flatteningRoutes2 } from '@/router';
 import { RouteRecordRaw } from 'vue-router';
 import { settingConfig } from '@/config';
-import { menuApi } from '@/api/routeMenu';
+
 export default defineStore('route', {
   state: () => ({
     addRoutes: [] as RouteRecordRaw[],
@@ -16,17 +15,17 @@ export default defineStore('route', {
   actions: {
     //生成权限过滤后的动态路由
     async generateRoutes() {
-      if (useUserStore().rules) {
-        switch (settingConfig.menuMode) {
-          case MenuModeEnum.STATIC:
-            this.addRoutes = markRaw(filterAsyncRoutes(asyncRoutes));
-            break;
-          case MenuModeEnum.API:
-            initDynamicViewsModules();
-            this.addRoutes = markRaw(filterAsyncRoutes(await menuApi()(), undefined, true));
-            break;
-        }
+      //if (useUserStore().rules) {
+      switch (settingConfig.menuMode) {
+        case MenuModeEnum.STATIC:
+          this.addRoutes = markRaw(filterAsyncRoutes(asyncRoutes));
+          break;
+        case MenuModeEnum.API:
+          initDynamicViewsModules();
+
+          break;
       }
+      //}
       return this.addRoutes;
     },
     //初始化路由

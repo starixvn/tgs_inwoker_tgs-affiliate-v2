@@ -4,11 +4,11 @@ import cookies from 'js-cookie';
 import { loginConfig as config } from '@/config';
 import { loading } from '@/utils/loading';
 import { PageEnum } from '@/dict/pageEnum';
-import { loginApi, LoginParams, userInfoApi, UserInfoResult } from '@/api/user';
+import { loginApi, LoginParams, userInfoApi, IUserInfoData } from '@/api/user';
 import useRouteStore from './route';
 import { router } from '@/router';
 interface UserState {
-  user: UserInfoResult; // 用户信息
+  user: IUserInfoData; // 用户信息
   rules: string[] | undefined; // 用户权限信息
   token: Ref<string>; // 用户token
 }
@@ -17,7 +17,7 @@ export default defineStore({
   state: (): UserState => {
     let _token = '';
     return {
-      user: {} as UserInfoResult,
+      user: {} as IUserInfoData,
       rules: undefined,
       token: customRef<string>((track, trigger) => {
         return {
@@ -50,8 +50,8 @@ export default defineStore({
       const token = tokenValue ?? cookies.get(config.tokenName);
       if (token) {
         this.token = token;
-        this.user = await userInfoApi(true, !tokenValue)();
-        this.rules = this.user.rules;
+        const result = await userInfoApi(true, !tokenValue)();
+        this.user = result.data;
         await useRouteStore().initRoutes(); //初始化路由
       } else {
         this.token = '';

@@ -1,6 +1,6 @@
 <template>
   <div class="layout-menu" :class="{ collapse: !globalStore.isMobile && themeConfig.menuCollapse }">
-    <div class="title">M<span>e - Admin</span></div>
+    <div class="title">A<span>gent Admin 2.0</span></div>
     <div class="menu-box">
       <el-scrollbar view-class="layout-menu-content">
         <el-menu
@@ -52,6 +52,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
   height: 100%;
   position: relative;
   padding-top: var(--el-menu-item-height);
+
   .title {
     height: var(--el-menu-item-height);
     line-height: var(--el-menu-item-height);
@@ -89,7 +90,12 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-sub-menu.is-active {
           > .el-sub-menu__title {
-            color: var(--el-menu-active-color);
+            background: #07b5bc;
+            color: #fff;
+
+            .el-icon {
+              color: #fff;
+            }
           }
         }
         .el-sub-menu__title {
@@ -103,10 +109,6 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-menu-item.is-active {
           color: var(--el-color-primary);
-        }
-
-        .el-menu--inline {
-          background-color: v-bind('menuBg1');
         }
 
         .el-menu-item,

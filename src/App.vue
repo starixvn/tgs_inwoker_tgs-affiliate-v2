@@ -7,9 +7,11 @@
   </el-config-provider>
 </template>
 <script setup lang="ts">
-import { useSettingStore } from '@/store';
+import { useGlobalStore, useSettingStore } from '@/store';
+import { getLocalization, getFeatures } from '@/api/misc';
 import { SizeEnum } from '@/dict/configEnum';
 import SetElGlobel from './setElGlobel';
+import { settingConfig } from '@/config';
 const settingStore = useSettingStore();
 const htmlDom = document.getElementsByTagName('html')[0];
 watchEffect(() => {
@@ -26,6 +28,39 @@ watch(
     new Promise<void>((reactive) => reactive()).then(() => (showSetElGlobel.value = !showSetElGlobel.value));
   },
 );
+
+var globalStore = useGlobalStore();
+
+function getJsonData() {
+  return fetch(
+    'https://app12.s3.ap-east-1.amazonaws.com/features_' +
+      //get data from .env file value BRANDS
+      settingConfig.brands +
+      '.json',
+  )
+    .then((response) => response.json())
+    .then((responseJson) => {
+      globalStore.setFeatures(responseJson.agent || []);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+const init = async () => {
+  const res = await getLocalization()();
+  globalStore.setLocalization(res.data);
+
+  //const res2 = await getFeatures(settingConfig.brands)();
+
+  // console.log(res2);
+
+  getJsonData();
+};
+
+onMounted(() => {
+  init();
+});
 </script>
 <style lang="scss" scoped>
 .fade-enter-active,

@@ -1,7 +1,9 @@
 import { Composer } from 'vue-i18n';
 import { event, mitter } from '@/event';
+import { Ref } from 'vue';
 import { LoadingOptions } from 'element-plus';
 import { forOwn } from 'lodash-es';
+import { getLocalization, getFeatures } from '@/api/misc';
 const WIDTH = 992; // refer to Bootstrap's responsive design
 const isMobile = ref(window.document.body.offsetWidth < WIDTH);
 mitter.on(event.RESIZE, () => {
@@ -11,9 +13,19 @@ mitter.on(event.RESIZE, () => {
 interface Localization {
   [key: string]: string;
 }
-
-export default defineStore('global', {
-  state: () => {
+interface Features {
+  [key: string]: string;
+}
+interface GlobalState {
+  i18n: Ref<Composer<unknown, unknown, unknown>>,
+  isMobile: Ref<boolean>,
+  layoutLoaded: boolean,
+  localization: Localization,
+  features: Features
+}
+export default defineStore({
+  id: 'global',
+  state: ():  GlobalState  => {
     let _i18n: Composer<unknown, unknown, unknown>;
     return {
       i18n: customRef((track, trigger) => {
@@ -38,6 +50,20 @@ export default defineStore('global', {
     };
   },
   actions: {
+    init: async function (tokenValue?: string) {
+       
+    },
+    // 登录
+    getFeature: async function () {
+
+      const res = await getFeatures()();
+      this.features = res;
+    },
+    // 退出
+    getLocalization: async function () {
+      const res = await getLocalization()();
+      this.localization = res.data;
+    },
     //store data into localization
     setLocalization: function (localization: any) {
       this.localization = localization;

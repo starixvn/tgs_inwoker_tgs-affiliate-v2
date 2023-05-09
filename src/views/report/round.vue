@@ -249,7 +249,6 @@ export default defineComponent({
       const res = await getRoundReportStatusDataApi();
       const result = await res.runAsync();
       this.statuses = Object.entries(result.data).map(([key, value]) => {
-        console.log(key, value);
         return {
           id: key,
           name: key,

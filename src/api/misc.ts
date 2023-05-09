@@ -8,15 +8,13 @@ export interface LocalizationResult extends BaseResult {
   data: Localization;
 }
 
-export interface FeatureData {
-  [key: string]: any;
-}
 
 interface FeatureResult {
-  data: FeatureData;
+  [key: string]: string;
 }
 
 export function getLocalization<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+
   return request<LocalizationResult, [], T>(
     () => ({
       url: 'localization',
@@ -27,10 +25,10 @@ export function getLocalization<T extends boolean = true>(returnAxios: T = true 
   );
 }
 
-export function getFeatures<T extends boolean = true>(brands: string, returnAxios: T = true as T, noLoading = false) {
+export function getFeatures<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<FeatureResult, [], T>(
     () => ({
-      url: 'https://app12.s3.ap-east-1.amazonaws.com/features_' + brands + '.json',
+      url: 'https://app12.s3.ap-east-1.amazonaws.com/features_' + process.env.BRAND + '.json',
       method: 'get',
     }),
     { needAll: true },

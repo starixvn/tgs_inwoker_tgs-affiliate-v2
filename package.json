@@ -10,8 +10,8 @@
   },
   "scripts": {
     "format": "prettier --write --cache .",
-    "dev": "vite --host",
-    "build": "npm run type-check && vite build -m prod ",
+    "dev": "cross-env BRAND=$npm_config_BRAND API_URL=$npm_config_API_URL SITE=$npm_config_SITE DEFAULT_LANGUAGE=$npm_config_DEFAULT_LANGUAGE vite --host",
+    "build": "cross-env BRAND=$npm_config_BRAND API_URL=$npm_config_API_URL SITE=$npm_config_SITE DEFAULT_LANGUAGE=$npm_config_DEFAULT_LANGUAGE vite build -m prod ",
     "build-github": "npm run type-check && vite build -m prod --base=/meadmin-template/",
     "type-check": "node --loader ts-node/esm ./cli/autoImport.ts  && vue-tsc --noEmit",
     "preview": "vite preview",
@@ -83,6 +83,7 @@
     "@yuntian001/vue-setup-extend": "^1.0.0",
     "autoprefixer": "^10.4.8",
     "core-js": "^3.25.3",
+    "cross-env": "^7.0.3",
     "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.3.0",

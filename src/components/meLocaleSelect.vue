@@ -20,7 +20,7 @@
 import { localeConfig } from '@/config';
 import { setI18nLanguage } from '@/locales/i18n';
 const setLanguage = (locale: string) => {
-  setI18nLanguage(locale);
+  setI18nLanguage(locale, false);
 };
 </script>
 <style lang="scss" scoped>

@@ -98,6 +98,7 @@ export const setLocaleMessage = (i18n: GlobaleI18n, locale: string, messageImpor
  * @returns
  */
 export const setI18nLanguage = async (locale: string, isLoading = true, i18n?: GlobaleI18n) => {
+
   if (!i18n) {
     i18n = useGlobalStore().i18n;
     if (!i18n) {
@@ -108,7 +109,9 @@ export const setI18nLanguage = async (locale: string, isLoading = true, i18n?: G
     return true;
   }
   isLoading && loading();
+
   if (i18n === useGlobalStore().i18n) {
+    useGlobalStore().getLocalization();
     useSettingStore().locale = locale;
     const messageArr = [
       setLocaleMessage(i18n, locale, [async (locale) => await import(`./lang/${locale}/index.ts`)]),
@@ -127,7 +130,9 @@ export const setI18nLanguage = async (locale: string, isLoading = true, i18n?: G
     }
     document?.querySelector('html')?.setAttribute('lang', locale);
   }
+
   i18n.locale.value = locale;
   isLoading && closeLoading();
+
   return true;
 };

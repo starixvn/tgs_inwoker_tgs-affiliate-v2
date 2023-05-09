@@ -131,7 +131,7 @@ const { user } = $state;
 
 let { t } = useLocalesI18n();
 
-const affiliatelink = 'https://dev-t1.rpgp.cc/a/' + user.invitationCode + '?do=register';
+const affiliatelink = process.env.SITE + 'a/' + user.invitationCode + '?do=register';
 
 function performCopyQRCode() {
   const element = document.getElementById('testonly') as HTMLCanvasElement;

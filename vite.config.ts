@@ -54,6 +54,12 @@ export default async (configEnv: ConfigEnv): Promise<UserConfigExport> => {
       __COMPAT__: `false`,
       __FEATURE_SUSPENSE__: `true`,
       __FEATURE_PROD_DEVTOOLS__: `false`,
+      'process.env': {
+        BRAND: process.env.BRAND || "PGG" ,
+        API_URL: process.env.API_URL || "https://stg-agent.rpgp.cc",
+        SITE: process.env.SITE || "https://stg-t1.rpgp.cc/",
+        DEFAULT_LANGUAGE: process.env.DEFAULT_LANGUAGE || "zh-CN"
+      }
     },
     /* eslint-disable */
     build: {

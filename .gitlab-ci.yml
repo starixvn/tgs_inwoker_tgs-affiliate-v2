@@ -1,0 +1,32 @@
+image: node:latest
+
+stages:
+  - build
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  script:
+    - npm install
+    - npm run build --BRAND=$BRAND --API_URL= --SITE=$SITE --DEFAULT_LANGUAGE=$DEFAULT_LANGUAGE
+  artifacts:
+    paths:
+      - dist/
+
+deploy:
+  stage: deploy
+  image:
+    name: amazon/aws-cli:latest
+    entrypoint: 
+      - '/usr/bin/env'
+  id_tokens:
+      ID_TOKEN:
+        aud: react_s3_gl
+  script:
+     - aws s3 sync ./dist s3://your-bucket-name
+

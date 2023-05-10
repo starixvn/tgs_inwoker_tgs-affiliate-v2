@@ -44,7 +44,7 @@
           <el-table-column :label="t('registeredtime')" prop="registeredtime" :formatter="formatDateTime" width="180" />
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
-              <el-popover trigger="click" placement="left" :width="200">
+              <el-popover trigger="click" placement="left" :width="250">
                 <template #reference>
                   <el-button link type="primary" size="small" @click="onClickBalance(scope.row)">
                     [{{ t('viewBalance') }}]

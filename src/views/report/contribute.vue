@@ -28,7 +28,7 @@
       <el-col :span="24">
         <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
           <el-table-column :label="t('username')" prop="username" min-width="150" />
-          <el-table-column :label="t('type')" prop="type" />
+          <el-table-column :label="t('type')" prop="type" :formatter="formatType"/>
           <el-table-column :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" />
           <el-table-column
             :label="t('withdrawalAmount')"
@@ -82,6 +82,7 @@ import { useI18n } from 'vue-i18n';
 import { agentContribute } from '@/api/agentreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
+import { i18nAddResources } from '@wangeditor/editor';
 
 interface ISubitems {
   agentAdjustAmount: number;
@@ -188,6 +189,17 @@ export default defineComponent({
         return row[column.property].toFixed(2) + percentage;
       } else {
         return '';
+      }
+    },
+    formatType(row: any, column: TableColumnCtx<ISubitems>) {
+      const { t } = useI18n();
+      if (row[column.property] === 1) {
+
+        return t("agent");
+      } else  if (row[column.property] === 2) {
+        return t("player");
+      }else{
+        return "";
       }
     },
     onSearch() {

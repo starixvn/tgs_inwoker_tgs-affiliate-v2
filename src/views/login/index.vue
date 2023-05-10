@@ -33,11 +33,16 @@
         <el-button text @click="dialogVisible = true">
           {{ $t('iForgotMyPassword') }}
         </el-button>
-        <el-dialog v-model="dialogVisible" width="30%">
+        <el-dialog v-model="dialogVisible" width="30%"  :title="$t('iForgotMyPassword')">
           <div v-if="forgotPassword.scene === 1">
-            <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
-            </el-input>
-            <el-input
+            <el-form ref="formRef" :model="loginParams" label-width="100px">
+              <el-form-item :label="t('email')">
+                <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
+                </el-input>
+              </el-form-item>
+
+              <el-form-item :label="t('verificationCode')">
+                <el-input
               v-model="resetPassword.validatecode"
               class="textInput"
               :placeholder="t('verificationCode')"
@@ -57,29 +62,40 @@
                     {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
                   </el-button>
                 </div>
-              </template></el-input
-            >
+              </template></el-input>
+              </el-form-item>
+            </el-form>
+    
+            
           </div>
           <div v-else>
-            <div>
-              <el-input
-                v-model="resetPassword.newpwd"
-                class="textInput"
-                type="password"
-                :placeholder="t('password')"
-                clearable
-                show-password
-              />
-              <el-input
-                v-model="forgotPassword.confirmpass"
-                class="textInput"
-                type="password"
-                :placeholder="t('confirmPassword')"
-                clearable
-                show-password
-              />
+            <el-form ref="formRef" :model="loginParams" label-width="100px">
+              <el-form-item :label="t('password')">
+                <el-input
+                              v-model="resetPassword.newpwd"
+                              class="textInput"
+                              type="password"
+                              :placeholder="t('password')"
+                              clearable
+                              show-password
+                            />
+              </el-form-item>
+
+              <el-form-item :label="t('confirmPassword')">
+                <el-input
+                    v-model="forgotPassword.confirmpass"
+                    class="textInput"
+                    type="password"
+                    :placeholder="t('confirmPassword')"
+                    clearable
+                    show-password
+                  />
+              </el-form-item>
+            </el-form>
+              
+  
             </div>
-          </div>
+  
           <template #footer>
             <span class="dialog-footer">
               <div v-if="forgotPassword.scene === 1">

@@ -14,8 +14,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="searchForm.From" type="date" size="large" />
-            <el-date-picker v-model="searchForm.To" type="date" size="large" />
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
           </el-form-item>
 
           <el-form-item>
@@ -220,6 +220,7 @@ interface SpanMethodProps {
 interface ISearchForm {
   From: string;
   To: string;
+  dateRange:[Date, Date],
   page: number;
   rows: number;
   desc: boolean;
@@ -231,6 +232,7 @@ interface AgentDetailsSearchForm {
   AgentId: string;
   From: string;
   To: string;
+  dateRange:[Date, Date],
   page: number;
   rows: number;
   desc: true;
@@ -269,6 +271,7 @@ export default defineComponent({
       searchForm: reactive<ISearchForm>({
         From: '',
         To: '',
+        dateRange:[new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -280,6 +283,7 @@ export default defineComponent({
         AgentId: '',
         From: '',
         To: '',
+        dateRange:[new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -380,6 +384,15 @@ export default defineComponent({
         return '';
       }
     },
+    disabledDate (time: Date)  {
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-6,'M').toDate().getTime();
+    },
+    daterangeChange(){
+      this.searchForm.dateRange 
+
+      this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
+    },
     onDateTypeChange() {
       if (this.dateType == 'today') {
         this.searchForm.From = moment().format('YYYY-MM-DD');
@@ -422,6 +435,8 @@ export default defineComponent({
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
+      this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
+      this.dividendDetailSearchForm.dateRange = [moment(this.dividendDetailSearchForm.From).toDate(), moment(this.dividendDetailSearchForm.To).toDate()];
       this.searchForm.page = 1;
     },
     onSearch() {

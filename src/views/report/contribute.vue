@@ -210,7 +210,7 @@ export default defineComponent({
       this.getItems();
     },
     disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-6,'M').toDate().getTime();
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
     },
     daterangeChange(){
       this.searchForm.dateRange 

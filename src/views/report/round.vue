@@ -308,7 +308,7 @@ export default defineComponent({
       return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
     },
     disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-6,'M').toDate().getTime();
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
     },
     daterangeChange(){
       this.searchForm.dateRange 

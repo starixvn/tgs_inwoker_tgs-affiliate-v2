@@ -42,7 +42,7 @@
           <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" width="150" />
           <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" />
           <el-table-column align="right" :label="t('balance')" prop="balance" :formatter="formatPrice" />
-          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" />
+          <el-table-column :label="t('status')" prop="agentstatus" :formatter="formatStatus" min-width="120" />
           <el-table-column :label="t('setting')" align="center" width="150">
             <template #default="scope">
               <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />

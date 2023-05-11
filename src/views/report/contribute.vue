@@ -14,9 +14,10 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="searchForm.From" type="date" size="large" />
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
 
-            <el-date-picker v-model="searchForm.To" type="date" size="large" />
+ 
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
@@ -110,6 +111,7 @@ interface ISearchForm {
   dateType: string;
   From: string;
   To: string;
+  dateRange:[Date, Date],
   page: number;
   rows: number;
   desc: boolean;
@@ -127,6 +129,7 @@ export default defineComponent({
   },
 
   data() {
+    
     return {
       showAgent: false,
       tableData: reactive<any[]>([]),
@@ -135,6 +138,7 @@ export default defineComponent({
         dateType: 'today',
         From: '',
         To: '',
+        dateRange:[new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -205,11 +209,20 @@ export default defineComponent({
     onSearch() {
       this.getItems();
     },
+    disabledDate (time: Date)  {
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-6,'M').toDate().getTime();
+    },
+    daterangeChange(){
+      this.searchForm.dateRange 
 
+      this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
+    },
     onDateTypeChange() {
       if (this.searchForm.dateType == 'today') {
         this.searchForm.From = moment().format('YYYY-MM-DD');
         this.searchForm.To = moment().format('YYYY-MM-DD');
+
       } else if (this.searchForm.dateType == 'yesterday') {
         this.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -232,6 +245,7 @@ export default defineComponent({
         this.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
+      this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
       this.searchForm.page = 1;
     },
 

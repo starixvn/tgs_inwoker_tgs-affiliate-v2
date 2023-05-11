@@ -8,6 +8,7 @@
   "winlossreport": "Win/Loss Report",
   "team": "Team",
   "agent": "Agent",
+  "chief": "Chief",
   "player": "Player",
   "report": "Report",
   "contribute": "Contribution",
@@ -224,5 +225,7 @@
   "newPassword": "New password",
   "welcomeback": "Welcome back!",
   "copied": "Copied",
-  "downloaded": "Downloaded"
+  "downloaded": "Downloaded",
+  "WaitForConfigurePercentage": "Wait For Configure Percentage",
+  "DoneForConfigurePercentage": "Normal"
 }

@@ -16,8 +16,8 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
-                <el-date-picker v-model="searchForm.ClosedFrom" type="date" size="large" />
-                <el-date-picker v-model="searchForm.ClosedTo" type="date" size="large" />
+                <el-date-picker v-model="searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
               </el-form-item>
             </el-col>
             <el-col>
@@ -185,6 +185,7 @@ interface ISearchForm {
   Status: string;
   From: string;
   To: string;
+  dateRange:[Date, Date],
   ClosedFrom: string;
   ClosedTo: string;
 }
@@ -225,6 +226,7 @@ export default defineComponent({
         Status: '',
         From: '',
         To: '',
+        dateRange:[new Date(), new Date()],
         ClosedFrom: '',
         ClosedTo: '',
       }),
@@ -305,7 +307,15 @@ export default defineComponent({
     formatTime(row: any, column: TableColumnCtx<ISubitems>) {
       return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
     },
+    disabledDate (time: Date)  {
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-6,'M').toDate().getTime();
+    },
+    daterangeChange(){
+      this.searchForm.dateRange 
 
+      this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
+    },
     onDateTypeChange() {
       if (this.dateType == 'today') {
         this.searchForm.ClosedFrom = moment().toISOString();
@@ -332,6 +342,7 @@ export default defineComponent({
         this.searchForm.ClosedFrom = moment().subtract(1, 'years').startOf('year').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'years').endOf('year').toISOString();
       }
+      this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
       this.searchForm.page = 1;
     },
     onSearch() {

@@ -36,9 +36,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="searchForm.From" type="date" size="large" />
-
-            <el-date-picker v-model="searchForm.To" type="date" size="large" />
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
@@ -117,6 +116,7 @@ export default defineComponent({
       searchForm: reactive<AccountChangesParams>({
         From: '',
         To: '',
+        dateRange:[new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -187,11 +187,21 @@ export default defineComponent({
         this.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
+      this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
       this.searchForm.page = 1;
       //this.getItems();
     },
     onSearch() {
       this.getItems();
+    },
+    disabledDate (time: Date)  {
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    },
+    daterangeChange(){
+      this.searchForm.dateRange 
+
+      this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     handleSizeChange(val: number) {
       this.searchForm.rows = val;

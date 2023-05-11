@@ -234,5 +234,9 @@
   "copied": "已复制",
   "downloaded": "已下载",
   "WaitForConfigurePercentage": "等待配置百分比",
-  "DoneForConfigurePercentage": "正常"
+  "DoneForConfigurePercentage": "正常",
+  "updateEmail" : "验证您的电子邮件",
+  "passwordResetSuccess":"密码重置成功",
+  "emailUpdateSuccess":"邮箱更新成功",
+  "withdrawalPasswordResetSuccess":"提款密码重置成功"
 }

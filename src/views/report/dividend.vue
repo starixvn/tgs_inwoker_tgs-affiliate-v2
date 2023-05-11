@@ -392,6 +392,8 @@ export default defineComponent({
 
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
+      this.dividendDetailSearchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.dividendDetailSearchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     onDateTypeChange() {
       if (this.dateType == 'today') {

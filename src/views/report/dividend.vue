@@ -349,7 +349,7 @@ export default defineComponent({
     },
 
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
-      if (rowIndex === 1) {
+      if (row.username === "") {
         return [1, 14];
       }
 

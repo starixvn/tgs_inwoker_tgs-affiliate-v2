@@ -6,18 +6,100 @@
         <div class="another-big-title">{{ $t('myprofile') }}</div>
         <div class="content-inside-content">
           <div>
-            <div v-for="item in profileInfo" :key="item.name">
+            <div v-for="item in profileInfo.list" :key="item.name">
               <div class="profile-info">
                 <div class="title">{{ $t(item.name) }}:</div>
 
-                <div class="data">{{ item.value }}</div>
+                <div class="data" >{{ item.value }} 
+                  <el-popover   trigger="click"  placement="right" :width="400" v-if="item.editable" @before-enter="resetUpdateEmail" @after-leave="resetUpdateEmail">
+                  <template #reference>
+                    <el-button size="small" type="primary" :icon="Edit"  >
+                  
+                </el-button>
+                  </template>
+                  <div >
+                    <el-row style="margin-bottom: 0px">
+                      <el-col :span="24">
+                        <div class="popover-title">{{ t('updateEmail') }}</div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="input-row-no-label">
+                          <el-input
+                            v-model="state.email"
+                            class="textInput"
+                            :disabled="state.sceneEmail === 1"
+                            :placeholder="t('email')"
+                            clearable
+                          />
+                        </div>
+                        <div class="input-row-no-label">
+                          <el-input
+                            v-model="updateEmail.validatecode"
+                            class="textInput"
+                            :placeholder="t('verificationCode')"
+                            clearable
+                          >
+                            <template #append>
+                              <div v-if="state.timer === 60">
+                                <el-button
+                                  type="primary"
+                                  :disabled="state.email === ''"
+                                  @click="getVerificationCodeForEmail"
+                                >
+                                  {{ t('requestCode') }}
+                                </el-button>
+                              </div>
+                              <div v-else>
+                                <el-button>
+                                  {{ t('resend') }}
+                                  {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
+                                </el-button>
+                              </div>
+                            </template></el-input
+                          >
+                        </div>
+                      </el-col>
+   
+                      <el-col :span="24" v-if="state.sceneEmail === 2">
+                        <el-row justify="end"
+                          ><el-button @click="onBackClick">
+                            {{ t('back') }}
+                          </el-button>
+                          <el-button type="primary" @click="onUpdateEmail"
+                          :disabled="updateEmail.validatecode === '' || state.email === ''"
+                          >
+                            {{ t('submit') }}
+                          </el-button></el-row>
+                      </el-col>
+              
+                      <el-col :span="24" v-if="state.sceneEmail === 1"  >
+                        <el-row justify="end"
+                          ><el-button
+                            type="primary"
+                            :disabled="updateEmail.validatecode === ''"
+                            @click="onVerfiyEmailCode"
+                          >
+                            {{ t('nextStep') }}
+                          </el-button>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                  </div>
+                 
+                </el-popover>
+            
+                </div>
+       
+                 
+          
+
               </div>
             </div>
             <div class="profile-info">
               <div class="title">{{ $t('loginpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="400">
+                <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterResetPass">
                   <template #reference>
                     <el-button type="primary">{{ t('resetPassword') }}</el-button>
                   </template>
@@ -84,7 +166,7 @@
               <div class="title">{{ $t('withdrawpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="400">
+                <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterChangeWithdrawalPass">
                   <template #reference>
                     <el-button>{{ t('withdrawpassword') }}</el-button>
                   </template>
@@ -198,7 +280,7 @@
           <div class="contents">
             <div class="another-big-title">{{ $t('mydomain') }}</div>
             <div class="content-inside-content">
-              <div v-for="item in user.agentdomains" :key="item">
+              <div v-for="item in $state.user.agentdomains" :key="item">
                 <div class="links">
                   <div>{{ item }}</div>
                   <div>
@@ -230,21 +312,31 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Account">
+<script setup lang="ts" name="profile">
 import {
   performUpdatePassword,
   performGetChangeWithdrawalPasswordVerificationCode,
+  performGetChangeEmailVerificationCode,
   performUpdateWithdrawalPassword,
+  GetEmailVerificationCodeParams,
+  verifyEmailCode,VerifyEmailCodeParams
 } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
 import { Link } from '@element-plus/icons-vue';
+import { reactive,ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import {
 
-//get data from userStore
+  Edit,
+
+} from '@element-plus/icons-vue'
+
+
+
 const { $state } = useUserStore();
 //from $state get the data
-const { user } = $state;
+
 
 let { t } = useLocalesI18n();
 
@@ -266,7 +358,8 @@ const state = reactive({
   confirmwithdrawpassword: '',
   timer: 60,
   scene: 1,
-  email: user?.email,
+  sceneEmail:1,
+  email: $state.user?.email,
 });
 
 const updatePassword = reactive({
@@ -279,7 +372,11 @@ const updateWithdrawalPassword = reactive({
   securitykey: '',
   validatecode: '',
 });
-
+const updateEmail = reactive({
+  email: '',
+  securitykey: '',
+  validatecode: '',
+});
 const profitShare = reactive([
   { name: 'live', value: 70 },
   { name: 'sportsbook', value: 70 },
@@ -302,11 +399,11 @@ const translate = (value: any) => {
   var altered = value.toString().replace(/,/g, '');
   return t(altered);
 };
-
+let autoSaveInterval: any = null;
 const startTimer = () => {
-  const timer = setInterval(() => {
+  autoSaveInterval = setInterval(() => {
     if (state.timer === 0) {
-      clearInterval(timer);
+      clearInterval(autoSaveInterval);
       state.timer = 60;
     } else {
       state.timer--;
@@ -321,26 +418,72 @@ const getVerificationCodeForWithdrawalPassword = async () => {
     startTimer();
   }
 };
+const getVerificationCodeForEmail= async () => {
 
+
+    const getEmailVerificationCodeParams = new GetEmailVerificationCodeParams();
+    getEmailVerificationCodeParams.email = state.email;
+
+    const res = await performGetChangeEmailVerificationCode()(getEmailVerificationCodeParams);
+
+    if (res) {
+      updateEmail.securitykey = res.data;
+      startTimer();
+    }
+
+};
+const onEnterResetPass= () => {
+  state.email = $state.user?.email;
+  updatePassword.newpwd = '';
+  updatePassword.oldpwd = '';
+  state.confirmpassword = '';
+  
+};
+const onEnterChangeWithdrawalPass = () => {
+  state.email = $state.user?.email;
+  updateWithdrawalPassword.newpwd = '';
+  updateWithdrawalPassword.securitykey = '';
+  updateWithdrawalPassword.validatecode = '';
+  state.confirmwithdrawpassword= '';
+};
 const updateTheWithdrawalPassword = async () => {
   if (updateWithdrawalPassword.newpwd !== state.confirmwithdrawpassword) {
     ElMessage.error(t('passwordNotSame'));
     return;
   }
   const res = await performUpdateWithdrawalPassword()(updateWithdrawalPassword);
+  if(res.err ===0){
+    ElMessage.success(t('withdrawalPasswordResetSuccess'));
+    updateWithdrawalPassword.newpwd = '';
+    updateWithdrawalPassword.securitykey = '';
+    updateWithdrawalPassword.validatecode = '';
+    document.getElementsByTagName("body")[0].click();
+  }
 };
 
-const profileInfo = reactive([
-  { name: 'agentusername', value: user?.username, editable: false },
-  { name: 'realname', value: user?.realname, editable: false },
-  { name: 'registeron', value: convertDate(user?.registeredon), editable: false },
-  { name: 'balance', value: user?.balance, editable: false },
-  { name: 'status', value: t(user?.status), editable: false },
-  { name: 'type', value: t(user?.type), editable: false },
-  { name: 'profitSharePT', value: user?.dividendpercentage, editable: false },
-  { name: 'email', value: user?.email, editable: true },
-  { name: 'phone', value: user?.phone, editable: false },
-]);
+interface ListItem {
+  name: string;
+  value: string;
+  editable:boolean;
+}
+
+
+const profileInfo = reactive({
+  list: [] as ListItem[]
+});
+
+
+profileInfo.list.push({ name: 'agentusername', value: $state.user?.username, editable: false });
+profileInfo.list.push({ name: 'realname', value: $state.user?.realname, editable: false });
+profileInfo.list.push({ name: 'registeron', value: convertDate($state.user?.registeredon), editable: false });
+profileInfo.list.push({ name: 'balance', value: $state.user?.balance.toFixed(2), editable: false });
+profileInfo.list.push({ name: 'status', value: t($state.user?.status), editable: false });
+profileInfo.list.push({ name: 'type', value: t($state.user?.type), editable: false });
+profileInfo.list.push({ name: 'profitSharePT', value: $state.user?.dividendpercentage.toFixed(2), editable: false });
+profileInfo.list.push({ name: 'email', value: $state.user?.email, editable: true });
+profileInfo.list.push({ name: 'phone', value: $state.user?.phone, editable: false });
+
+
 
 const updateNewPassword = async () => {
   if (updatePassword.newpwd !== state.confirmpassword) {
@@ -348,7 +491,64 @@ const updateNewPassword = async () => {
     return;
   }
   const res = await performUpdatePassword()(updatePassword);
+  if(res.err ===0){
+    ElMessage.success(t('passwordResetSuccess'));
+    updatePassword.newpwd = '';
+    updatePassword.oldpwd = '';
+    document.getElementsByTagName("body")[0].click();
+  }
 };
+const resetUpdateEmail = () =>{
+
+  updateEmail.validatecode = '';
+  state.sceneEmail = 1;
+  state.timer = 60;
+
+
+  clearInterval(autoSaveInterval);
+    
+}
+const onBackClick = () =>{
+
+  document.getElementsByTagName("body")[0].click();
+}
+const onUpdateEmail = async () => {
+
+const res = await onVerfiyEmailCode();
+};
+
+const onVerfiyEmailCode = async () => {
+  const verifyEmailCodeParams = new VerifyEmailCodeParams();
+  verifyEmailCodeParams.securitykey = updateEmail.securitykey;
+  verifyEmailCodeParams.validatecode = updateEmail.validatecode;
+  
+  const res = await verifyEmailCode()(verifyEmailCodeParams);
+  if(res.err ===0){
+    if(state.sceneEmail === 1){
+      state.sceneEmail = 2;
+      state.email = '';
+      state.timer = 60;
+      clearInterval(autoSaveInterval);
+      updateEmail.validatecode = '';
+    }else{
+      await useUserStore().init();
+
+
+      const itemIndex = profileInfo.list.findIndex(item => item.name === 'email');
+      if (itemIndex !== -1) {
+        profileInfo.list[itemIndex].value = state.email;
+      }
+
+      ElMessage.success(t('emailUpdateSuccess'));
+      document.getElementsByTagName("body")[0].click();
+    }
+    
+  }else{
+    ElMessage.error(t('invalidCode'));
+
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -474,5 +674,6 @@ const updateNewPassword = async () => {
   .data {
     text-align: left;
   }
+
 }
 </style>

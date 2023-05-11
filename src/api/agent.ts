@@ -57,6 +57,13 @@ export interface UpdatePasswordResult extends BaseResult {
 export interface GetWithdrawalPasswordVerificationCodeResult extends BaseResult {
   data: string;
 }
+export interface GetEmailVerificationCodeResult extends BaseResult {
+  data: string;
+}
+export class GetEmailVerificationCodeParams  {
+  email = '';
+  
+}
 
 export interface UpdateWithdrawalPasswordParams {
   newpwd: string;
@@ -110,7 +117,7 @@ export function performUpdatePassword<T extends boolean = true>(returnAxios: T =
   return request<UpdatePasswordResult, [UpdatePasswordParams], T>(
     (params) => ({
       url: 'agent/password',
-      method: 'post',
+      method: 'put',
       data: params,
     }),
     { needAll: true },
@@ -133,6 +140,18 @@ export function performGetChangeWithdrawalPasswordVerificationCode<T extends boo
   );
 }
 
+export function performGetChangeEmailVerificationCode<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<GetEmailVerificationCodeResult, [GetEmailVerificationCodeParams], T>(
+    (params) => ({
+      url: 'agent/email',
+      method: 'post',
+      data: params,
+    }),
+    { noLoading },
+    returnAxios,
+  );
+}
+
 export function performUpdateWithdrawalPassword<T extends boolean = true>(
   returnAxios: T = true as T,
   noLoading = false,
@@ -140,7 +159,29 @@ export function performUpdateWithdrawalPassword<T extends boolean = true>(
   return request<UpdateWithdrawalPasswordResult, [UpdateWithdrawalPasswordParams], T>(
     (params) => ({
       url: 'pay/password',
-      method: 'post',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+
+export class VerifyEmailCodeParams  {
+  securitykey = '';
+  validatecode = '';
+}
+export interface VerifyEmailCodeResult extends BaseResult {
+  data: string;
+}
+export function verifyEmailCode<T extends boolean = true>(
+  returnAxios: T = true as T,
+  noLoading = false,
+) {
+  return request<VerifyEmailCodeResult, [VerifyEmailCodeParams], T>(
+    (params) => ({
+      url: 'agent/email',
+      method: 'put',
       data: params,
     }),
     { needAll: true },

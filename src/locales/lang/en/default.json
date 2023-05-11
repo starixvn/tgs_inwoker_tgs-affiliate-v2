@@ -227,5 +227,9 @@
   "copied": "Copied",
   "downloaded": "Downloaded",
   "WaitForConfigurePercentage": "Wait For Configure Percentage",
-  "DoneForConfigurePercentage": "Normal"
+  "DoneForConfigurePercentage": "Normal",
+  "updateEmail" : "Verify Your E-mail",
+  "passwordResetSuccess":"Password reset successfully",
+  "emailUpdateSuccess":"Email update successfully",
+  "withdrawalPasswordResetSuccess":"Withdrawal password reset successfully"
 }

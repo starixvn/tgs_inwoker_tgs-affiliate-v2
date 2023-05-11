@@ -49,9 +49,9 @@ service.interceptors.response.use(
   (error) => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    if (error.response.data.err === 401 || error.response.data.err === 900) {
-      useUserStore().logOut();
-    }
+    // if (error.response.data.err === 401 || error.response.data.err === 900) {
+    //   useUserStore().logOut();
+    // }
     log.error(error); // for debug
 
     //match error.response.data.errmsgid with data in globalstore localization
@@ -116,11 +116,11 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       }
 
       // 401：认证失败
-      if (res.err === 401) {
+      // if (res.err === 401) {
  
-        await useUserStore().logOut();
-        return res;
-      }
+      //   await useUserStore().logOut();
+      //   return res;
+      // }
  
       if (res.err !== 0) {
        

@@ -162,7 +162,7 @@
               align="right"
               :formatter="formatIntervalDate"
             />
-            <el-table-column prop="agentDividendAmount" :label="t('agentDividendAmount')" align="right" />
+            <el-table-column prop="agentDividendAmount" :label="t('agentDividendAmount')" align="right" :formatter="formatPrice" />
 
             <template #empty>
               {{ t('noRecord') }}
@@ -311,19 +311,23 @@ export default defineComponent({
     },
 
     async getDividendDetails(row: any) {
-      this.scene = 'detail';
-      this.selectedUserId = row.id || row.AgentId;
-      this.selecterUserDividend = row.agentDividendPercentage;
-      let searchForm = { ...this.dividendDetailSearchForm };
-      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-      searchForm.AgentId = this.selectedUserId || row.id;
-      searchForm.agentDividendPercentage = this.selecterUserDividend || row.agentDividendPercentage;
-      const response = await agentDividendDetails();
-      const result = await response.runAsync(searchForm);
+      if(row.id != ''){
+        this.scene = 'detail';
+        this.selectedUserId = row.id || row.AgentId;
+        this.selecterUserDividend = row.agentDividendPercentage;
+        let searchForm = { ...this.dividendDetailSearchForm };
+        searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        searchForm.AgentId = this.selectedUserId || row.id;
+        searchForm.agentDividendPercentage = this.selecterUserDividend || row.agentDividendPercentage;
+        const response = await agentDividendDetails();
+        const result = await response.runAsync(searchForm);
 
-      this.tableData = [...result.data.items];
-      this.totalAgentDetailRowCount = result.data.totalcount;
+        this.tableData = [...result.data.items];
+        this.totalAgentDetailRowCount = result.data.totalcount;
+
+      }
+      
     },
 
     goBackResetEverything() {
@@ -342,7 +346,7 @@ export default defineComponent({
 
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
       if (rowIndex === 1) {
-        return [1, 12];
+        return [1, 14];
       }
 
       if (row.username == 'Total') {
@@ -421,9 +425,14 @@ export default defineComponent({
       this.searchForm.page = 1;
     },
     onSearch() {
+
       if (this.scene === 'total') {
+        this.searchForm.rows = 10;
+        this.searchForm.page = 1;
         this.getItems();
       } else if (this.scene === 'detail') {
+        this.dividendDetailSearchForm.rows = 10;
+        this.dividendDetailSearchForm.page = 1;
         this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
       }
     },
@@ -439,13 +448,30 @@ export default defineComponent({
     },
 
     handleSizeChange(val: number) {
-      this.searchForm.rows = val;
-      this.searchForm.page = 1;
-      this.getItems();
+
+      if (this.scene === 'total') {
+        this.searchForm.rows = val;
+        this.searchForm.page = 1;
+        this.getItems();
+      } else if (this.scene === 'detail') {
+        this.dividendDetailSearchForm.rows = val;
+        this.dividendDetailSearchForm.page = 1;
+        this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
+      }
+
+
+
     },
     handleCurrentChange(val: number) {
-      this.searchForm.page = val;
-      this.getItems();
+
+      if (this.scene === 'total') {
+        this.searchForm.page = val;
+        this.getItems();
+      } else if (this.scene === 'detail') {
+        this.dividendDetailSearchForm.page = val;
+        this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
+      }
+
     },
   },
 });

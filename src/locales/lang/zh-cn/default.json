@@ -8,6 +8,7 @@
   "winlossreport": "贏/輸報表",
   "team": "團隊",
   "agent": "代理",
+  "chief": "总代",
   "player": "玩家",
   "report": "报表",
   "contribute": "贡献报表",
@@ -231,5 +232,7 @@
   "newPassword": "新密码",
   "welcomeback": "欢迎回来!",
   "copied": "已复制",
-  "downloaded": "已下载"
+  "downloaded": "已下载",
+  "WaitForConfigurePercentage": "等待配置百分比",
+  "DoneForConfigurePercentage": "正常"
 }

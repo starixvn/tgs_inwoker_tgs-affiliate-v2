@@ -239,6 +239,7 @@ import {
 import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
 import { Link } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
 
 //get data from userStore
 const { $state } = useUserStore();
@@ -335,7 +336,7 @@ const profileInfo = reactive([
   { name: 'registeron', value: convertDate(user?.registeredon), editable: false },
   { name: 'balance', value: user?.balance, editable: false },
   { name: 'status', value: user?.status, editable: false },
-  { name: 'type', value: user?.type, editable: false },
+  { name: 'type', value: t(user?.leveltype.toLowerCase()), editable: false },
   { name: 'profitSharePT', value: user?.dividendpercentage, editable: false },
   { name: 'email', value: user?.email, editable: true },
   { name: 'phone', value: user?.phone, editable: false },

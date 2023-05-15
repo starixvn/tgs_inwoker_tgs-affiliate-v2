@@ -5,6 +5,7 @@
       <el-col :xl="6" :lg="6" :md="8" :sm="8" :xs="24">
         <div class="balance boxshadow">
           <div class="user-balance">
+            <span class="balance-label">{{t('balance')}}</span><br/>
             {{ formatNumber({ truncate: 2, padRight: 2 })(userStore.user.balance) }}
           </div>
         </div>
@@ -410,14 +411,17 @@ export default defineComponent({
 
   > .user-balance {
     width: 100%;
-    text-align: right;
-    padding: 50px 10px 0 0;
+    text-align: left;
+    padding: 10px 10px 0 10px;
     font-weight: bold;
     font-size: 30px;
     background-image: url('../assets/images/userbalance.jpg');
     background-size: cover;
     height: inherit;
     border-radius: 20px;
+    > .balance-label{
+      font-weight: normal;
+    }
   }
 }
 .bank-card-container {

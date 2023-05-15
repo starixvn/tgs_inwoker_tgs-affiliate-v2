@@ -1,7 +1,8 @@
 <template>
   <div class="total-panel">
-    <el-row :gutter="30">
-      <el-col v-for="(item, index) in list" :key="index" :xs="12" :sm="12" :lg="5">
+    <el-row :gutter="30" style="justify-content: space-between;">
+      
+      <el-col v-for="(item, index) in list" :key="index" :xs="24"  :sm="12" :md="12" :lg="6" :xl="6">
         <div class="card" @click="navigateTo(item.path, item.params)">
           <div class="card-icon">
             <img :src="getImgUrl(item.title)" style="width: 50%" />
@@ -91,17 +92,17 @@ const list = reactive([
   gap: 10px;
   transition: all 0.3s ease-in-out;
 
-  &:hover {
-    background-color: #07b5bc;
-    color: #fff;
+  // &:hover {
+  //   background-color: #07b5bc;
+  //   color: #fff;
 
-    &:hover {
-      > .card-icon img {
-        //convert to white
-        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
-      }
-    }
-  }
+  //   &:hover {
+  //     > .card-icon img {
+  //       //convert to white
+  //       filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  //     }
+  //   }
+  // }
 }
 
 .card-icon {
@@ -111,5 +112,6 @@ const list = reactive([
   display: flex;
   justify-content: center;
   align-items: center;
+  filter: invert(46%) sepia(53%) saturate(1220%) hue-rotate(143deg) brightness(102%) contrast(94%);
 }
 </style>

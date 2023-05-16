@@ -1,7 +1,7 @@
 <template>
   <div class="right">
-    <me-locale-select v-if="localeConfig.localeList.length > 1" class="item"></me-locale-select>
-    <me-size-select v-if="themeConfig.showSize" class="item"></me-size-select>
+    <!-- <me-locale-select v-if="localeConfig.localeList.length > 1" class="item"></me-locale-select> -->
+    <!-- <me-size-select v-if="themeConfig.showSize" class="item"></me-size-select> -->
     <user class="item"></user>
   </div>
 </template>

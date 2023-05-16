@@ -12,6 +12,7 @@
               autofocus
               :placeholder="t('username')"
               clearable
+              size="large"
             />
           </el-form-item>
           <el-form-item prop="password" class="textInput">
@@ -22,20 +23,25 @@
               :placeholder="t('password')"
               clearable
               show-password
+              size="large"
             />
           </el-form-item>
 
-          <el-button class="submit" type="primary" @click="login">{{ t('login') }}</el-button>
+          <el-button class="submit" type="primary" size="large" @click="login">{{ t('login') }}</el-button>
         </el-form>
       </div>
 
-      <div>
-        <el-button text @click="dialogVisible = true">
+      <div class="btm-container">
+        <el-button text @click="dialogVisible = true" class="button-forgot">
           {{ $t('iForgotMyPassword') }}
         </el-button>
-        <el-dialog v-model="dialogVisible" width="30%"  :title="$t('iForgotMyPassword')">
+       
+        <me-locale-select v-if="localeConfig.localeList.length > 1" class="item"></me-locale-select>
+      </div>
+        
+        <el-dialog v-model="dialogVisible" width="40%"  :title="$t('iForgotMyPassword')">
           <div v-if="forgotPassword.scene === 1">
-            <el-form ref="formRef" :model="loginParams" label-width="100px">
+            <el-form ref="formRef" :model="loginParams" label-width="150px">
               <el-form-item :label="t('email')">
                 <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
                 </el-input>
@@ -114,7 +120,7 @@
             </span>
           </template>
         </el-dialog>
-      </div>
+    
     </div>
   </div>
 </template>
@@ -125,6 +131,7 @@ import { requestVerificationCode, performChangePassword } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
+import { localeConfig } from '@/config';
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
 const route = useRoute();
@@ -294,6 +301,17 @@ const login = async () => {
       width: fit-content;
       padding: 10px 20px;
       display: block;
+    }
+  }
+  .btm-container{
+   
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:column;
+    .button-forgot{
+      font-size:16px;
+      margin-bottom: 20px;
     }
   }
 }

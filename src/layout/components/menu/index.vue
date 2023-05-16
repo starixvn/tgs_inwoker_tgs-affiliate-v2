@@ -11,6 +11,7 @@
           <layout-menu-item v-for="route in routeStore.routes" :key="route.path" :item="route" />
         </el-menu>
       </el-scrollbar>
+     
     </div>
   </div>
 </template>
@@ -109,6 +110,7 @@ const menuTextColor = computed(() => mixColor(themeConfig.menuBg, menuActiveColo
 
         .el-menu-item.is-active {
           color: var(--el-color-primary);
+          font-weight: bold;
         }
 
         .el-menu-item,

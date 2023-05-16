@@ -8,7 +8,8 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'index',
         component: () => import('@/views/account/index.vue'),
-        meta: { title: 'account', icon: 'me-icon-account' },
+        meta: { title: 'myprofile', icon: 'me-icon-account' },
+        props: (route) => ({ perform: route.query.perform }),
       },
     ],
   },

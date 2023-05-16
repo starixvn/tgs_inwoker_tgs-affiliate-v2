@@ -2,6 +2,12 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
+        <div class="big-title" v-show="scene === 'total'">{{ $t('profitShareReport') }}</div>
+        <div class="big-title" v-show="scene === 'detail'">{{ $t('profitShareReportDetails') }}</div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
         <el-form :inline="true">
           <el-form-item>
             <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
@@ -29,7 +35,8 @@
       <el-row>
         <div class="legends">
           <div>
-            <div class="legendsToggle" @click="showlegends = !showlegends">i</div>
+            <el-button type="primary" icon="me-icon-info"  @click="showlegends = !showlegends" />
+
           </div>
           <div v-show="showlegends === true">
             <div v-for="(legend, index) in legends" :key="index">
@@ -148,8 +155,8 @@
       </el-row>
     </div>
     <div v-show="scene === 'detail'">
-      <el-row>
-        <div class="back-btn no-select" @click="goBackResetEverything">« {{ t('goBack') }}</div></el-row
+      <el-row style="justify-content: end;">
+        <div class="back-btn no-select"  @click="goBackResetEverything">« {{ t('goBack') }}</div></el-row
       >
       <el-row>
         <el-col :span="24">
@@ -545,5 +552,8 @@ export default defineComponent({
 
 .back-btn {
   cursor: pointer;
+ color: var(--el-color-primary);
+ font-weight: bold;
+ text-decoration: underline;
 }
 </style>

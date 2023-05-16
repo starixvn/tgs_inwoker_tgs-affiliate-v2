@@ -67,9 +67,9 @@
 
   "viplevel": "VIP等级",
   "registeredtime": "注册时间",
-  "Disabled": "已禁用",
+  "Disabled": "封鎖",
   "InBlacklist": "黑名单",
-  "RegisterUndone": "注册未完成",
+  "RegisterUndone": "註冊中",
 
   "teamnumber": "团队人数",
   "dividendpercentage": "分红比例",
@@ -203,13 +203,13 @@
 
   "usernameCannotBeEmpty": "用户名不能为空",
   "dateCannotBeEmpty": "结算时间不能为空",
-  "rl_bonusAmount": "红利金额 = VIP福利 + VIP反水 + 活动的优惠金额。",
-  "rl_agentCoveredBonus": "代理承担红利 = 红利金额 * 分红比例。",
-  "rl_agentCoveredBonusAdjust": "代理承担优惠调帐 = 优惠调帐 * 分红比例。",
-  "rl_netProfit": "净盈利 = 公司输赢金额 - 红利金额 - 优惠调帐。",
-  "rl_directPlayerContribution": "直属玩家贡献 = 净盈利 * 分红比例。",
-  "rl_teamContribution": "团队贡献 = 下级代理净盈利 * (代理分红% - 下级代理分红%)。",
-  "rl_profitSharingAmount": "分红金额 = 直属玩家贡献 + 团队贡献 - 代理调帐。",
+  "rl_bonusAmount": "紅利金額 = 活動優惠 + VIP福利 + VIP返水",
+  "rl_agentCoveredBonus": "代理承擔紅利 = 紅利金額 * 佔成",
+  "rl_agentCoveredBonusAdjust": "代理承擔優惠調帳 = 優惠調帳 * 佔成",
+  "rl_netProfit": "淨盈利 = 輸贏金額 - 紅利金額 - 優惠調帳",
+  "rl_directPlayerContribution": "玩家貢獻 = 淨盈利 * 佔成",
+  "rl_teamContribution": "團隊貢獻 = 直屬代理淨盈利 * (佔成 - 直屬代理佔成)",
+  "rl_profitSharingAmount": "分紅金額 = 玩家貢獻 + 團隊貢獻 - 代理調帳",
   "settlementDate": "结算日期",
   "settlementDateFromTo": "结算区间",
   "goBack": "返回",
@@ -238,5 +238,14 @@
   "updateEmail" : "验证您的电子邮件",
   "passwordResetSuccess":"密码重置成功",
   "emailUpdateSuccess":"邮箱更新成功",
-  "withdrawalPasswordResetSuccess":"提款密码重置成功"
+  "withdrawalPasswordResetSuccess":"提款密码重置成功",
+  "playercode":"玩家代码",
+  "areacode":"区号",
+  "registerhost":"注册域名",
+  "agentInfo":"代理详情",
+  "dividentAlert": "需小於或等於目前的分紅占成 {0}",
+  "plsEnterRemark":"备注不能为空",
+  "plsEnterRealName":"真实姓名不能为空",
+  "menuProfitShare":"分紅報表"
+  
 }

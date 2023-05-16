@@ -1,6 +1,6 @@
 <template>
   <div class="big-container">
-    <div class="big-title">{{ $t('dashboard') }}</div>
+    <div class="big-title">{{ $t('dashboard').toUpperCase() }}</div>
     <div class="content-wrapper">
       <div class="">
         <div class="another-big-title">{{ $t('accountOverview') }}</div>
@@ -12,9 +12,9 @@
           <div class="account-container">
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
-              <div>{{ user.balance }}</div>
+              <div>{{ user.balance.toFixed(2) }}</div>
               <router-link :to="'/wallet/withdraw'">
-                <el-button type="primary" size="large" :icon="Wallet"> {{ $t('wallet') }} </el-button>
+                <el-button type="primary" size="large" icon="me-icon-dollar" class="custom-btn"> {{ $t('wallet') }} </el-button>
               </router-link>
             </div>
           </div>
@@ -25,6 +25,7 @@
               <el-button
                 size="large"
                 type="primary"
+                class="custom-btn"
                 :icon="CopyDocument"
                 @click="
                   () => {
@@ -41,14 +42,14 @@
               {{ affiliatelink }}
             </div>
             <div class="button-container">
-              <el-button type="primary" size="large" :icon="CopyDocument" @click="performCopyText(affiliatelink)">{{
+              <el-button type="primary" class="custom-btn" size="large" :icon="CopyDocument" @click="performCopyText(affiliatelink)">{{
                 $t('copy')
               }}</el-button>
-              <router-link :to="{ name: 'agent', path: '/team/agent', params: { perform: 'addagent' } }">
-                <el-button type="primary" size="large"> {{ $t('addagent') }} </el-button>
+              <router-link :to="{ name: 'agent', path: '/team/agent', query: { perform: 'add' } }">
+                <el-button type="primary" size="large" icon="me-icon-addagent" class="custom-btn"> {{ $t('addagent') }} </el-button>
               </router-link>
-              <router-link :to="{ name: 'player', path: '/team/player', params: { perform: 'addplayer' } }">
-                <el-button type="primary" size="large"> {{ $t('addplayer') }} </el-button>
+              <router-link :to="{ name: 'player', path: '/team/player', query: { perform: 'add' } }">
+                <el-button type="primary" class="custom-btn" size="large" icon="me-icon-addplayer"> {{ $t('addplayer') }} </el-button>
               </router-link>
 
               <custom-button />
@@ -63,6 +64,7 @@
               </div>
               <div class="qrcode-button">
                 <el-button
+                class="custom-btn"
                   type="primary"
                   size="large"
                   :icon="Download"
@@ -71,6 +73,7 @@
                   >{{ $t('download') }}</el-button
                 >
                 <el-button
+                class="custom-btn"
                   type="primary"
                   size="large"
                   :icon="CopyDocument"
@@ -286,18 +289,18 @@ const overview = reactive([
     font-weight: bold;
   }
   &.blue-gradient {
-    background: linear-gradient(90deg, #008dce 0%, #00b0ff 100%);
+    background: linear-gradient(90deg, #134190 0%, #2E72E5 100%);
   }
 
   &.purple-gradient {
-    background: linear-gradient(90deg, #6200c4 0%, #a55eea 100%);
+    background: linear-gradient(90deg, #261A47 0%, #8372B6 100%);
   }
   &.yellow-gradient {
-    background: linear-gradient(90deg, #d8b400 0%, #f9d423 100%);
+    background: linear-gradient(90deg, #E89941 0%, #FDDE91 100%);
   }
 
   &.pink-gradient {
-    background: linear-gradient(90deg, #d30000 0%, #ff5e5e 100%);
+    background: linear-gradient(90deg, #D817B9 0%, #DBC3E6 100%);
   }
 }
 
@@ -403,6 +406,23 @@ const overview = reactive([
     .el-button + .el-button {
       margin: 0;
     }
+  }
+ 
+
+}
+
+</style>
+<style lang="scss">
+.custom-btn {   
+ 
+  .el-icon {
+    width: 1.3em;
+    height: 1.3em;
+
+  } 
+  .el-icon > svg {
+    width: 1.3em;
+    height: 1.3em;
   }
 }
 </style>

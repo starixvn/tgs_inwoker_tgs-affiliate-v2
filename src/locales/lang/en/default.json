@@ -26,7 +26,7 @@
   "status": "Status",
   "type": "Type",
 
-  "email": "Email",
+  "email": "E-Mail",
   "phone": "Phone",
   "loginpassword": "Login Password",
   "withdrawpassword": "Withdraw Password",
@@ -69,8 +69,8 @@
   "viplevel": "VIP Level",
   "registeredtime": "Registered Time",
   "Disabled": "Disabled",
-  "InBlacklist": "Blacklist",
-  "RegisterUndone": "Register Undone",
+  "InBlacklist": "Blacklisted",
+  "RegisterUndone": "Registering",
 
   "teamnumber": "Team Number",
   "dividendpercentage": "Dividend Percentage",
@@ -121,7 +121,7 @@
   "profitSharePT": "Profit Share P/T",
   "setting": "Setting",
 
-  "rgisteredOn": "Registered On",
+  "registeredOn": "Registered On",
 
   "search": "SEARCH",
   "enterUsername": "Enter Username",
@@ -140,7 +140,7 @@
   "playerUsername": "Player Username",
   "viewBalance": "View Balance",
   "enterPhoneNumber": "Enter Phone Number",
-  "enterEmail": "Enter Email",
+  "enterEmail": "Enter E-Mail",
   "registerPlayerCondition": "I confirm that my direct player is at least 18 years old and have read and accepted the policy, privacy statement, terms and conditions of this website.",
 
   "yesterday": "Yesterday",
@@ -179,6 +179,7 @@
 
   "resetPassword": "Reset Password",
 
+  
   "externalRoundId": "External ID",
   "roundId": "ID",
   "betTime": "Created on",
@@ -197,13 +198,13 @@
 
   "usernameCannotBeEmpty": "Username cannot be empty",
   "dateCannotBeEmpty": "Date cannot be empty",
-  "rl_bonusAmount": "Bonus Amount = VIP Bonus + VIP Rebate + Promotion Bonus Amount.",
-  "rl_agentCoveredBonus": "Agent-Covered Bonus = Bonus Amount * Profit Sharing Percentage.",
-  "rl_agentCoveredBonusAdjust": "Agent-Covered Bonus Adjust = Bonus Adjustment Amount * Profit Sharing Percentage.",
-  "rl_netProfit": "Net Profit = CO. W/L - Bonus Amount - Bonus Adjustment Amount.",
-  "rl_directPlayerContribution": "Direct-Player Contribution = Net Profit * Profit Sharing Percentage.",
-  "rl_teamContribution": "Team Contribution = Net Profit from Sub Agent * (Agent Profit Sharing Percentage - Sub Agent Profit Sharing Percentage).",
-  "rl_profitSharingAmount": "Profit Sharing Amount = Direct-Player Contribution + Team Contribution - Agent Adjustment Amount.",
+  "rl_bonusAmount": "Bonus = Promotion Bonus + VIP Bonus + VIP Rebate ",
+  "rl_agentCoveredBonus": "Bonus (Agent) = Bonus * P/T.",
+  "rl_agentCoveredBonusAdjust": "Bonus Adjust (Agent) = Bonus Adjust * P/T.",
+  "rl_netProfit": "Net Profit = Winloss - Bonus - Bonus Adjust.",
+  "rl_directPlayerContribution": "Contribution (Player) = Net Profit * P/T.",
+  "rl_teamContribution": "Contribution (Team) = Net Profit from Direct Agent * ( P/T - Direct Agent P/T ).",
+  "rl_profitSharingAmount": "Profit Sharing = Contribution ( Player )  + Contribution ( Team ) - Agent Adjust.",
   "settlementDate": "Settlement Date",
   "settlementDateFromTo": "Settlement interval",
   "goBack": "Go Back",
@@ -228,8 +229,24 @@
   "downloaded": "Downloaded",
   "WaitForConfigurePercentage": "Wait For Configure Percentage",
   "DoneForConfigurePercentage": "Normal",
-  "updateEmail" : "Verify Your E-mail",
+  "updateEmail" : "Verify Your E-Mail",
   "passwordResetSuccess":"Password reset successfully",
-  "emailUpdateSuccess":"Email update successfully",
-  "withdrawalPasswordResetSuccess":"Withdrawal password reset successfully"
+  "emailUpdateSuccess":"E-Mail update successfully",
+  "withdrawalPasswordResetSuccess":"Withdrawal password reset successfully",
+  "playercode":"Player Code",
+  "areacode":"Area Code",
+  "registerhost":"Register Host",
+  "agentInfo":"Agent Info",
+  "dividentAlert": "Must be equal or less than {0}",
+  "plsEnterRemark":"Remark cannot be empty",
+  "plsEnterRealName":"Real name cannot be empty",
+  "menuProfitShare":"Profit Share",
+  "profitShareReport":"Profit Share Report",
+  "profitShareReportDetails":"Profit Share Report - Details",
+  "orderTracking":"Order Tracking",
+  "winlossReport":"Winloss Report",
+  "agentList":"Agent List",
+  "playerList":"Player List",
+  "plsSelectBankCard":"Please Add a Bank Card",
+  "balanceHistory":"Balance History"
 }

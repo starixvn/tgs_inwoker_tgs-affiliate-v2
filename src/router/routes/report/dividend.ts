@@ -3,6 +3,6 @@ export const routes: RouteRecordRaw[] = [
   {
     path: 'dividend',
     component: () => import('@/views/report/dividend.vue'),
-    meta: { title: 'dividend' },
+    meta: { title: 'menuProfitShare' },
   },
 ];

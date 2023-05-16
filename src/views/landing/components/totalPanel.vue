@@ -8,7 +8,7 @@
             <img :src="getImgUrl(item.title)" style="width: 50%" />
           </div>
           <div>
-            {{ t(item.title) }}
+            {{ t(item.title).toUpperCase() }}
           </div>
         </div>
       </el-col>
@@ -26,10 +26,8 @@ function getImgUrl(pic: string) {
 }
 
 function navigateTo(path: string, params: any = {}) {
-  router.push({
-    path: path,
-    params: params,
-  });
+
+  router.push({ path: path, query: { ...params } });
 }
 
 const list = reactive([
@@ -37,6 +35,9 @@ const list = reactive([
     title: 'addagent',
     icon: 'mel-icon-platform',
     path: '/team/agent',
+    params: {
+      perform: 'add',
+    },
   },
   {
     title: 'addplayer',
@@ -55,6 +56,9 @@ const list = reactive([
     title: 'changepassword',
     icon: 'mel-icon-user-filled',
     path: '/account/index',
+    params: {
+      perform: 'changePass',
+    },
   },
   {
     title: 'wallet',

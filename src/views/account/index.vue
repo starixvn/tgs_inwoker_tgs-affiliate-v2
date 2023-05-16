@@ -1,6 +1,6 @@
 <template>
   <div class="big-container">
-    <div class="big-title">{{ $t('myaccount') }}</div>
+    <div class="big-title">{{ $t('myaccount').toUpperCase() }}</div>
     <div class="content-wrapper">
       <div class="contents">
         <div class="another-big-title">{{ $t('myprofile') }}</div>
@@ -101,7 +101,7 @@
               <div class="data">
                 <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterResetPass">
                   <template #reference>
-                    <el-button type="primary">{{ t('resetPassword') }}</el-button>
+                    <el-button ref="buttonRef" type="primary">{{ t('resetPassword') }}</el-button>
                   </template>
                   <div>
                     <el-row style="margin-bottom: 0px">
@@ -333,6 +333,16 @@ import {
 } from '@element-plus/icons-vue'
 
 
+// Props
+const props = defineProps({
+  perform: String
+});
+const buttonRef = ref(null);
+onMounted(() => {
+  if(props.perform === "changePass"){
+    buttonRef.value?.$el?.click();
+  }
+});
 
 const { $state } = useUserStore();
 //from $state get the data

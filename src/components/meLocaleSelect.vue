@@ -1,8 +1,12 @@
 <template>
-  <el-dropdown class="me-locale-select" trigger="click" max-height="500px">
-    <div class="flex-center pointer">
-      <me-icon-translation class="icon"></me-icon-translation>
-    </div>
+  
+  <el-dropdown trigger="click" class="dropdown">
+    <span >
+      {{localeConfig.localeList.filter(a=> a.locale === $i18n.locale)[0].text}}
+      <el-icon >
+        <mel-icon-arrow-down />
+      </el-icon>
+    </span>
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item
@@ -15,6 +19,8 @@
       </el-dropdown-menu>
     </template>
   </el-dropdown>
+
+ 
 </template>
 <script setup lang="ts" name="MeTranslation">
 import { localeConfig } from '@/config';
@@ -33,6 +39,12 @@ const setLanguage = (locale: string) => {
     .icon {
       font-size: 1.3em;
     }
+  }
+}
+.dropdown{
+  font-size:16px;
+  :hover{
+    cursor:pointer;
   }
 }
 </style>

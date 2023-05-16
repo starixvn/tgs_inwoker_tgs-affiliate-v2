@@ -1,6 +1,11 @@
 <template>
   <el-card shadow="never" class="table">
     <el-row>
+      <el-col :span="24">
+        <div class="big-title">{{ $t('agentList') }}</div>
+      </el-col>
+    </el-row>
+    <el-row>
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
@@ -98,7 +103,12 @@
           <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
             <template #append>%</template>
           </el-input>
+          <el-alert type="error"  :closable="false">
+            {{$t("dividentAlert", [userStore.user.dividendpercentage.toFixed(2)])}}
+        </el-alert>
         </el-form-item>
+       
+    
         <el-form-item :label="t('remarks')">
           <el-input v-model="addAgentParams.remarks" size="large" type="textarea" />
         </el-form-item>
@@ -112,7 +122,7 @@
       </template>
     </el-dialog>
 
-    <el-dialog v-model="viewAgentDialogVisible" :title="t('addagent')" width="80%" :fullscreen="globalStore.isMobile">
+    <el-dialog v-model="viewAgentDialogVisible" :title="t('agentInfo')" width="80%" :fullscreen="globalStore.isMobile">
       <el-tabs v-model="activeName" type="card">
         <el-tab-pane :label="t('agent')" name="first">
           <el-row>
@@ -167,7 +177,7 @@
                     style="width: 100%"
                     :placeholder="$t('transactionType')"
                   >
-                    <el-option :label="$t('all')" value="" />
+   
                     <el-option
                       v-for="(value, propertyName) in accountChange.transactionTypeList"
                       :key="propertyName"
@@ -193,9 +203,10 @@
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                  <el-date-picker v-model="accountChange.searchForm.From" type="date" size="large" />
 
-                  <el-date-picker v-model="accountChange.searchForm.To" type="date" size="large" />
+                  <el-date-picker v-model="accountChange.searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
+
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" class="btnsearch" size="large" @click="onSearchAccountChange()">{{
@@ -254,6 +265,7 @@ import { defineComponent, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import moment from 'moment';
 import { useGlobalStore } from '@/store';
+import { useUserStore } from '@/store';
 import type { TableColumnCtx } from 'element-plus';
 import {
   getAgentList,
@@ -275,12 +287,15 @@ import { AddAgentParams, addAgentApi } from '@/api/agent';
 
 export default defineComponent({
   name: 'MyComponent',
+  props: ['perform'],
   setup() {
     const { t } = useI18n();
     const globalStore = useGlobalStore();
+    const userStore = useUserStore();
     return {
       t,
       globalStore,
+      userStore
     };
   },
 
@@ -293,13 +308,14 @@ export default defineComponent({
         searchForm: reactive<AccountChangesParams>({
           From: '',
           To: '',
+          dateRange:[new Date(), new Date()],
           page: 1,
           rows: 10,
           desc: true,
           sort: 'recordedOn',
           all: false,
           transactiontype: '',
-          id: '',
+          id: '', 
         }),
         dateType: 'today',
       },
@@ -308,7 +324,7 @@ export default defineComponent({
       statuses: reactive<AgentStatusesData>({}),
       totalRowCount: 0,
       activeName: 'first',
-      addAgentDialogVisible: false,
+      addAgentDialogVisible: this.perform === "add",
       viewAgentDialogVisible: false,
       agentDetails: reactive<AgentDetailsData>({
         accumulatedprofitsharing: 0,
@@ -413,6 +429,15 @@ export default defineComponent({
         return '';
       }
     },
+    disabledDate (time: Date)  {
+        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    },
+    daterangeChange(){
+
+
+    this.accountChange.searchForm.From = moment(this.accountChange.searchForm.dateRange[0]).format('YYYY-MM-DD');
+    this.accountChange.searchForm.To = moment(this.accountChange.searchForm.dateRange[1]).format('YYYY-MM-DD');
+    },
     onDateTypeChange() {
       if (this.accountChange.dateType == 'today') {
         this.accountChange.searchForm.From = moment().format('YYYY-MM-DD');
@@ -439,6 +464,7 @@ export default defineComponent({
         this.accountChange.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.accountChange.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
+      this.accountChange.searchForm.dateRange = [moment(this.accountChange.searchForm.From).toDate(), moment(this.accountChange.searchForm.To).toDate()];
       this.accountChange.searchForm.page = 1;
       //this.getItems();
     },
@@ -461,6 +487,26 @@ export default defineComponent({
       return '';
     },
     async onRegister() {
+      if(this.addAgentParams.userName === ''){
+        ElMessage.error(this.$t('usernameCannotEmpty'));
+        return;
+      }
+      if(this.addAgentParams.password === ''){
+        ElMessage.error(this.$t('passwordCannotEmpty'));
+        return;
+      }
+      if(this.addAgentParams.confirmPassword !== this.addAgentParams.password){
+        ElMessage.error(this.$t('passwordNotSame'));
+        return;
+      }
+      if(this.addAgentParams.realname === ''){
+        ElMessage.error(this.$t('plsEnterRealName'));
+        return;
+      }
+      if(this.addAgentParams.remarks === ''){
+        ElMessage.error(this.$t('plsEnterRemark'));
+        return;
+      }
       const res = await addAgentApi()(this.addAgentParams);
       this.getItems();
       this.resetAddAgent();

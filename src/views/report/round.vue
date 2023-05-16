@@ -1,29 +1,19 @@
 <template>
   <el-card shadow="never" class="table">
-    <el-row>
+    <el-row >
+      <el-col :span="24">
+        <div class="big-title">{{ $t('orderTracking') }}</div>
+      </el-col>
+    </el-row>
+    <el-row style="margin-bottom: 10px;">
       <el-col :span="24">
         <el-form :inline="true">
-          <el-row :gutter="20">
+          <el-row :gutter="20" >
+
             <el-col>
-              <el-form-item>
-                <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
-                  <el-radio-button label="today">{{ t('today') }}</el-radio-button>
-                  <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
-                  <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
-                  <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
-                  <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
-                  <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item>
-                <el-date-picker v-model="searchForm.dateRange" type="daterange" 
-            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
-              </el-form-item>
-            </el-col>
-            <el-col>
-              <el-row :gutter="20">
+              <el-row :gutter="20" style="margin-bottom: 0px;">
                 <el-col :span="24">
-                  <el-row :gutter="20">
+                  <el-row :gutter="20" style="margin-bottom: 0px;">
                     <el-col :span="12">
                       <el-row>
                         <el-col :span="8">
@@ -41,7 +31,7 @@
                         /></el-col>
                       </el-row>
                     </el-col>
-                    <el-col :span="9" :xs="24">
+                    <el-col :span="12" :xs="24">
                       <el-form-item>
                         <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
                           <el-option :label="t('all')" value="" />
@@ -64,55 +54,106 @@
                         </el-select>
                       </el-form-item>
 
-                      <el-form-item>
-                        <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
-                          t('search')
-                        }}</el-button>
-                      </el-form-item>
+             
                     </el-col>
                   </el-row>
                 </el-col>
               </el-row>
             </el-col>
+            <el-col>
+              <el-form-item>
+                <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
+                  <el-radio-button label="today">{{ t('today') }}</el-radio-button>
+                  <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
+                  <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
+                  <el-radio-button label="lastWeek">{{ t('lastWeek') }}</el-radio-button>
+                  <el-radio-button label="thisMonth">{{ t('thisMonth') }}</el-radio-button>
+                  <el-radio-button label="lastMonth">{{ t('lastMonth') }}</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item>
+                <el-date-picker v-model="searchForm.dateRange" type="daterange" 
+            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
+              </el-form-item>
+              <el-form-item>
+                        <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
+                          t('search')
+                        }}</el-button>
+                      </el-form-item>
+            </el-col>
           </el-row>
         </el-form>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row >
       <el-col :span="24">
+        <el-row style="margin-bottom: 5px;">
+      <el-col :span="24">
+        <el-popover
+          placement="left-start"
+          :width="200"
+          trigger="click"
+          content="this is content, this is content, this is content"
+        >
+          <template #reference>
+            <el-button
+                      type="primary"
+                      class="btnsearch"
+                      size="large"
+                      style="float: right"
+                      icon="mel-icon-filter"
+        
+                      >
+                    </el-button>
+          </template>
+          <template #default>
+            <div
+                class="demo-rich-conent"
+                style="display: flex; gap: 5px; flex-direction: column"
+              >
+                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
+                
+            </div>
+          </template>
+        </el-popover>
+      </el-col>
+    </el-row>
         <el-table :data="tableData" stripe scrollbar-always-on resizable>
-          <el-table-column :label="t('username')" prop="playerName" width="150" />
-          <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right" width="120" />
-          <el-table-column prop="id" :label="t('roundId')" align="right" />
-          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime" width="130" />
-          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" width="130" />
-          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right" width="130" />
-          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right" width="160" />
-          <el-table-column prop="status" :label="t('status')" align="right" :formatter="formatStatus" />
-          <el-table-column prop="currencyCode" :label="t('currency')" align="right" width="130" />
+          <el-table-column :label="t('username')" prop="playerName" />
+          <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right"   v-if="tableColumn.externalRoundId.isShow"/>
+          <el-table-column prop="id" :label="t('roundId')" align="right"  v-if="tableColumn.roundId.isShow"/>
+          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime"  v-if="tableColumn.betTime.isShow"/>
+          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" v-if="tableColumn.closeTime.isShow" />
+          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right"  v-if="tableColumn.brandProvider.isShow" />
+          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right"  v-if="tableColumn.childBrandProvider.isShow" />
+          <el-table-column prop="status" :label="t('status')" align="right" :formatter="formatStatus" v-if="tableColumn.status.isShow"/>
+          <el-table-column prop="currencyCode" :label="t('currency')" align="right"  v-if="tableColumn.currency.isShow" />
           <el-table-column
             prop="betAmount"
             :label="t('betAmount')"
             align="right"
             :formatter="formatPrice"
-            width="130"
+     
+            v-if="tableColumn.betAmount.isShow"
           />
           <el-table-column
             prop="validBetAmount"
             :label="t('effectiveBet')"
             align="right"
             :formatter="formatPrice"
-            width="130"
+         
+            v-if="tableColumn.effectiveBet.isShow"
           />
-          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" width="130" />
+          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" v-if="tableColumn.turnover.isShow"/>
           <el-table-column
             prop="settleAmount"
             :label="t('payout')"
             align="right"
             :formatter="formatPrice"
-            width="130"
+         
+            v-if="tableColumn.payout.isShow"
           />
-          <el-table-column prop="winLoss" :label="t('winLose')" align="right" :formatter="formatPrice" width="130" />
+          <el-table-column prop="winLoss" v-if="tableColumn.winLose.isShow" :label="t('winLose')" align="right" :formatter="formatPrice"  />
 
           <template #empty>
             {{ t('noRecord') }}
@@ -165,7 +206,66 @@ interface ISubitems {
   validBetAmount: number;
   winLossAmount: number;
 }
+interface DataColumn {
+  username: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  externalRoundId: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  roundId: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  betTime: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  closeTime: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  brandProvider: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  childBrandProvider: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  status: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  currency: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  betAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  effectiveBet: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  turnover: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+ 
+  payout: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
 
+  winLose: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+}
 interface SpanMethodProps {
   row: ISubitems;
   column: TableColumnCtx<ISubitems>;
@@ -213,6 +313,68 @@ export default defineComponent({
       gameproviders: [] as GameProvider[],
       dateType: 'today',
       statuses: reactive<any[]>([]),
+      tableColumn: reactive<DataColumn>({
+        username: {
+            isShow: true,
+            mustShow: true
+          },
+          externalRoundId: {
+            isShow: true,
+            mustShow: false
+          },
+          roundId: {
+            isShow: true,
+            mustShow: false
+          },
+          betTime: {
+            isShow: true,
+            mustShow: false
+          },
+          closeTime: {
+            isShow: true,
+            mustShow: false
+          },
+          brandProvider: {
+            isShow: true,
+            mustShow: false
+          },
+          childBrandProvider: {
+            isShow: true,
+            mustShow: false
+          },
+          status: {
+            isShow: true,
+            mustShow: false
+          },
+          currency: {
+            isShow: true,
+            mustShow: false
+          },
+          betAmount: {
+            isShow: true,
+            mustShow: false
+          },
+          effectiveBet: {
+            isShow: true,
+            mustShow: false
+          },
+          turnover: {
+            isShow: true,
+            mustShow: false
+          },
+        
+          payout: {
+            isShow: true,
+            mustShow: false
+          },
+
+          winLose: {
+            isShow: true,
+            mustShow: false
+          }
+          
+
+       }),
       searchForm: reactive<ISearchForm>({
         page: 1,
         rows: 10,
@@ -235,6 +397,9 @@ export default defineComponent({
   beforeMount() {
     this.getGameProviderId();
     this.getRoundReportStatus();
+ 
+    this.onDateTypeChange();
+ 
   },
   methods: {
     async getGameProviderId() {
@@ -311,10 +476,10 @@ export default defineComponent({
         return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
     },
     daterangeChange(){
-      this.searchForm.dateRange 
 
-      this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
-      this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
+
+      this.searchForm.ClosedFrom = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.searchForm.ClosedTo = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     onDateTypeChange() {
       if (this.dateType == 'today') {
@@ -342,7 +507,7 @@ export default defineComponent({
         this.searchForm.ClosedFrom = moment().subtract(1, 'years').startOf('year').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'years').endOf('year').toISOString();
       }
-      this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
+      this.searchForm.dateRange = [moment(this.searchForm.ClosedFrom).toDate(), moment(this.searchForm.ClosedTo).toDate()];
       this.searchForm.page = 1;
     },
     onSearch() {

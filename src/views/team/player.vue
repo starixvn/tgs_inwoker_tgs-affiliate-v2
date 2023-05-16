@@ -1,6 +1,11 @@
 <template>
   <el-card shadow="never" class="table">
     <el-row>
+      <el-col :span="24">
+        <div class="big-title">{{ $t('playerList') }}</div>
+      </el-col>
+    </el-row>
+    <el-row style="margin-bottom: 10px;">
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
@@ -19,29 +24,61 @@
       </el-col>
 
       <el-col :md="6" :sm="24">
-        <el-form :inline="true">
-          <el-form-item style="margin-right: 0px; float: right">
-            <div>
-              <el-button
+        
+        <el-button
                 type="primary"
                 class="btnsearch"
                 size="large"
                 style="float: right"
                 icon="mel-icon-plus"
-                @click="addPlayerDialogVisible = true"
+                @click="columnFilterVisible = true"
                 >{{ $t('addPlayer') }}</el-button
               >
-            </div>
-          </el-form-item>
-        </el-form>
       </el-col>
     </el-row>
+   
     <el-row>
       <el-col :span="24">
+        <el-row style="margin-bottom: 5px;">
+      <el-col :span="24">
+        <el-popover
+          placement="left-start"
+          :width="200"
+          trigger="click"
+          content="this is content, this is content, this is content"
+        >
+          <template #reference>
+            <el-button
+                      type="primary"
+                      class="btnsearch"
+                      size="large"
+                      style="float: right"
+                      icon="mel-icon-filter"
+        
+                      >
+                    </el-button>
+          </template>
+          <template #default>
+            <div
+                class="demo-rich-conent"
+                style="display: flex; gap: 5px; flex-direction: column"
+              >
+                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
+                
+            </div>
+          </template>
+        </el-popover>
+      </el-col>
+    </el-row>
         <el-table :data="tableData" border>
-          <el-table-column :label="t('username')" prop="username" min-width="150" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" />
-          <el-table-column :label="t('registeredtime')" prop="registeredtime" :formatter="formatDateTime" width="180" />
+
+          <el-table-column :label="t('player')" prop="username" min-width="150" />
+          <el-table-column :label="t('playercode')" prop="playercode" v-if="tableColumn.playercode.isShow" />
+          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" v-if="tableColumn.viplevel.isShow"/>
+          <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow"/>
+          <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow"/>
+          <el-table-column :label="t('registeredtime')" prop="registeredtime"  :formatter="formatDateTime" width="180" v-if="tableColumn.registeredtime.isShow" />
+          <el-table-column :label="t('registerhost')" prop="registerhost"  v-if="tableColumn.registerhost.isShow" />
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="250">
@@ -75,7 +112,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" />
+          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" v-if="tableColumn.status.isShow"/>
 
           <template #empty>
             {{ t('noRecord') }}
@@ -185,9 +222,52 @@ import {
 import formatNumber from 'format-number';
 import { useGlobalStore } from '@/store';
 import { router } from '@/router';
+import { table } from 'console';
+
+interface PlayerDataColumn {
+  player: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  playercode: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  viplevel: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  areacode: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  phone: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  registeredtime: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  registerhost: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  balance: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  status: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+}
+
 export default defineComponent({
   name: 'MyComponent',
+  props: ['perform'],
   setup() {
+
     const globalStore = useGlobalStore();
     const { t } = useI18n();
     return {
@@ -202,8 +282,48 @@ export default defineComponent({
       tableData: reactive<PlayerData[]>([]),
       statuses: reactive<PlayerStatusData>({}),
       totalRowCount: 0,
-      addPlayerDialogVisible: false,
+      addPlayerDialogVisible: this.perform === "add",
+      columnFilterVisible: false,
       addPlayerParams: reactive(new AddPlayerParams()),
+      tableColumn: reactive<PlayerDataColumn>({
+        player: {
+          isShow: true,
+          mustShow: true
+        },
+        playercode: {
+          isShow: false,
+          mustShow: false
+        },
+        viplevel: {
+          isShow: true,
+          mustShow: false
+        },
+        areacode: {
+          isShow: false,
+          mustShow: false
+        },
+        phone: {
+          isShow: false,
+          mustShow: false
+        },
+        registeredtime: {
+          isShow: true,
+          mustShow: false
+        },
+        registerhost: {
+          isShow: false,
+          mustShow: false
+        },
+        balance: {
+          isShow: true,
+          mustShow: true
+        },
+        status: {
+          isShow: true,
+          mustShow: false
+        }
+
+       }),
       playerBalance: {
         balanceVisible: false,
         username: '--',
@@ -227,10 +347,13 @@ export default defineComponent({
   },
 
   beforeMount() {
+
     this.getItems();
     this.getStatuses();
   },
+  mounted() {
 
+  },
   methods: {
     async getItems() {
       const response = await getPlayerList();

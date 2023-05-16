@@ -2,6 +2,11 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
+        <div class="big-title">{{ $t('winlossReport') }}</div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
         <el-form :inline="true">
           <el-form-item>
             <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
@@ -72,7 +77,12 @@
           :total="totalRowCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-        />
+        >
+        <template #sizes>
+          <span>{{ totalRowCount }} Rows</span>
+        </template>
+        </el-pagination>  
+  
       </div>
     </el-row>
   </el-card>
@@ -213,7 +223,7 @@ export default defineComponent({
         return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
     },
     daterangeChange(){
-      this.searchForm.dateRange 
+
 
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');

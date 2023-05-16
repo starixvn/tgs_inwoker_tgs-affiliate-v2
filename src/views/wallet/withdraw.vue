@@ -76,7 +76,7 @@
           <el-form-item v-if="selectedbankInfo.banktype === 'Bank'" :label="t('accountNumber')" class="label-bold">
             <span>{{ selectedbankInfo.detail.bankAccount }}</span>
           </el-form-item>
-          <el-form-item v-if="selectedbankInfo.banktype === 'Crypto'" :label="t('Address')" class="label-bold">
+          <el-form-item v-if="selectedbankInfo.banktype === 'Crypto'" :label="t('address')" class="label-bold">
             <span>{{ selectedbankInfo.detail.address }}</span>
           </el-form-item>
         </el-form>

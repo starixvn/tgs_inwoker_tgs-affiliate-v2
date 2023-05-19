@@ -5,6 +5,7 @@
         <div class="big-title">{{ $t('winlossReport') }}</div>
       </el-col>
     </el-row>
+    
     <el-row>
       <el-col :span="24">
         <el-form :inline="true">
@@ -31,35 +32,67 @@
       </el-col>
     </el-row>
     <el-row>
+      <el-col :span="24" >
+        <el-popover
+          style="float:right"
+          placement="left-start"
+          :width="200"
+          trigger="click"
+          content="this is content, this is content, this is content"
+        >
+          <template #reference>
+            <el-button
+                      type="primary"
+                      class="btnsearch"
+                      size="large"
+                      style="float: right"
+                      icon="mel-icon-filter"
+        
+                      >
+                    </el-button>
+          </template>
+          <template #default>
+            <div
+                class="demo-rich-conent"
+                style="display: flex; gap: 5px; flex-direction: column"
+              >
+                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
+                
+            </div>
+          </template>
+        </el-popover>
+      </el-col>
+    </el-row>
+    <el-row>
       <el-col :span="24">
         <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column :label="t('username')" prop="username" min-width="150" />
-          <el-table-column :label="t('type')" prop="type" :formatter="formatType"/>
-          <el-table-column :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" />
+          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
+          <el-table-column v-if="tableColumn.type.isShow" :label="t('type')" prop="type" :formatter="formatType" align="right"/>
+          <el-table-column v-if="tableColumn.depositAmount.isShow" :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" align="right" />
           <el-table-column
+          v-if="tableColumn.withdrawalAmount.isShow"
             :label="t('withdrawalAmount')"
             prop="withdrawalAmount"
-            :formatter="formatPrice"
-            width="110"
+            :formatter="formatPrice" align="right"
           />
-          <el-table-column :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" />
+          <el-table-column v-if="tableColumn.bonusAmount.isShow" :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" align="right" />
           <el-table-column
+            v-if="tableColumn.bonusAdjustAmount.isShow"
             :label="t('bonusAdjustAmount')"
             prop="bonusAdjustAmount"
-            :formatter="formatPrice"
-            width="150"
+            :formatter="formatPrice" align="right"
           />
           <el-table-column
+          v-if="tableColumn.agentAdjustAmount.isShow"
             :label="t('agentAdjustAmount')"
             prop="agentAdjustAmount"
-            :formatter="formatPrice"
-            width="150"
+            :formatter="formatPrice" align="right"
           />
-          <el-table-column :label="t('betAmount')" prop="betAmount" :formatter="formatPrice" width="120" />
-          <el-table-column :label="t('validBetAmount')" prop="validBetAmount" :formatter="formatPrice" width="120" />
-          <el-table-column :label="t('turnover')" prop="turnover" :formatter="formatPrice" width="120" />
-          <el-table-column :label="t('winLossAmount')" prop="winLossAmount" :formatter="formatPrice" />
-          <el-table-column :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" width="120" />
+          <el-table-column v-if="tableColumn.betAmount.isShow" :label="t('betAmount')" prop="betAmount" :formatter="formatPrice" align="right" />
+          <el-table-column v-if="tableColumn.validBetAmount.isShow" :label="t('validBetAmount')" prop="validBetAmount" :formatter="formatPrice" align="right"/>
+          <el-table-column v-if="tableColumn.turnover.isShow" :label="t('turnover')" prop="turnover" :formatter="formatPrice" align="right"/>
+          <el-table-column v-if="tableColumn.winLossAmount.isShow" :label="t('winLossAmount')" prop="winLossAmount" :formatter="formatPrice" align="right"/>
+          <el-table-column v-if="tableColumn.netProfit.isShow" :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" align="right"/>
 
           <template #empty>
             {{ t('noRecord') }}
@@ -128,6 +161,56 @@ interface ISearchForm {
   sort: string;
   all: boolean;
 }
+interface DataColumn {
+  username: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  type:{
+    isShow: boolean;
+    mustShow: boolean;
+  }
+  depositAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  withdrawalAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  bonusAmount:{
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  bonusAdjustAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  agentAdjustAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  betAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  validBetAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  turnover: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  winLossAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  }; 
+  netProfit: {
+    isShow: boolean;
+    mustShow: boolean;
+  }; 
+}
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -144,6 +227,57 @@ export default defineComponent({
       showAgent: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
+      tableColumn: reactive<DataColumn>({
+        username: {
+          isShow: true,
+          mustShow: true
+        },
+        type:{
+          isShow: true,
+          mustShow: false
+        },
+        depositAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        withdrawalAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        bonusAmount:{
+          isShow: true,
+          mustShow: false
+        },
+        bonusAdjustAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        agentAdjustAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        betAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        validBetAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        turnover: {
+          isShow: true,
+          mustShow: false
+        },
+        winLossAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        netProfit: {
+          isShow: true,
+          mustShow: false
+        }
+
+      }),
       searchForm: reactive<ISearchForm>({
         dateType: 'today',
         From: '',

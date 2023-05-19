@@ -13,7 +13,7 @@
           </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-              <el-option :label="t('all')" value="" />
+              <el-option :label="t('status')" value="" />
               <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
             </el-select>
           </el-form-item>
@@ -42,12 +42,12 @@
     <el-row>
       <el-col :span="24">
         <el-table :data="tableData" border resizable fit>
-          <el-table-column :label="t('username')" prop="username" min-width="150" />
-          <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" />
-          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" width="150" />
-          <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" />
-          <el-table-column align="right" :label="t('balance')" prop="balance" :formatter="formatPrice" />
-          <el-table-column :label="t('status')" prop="agentstatus" :formatter="formatStatus" min-width="120" />
+          <el-table-column :label="t('agent')" prop="username" min-width="150" align="center" />
+          <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" align="center"/>
+          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" :formatter="formatPercentage" width="150" align="center"/>
+          <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" align="center"/>
+          <el-table-column align="center" :label="t('balance')" prop="balance" :formatter="formatPrice" />
+          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" min-width="120" align="center" />
           <el-table-column :label="t('setting')" align="center" width="150">
             <template #default="scope">
               <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />
@@ -104,7 +104,7 @@
             <template #append>%</template>
           </el-input>
           <el-alert type="error"  :closable="false">
-            {{$t("dividentAlert", [userStore.user.dividendpercentage.toFixed(2)])}}
+            {{$t("dividentAlert", [userStore.user.dividendpercentage])}}%
         </el-alert>
         </el-form-item>
        
@@ -147,7 +147,7 @@
                   {{ agentDetails.type }}
                 </el-form-item>
                 <el-form-item :label="t('profitSharePT') + ':'">
-                  {{ agentDetails.dividendpercentage }}
+                  {{ agentDetails.dividendpercentage }}%
                 </el-form-item>
               </el-form>
             </el-col>
@@ -429,6 +429,10 @@ export default defineComponent({
         return '';
       }
     },
+    formatPercentage(row: any, column: TableColumnCtx<AgentData>) {
+      let percentage = '%' as string;
+     return row[column.property] + percentage;
+    },
     disabledDate (time: Date)  {
         return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
     },
@@ -499,14 +503,14 @@ export default defineComponent({
         ElMessage.error(this.$t('passwordNotSame'));
         return;
       }
-      if(this.addAgentParams.realname === ''){
-        ElMessage.error(this.$t('plsEnterRealName'));
-        return;
-      }
-      if(this.addAgentParams.remarks === ''){
-        ElMessage.error(this.$t('plsEnterRemark'));
-        return;
-      }
+      // if(this.addAgentParams.realname === ''){
+      //   ElMessage.error(this.$t('plsEnterRealName'));
+      //   return;
+      // }
+      // if(this.addAgentParams.remarks === ''){
+      //   ElMessage.error(this.$t('plsEnterRemark'));
+      //   return;
+      // }
       const res = await addAgentApi()(this.addAgentParams);
       this.getItems();
       this.resetAddAgent();

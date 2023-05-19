@@ -10,7 +10,7 @@
               style="width: 100%"
               :placeholder="$t('transactionType')"
             >
-              <el-option :label="$t('all')" value="" />
+              <el-option :label="$t('transactionType')" value="" />
               <el-option
                 v-for="(value, propertyName) in transactionTypeList"
                 :key="propertyName"

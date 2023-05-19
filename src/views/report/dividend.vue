@@ -32,7 +32,10 @@
     </el-row>
 
     <div v-show="scene === 'total'">
+  
+  
       <el-row>
+        <el-col :span="22">
         <div class="legends">
           <div>
             <el-button type="primary" icon="me-icon-info"  @click="showlegends = !showlegends" />
@@ -44,6 +47,38 @@
             </div>
           </div>
         </div>
+        
+      </el-col>
+      <el-col :span="2">
+        <el-popover
+          style="float:right"
+          placement="left-start"
+          :width="200"
+          trigger="click"
+          content="this is content, this is content, this is content"
+        >
+          <template #reference>
+            <el-button
+                      type="primary"
+                      class="btnsearch"
+                      size="large"
+                      style="float: right"
+                      icon="mel-icon-filter"
+        
+                      >
+                    </el-button>
+          </template>
+          <template #default>
+            <div
+                class="demo-rich-conent"
+                style="display: flex; gap: 5px; flex-direction: column"
+              >
+                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
+                
+            </div>
+          </template>
+        </el-popover>
+      </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
@@ -54,20 +89,21 @@
             stripe
             @row-click="getDividendDetails"
           >
-            <el-table-column :label="t('agent')" prop="username" :formatter="customRowFormatter" min-width="150" />
+            <el-table-column v-if="tableColumn.agent.isShow" :label="t('agent')" prop="username" :formatter="customRowFormatter" min-width="150" />
             <el-table-column
+              v-if="tableColumn.pt.isShow"
               prop="agentDividendPercentage"
               :label="t('p/t')"
               align="right"
               :formatter="formatPrice"
               width="170"
             />
-            <el-table-column :label="t('bonus')" align="center">
+            <el-table-column v-if="tableColumn.bonus.isShow" :label="t('bonus')" align="center">
               <el-table-column prop="bonusAmount" :label="t('total')" align="right" :formatter="formatPrice" />
               <el-table-column prop="agentCoveredBonus" :label="t('agent')" align="right" :formatter="formatPrice" />
             </el-table-column>
 
-            <el-table-column :label="t('bonusAdjust')" align="center">
+            <el-table-column v-if="tableColumn.bonusAdjust.isShow" :label="t('bonusAdjust')" align="center">
               <el-table-column prop="bonusAdjustAmount" :label="t('total')" align="right" :formatter="formatPrice" />
               <el-table-column
                 prop="agentCoveredBonusAdjust"
@@ -78,6 +114,7 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
+            v-if="tableColumn.betAmount.isShow"
               prop="betAmount"
               :label="t('betAmount')"
               align="right"
@@ -85,6 +122,7 @@
               width="120"
             />
             <el-table-column
+            v-if="tableColumn.validBetAmount.isShow"
               prop="validBetAmount"
               :label="t('validBetAmount')"
               align="right"
@@ -92,6 +130,7 @@
               width="120"
             />
             <el-table-column
+            v-if="tableColumn.winloss.isShow"
               prop="winLossAmount"
               :label="t('winloss')"
               align="right"
@@ -99,13 +138,14 @@
               width="120"
             />
             <el-table-column
+            v-if="tableColumn.netProfit.isShow"
               prop="netProfit"
               :label="t('netProfit')"
               align="right"
               :formatter="formatPrice"
               width="120"
             />
-            <el-table-column :label="t('contribution')" align="center">
+            <el-table-column :label="t('contribution')" align="center" v-if="tableColumn.contribution.isShow">
               <el-table-column
                 prop="fromPlayerAgentDividendAmount"
                 :label="t('player')"
@@ -121,6 +161,7 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
+            v-if="tableColumn.agentAdjustAmount.isShow"
               prop="agentAdjustAmount"
               :label="t('agentAdjustAmount')"
               align="right"
@@ -128,6 +169,7 @@
               width="150"
             />
             <el-table-column
+            v-if="tableColumn.agentDividendAmount.isShow"
               prop="agentDividendAmount"
               :label="t('agentDividendAmount')"
               align="right"
@@ -160,16 +202,16 @@
       >
       <el-row>
         <el-col :span="24">
-          <el-table :data="tableData" stripe>
-            <el-table-column :label="t('agent')" prop="username" />
-            <el-table-column prop="settlementDate" :label="t('settlementDate')" align="right" :formatter="formatDate" />
+          <el-table :data="tableData" stripe :summary-method="getSummaries"  show-summary>
+            <el-table-column :label="t('agent')" prop="username"  align="center"/>
+            <el-table-column prop="settlementDate" :label="t('settlementDate')" align="center" :formatter="formatDate" />
             <el-table-column
               props="settlementDateFrom, settlementDateTo"
               :label="t('settlementDateFromTo')"
-              align="right"
+              align="center"
               :formatter="formatIntervalDate"
             />
-            <el-table-column prop="agentDividendAmount" :label="t('agentDividendAmount')" align="right" :formatter="formatPrice" />
+            <el-table-column prop="agentDividendAmount" :label="t('menuProfitShare')" align="center" :formatter="formatPrice" />
 
             <template #empty>
               {{ t('noRecord') }}
@@ -247,6 +289,56 @@ interface AgentDetailsSearchForm {
   all: boolean;
   agentDividendPercentage: number;
 }
+interface DataColumn {
+  agent: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  pt:{
+    isShow: boolean;
+    mustShow: boolean;
+  }
+  bonus: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  bonusAdjust: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  betAmount:{
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  validBetAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  winloss: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  netProfit: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  contribution: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  agentAdjustAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  agentDividendAmount: {
+    isShow: boolean;
+    mustShow: boolean;
+  }; 
+}
+interface SummaryMethodProps<T = ISubitems> {
+  columns: TableColumnCtx<T>[]
+  data: T[]
+}
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -264,6 +356,53 @@ export default defineComponent({
       totalAgentDetailRowCount: 0,
       showlegends: false,
       dateType: 'thisWeek',
+      tableColumn: reactive<DataColumn>({
+        agent: {
+          isShow: true,
+          mustShow: true
+        },
+        pt:{
+          isShow: true,
+          mustShow: false
+        },
+        bonus: {
+          isShow: true,
+          mustShow: false
+        },
+        bonusAdjust: {
+          isShow: true,
+          mustShow: false
+        },
+        betAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        validBetAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        winloss: {
+          isShow: true,
+          mustShow: false
+        },
+        netProfit: {
+          isShow: true,
+          mustShow: false
+        },
+        contribution: {
+          isShow: true,
+          mustShow: false
+        },
+        agentAdjustAmount: {
+          isShow: true,
+          mustShow: false
+        },
+        agentDividendAmount: {
+          isShow: true,
+          mustShow: false
+        },
+
+      }),
       legends: [
         'rl_bonusAmount',
         'rl_agentCoveredBonus',
@@ -354,7 +493,31 @@ export default defineComponent({
       var formatTo = moment(row.settlementDateTo).format('YYYY-MM-DD');
       return `${formatFrom} - ${formatTo}`;
     },
+    getSummaries(param: SummaryMethodProps) {
+      const { columns, data } = param
+      const sums: string[] = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = this.$t("total");
+          return
+        }
+        const values = data.map((item) => Number(item[column.property]))
+        if (!values.every((value) => Number.isNaN(value))) {
+          sums[index] = `${values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!Number.isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0).toFixed(2)}`
+        } else {
+          sums[index] = ''
+        }
+      })
 
+      return sums
+    },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
       if (row.username === "") {
         return [1, 14];
@@ -555,5 +718,27 @@ export default defineComponent({
  color: var(--el-color-primary);
  font-weight: bold;
  text-decoration: underline;
+}
+</style>
+<style lang="scss">
+
+table thead tr th{
+  .cell{
+    text-align:center;
+  }
+ 
+}
+.el-table__footer{
+ tr{
+  background-color: #eeeeee;
+  >td{
+
+  }
+ }
+
+}
+.el-table__footer-wrapper tbody td.el-table__cell{
+  background-color: #eeeeee;
+  font-weight: bold;
 }
 </style>

@@ -38,7 +38,7 @@
                 style="width: 100%"
               />
             </el-form-item>
-            <el-alert type="info" show-icon :closable="false" class="withdraw-amount-alert">
+            <el-alert type="error" show-icon :closable="false" class="withdraw-amount-alert">
               <p>{{ t('withdrawalRange', [minWithdrawal, maxWithdrawal]) }}</p>
             </el-alert>
           </el-space>

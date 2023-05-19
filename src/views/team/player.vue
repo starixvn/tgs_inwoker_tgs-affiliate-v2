@@ -13,7 +13,7 @@
           </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
-              <el-option :label="t('all')" value="" />
+              <el-option :label="t('status')" value="" />
               <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
             </el-select>
           </el-form-item>
@@ -31,7 +31,7 @@
                 size="large"
                 style="float: right"
                 icon="mel-icon-plus"
-                @click="columnFilterVisible = true"
+                @click="addPlayerDialogVisible = true"
                 >{{ $t('addPlayer') }}</el-button
               >
       </el-col>
@@ -81,7 +81,7 @@
           <el-table-column :label="t('registerhost')" prop="registerhost"  v-if="tableColumn.registerhost.isShow" />
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
-              <el-popover trigger="click" placement="left" :width="250">
+              <el-popover trigger="click" placement="left" :width="300">
                 <template #reference>
                   <el-button link type="primary" size="small" @click="onClickBalance(scope.row)">
                     [{{ t('viewBalance') }}]
@@ -95,7 +95,7 @@
                   </el-row>
                   <el-row style="margin-bottom: 0px">
                     <el-col :span="24">
-                      <el-form :label-width="80" label-position="left">
+                      <el-form :label-width="120" label-position="left">
                         <el-form-item :label="t('username') + ':'" class="balance-item">
                           {{ playerBalance.username }}
                         </el-form-item>
@@ -283,7 +283,6 @@ export default defineComponent({
       statuses: reactive<PlayerStatusData>({}),
       totalRowCount: 0,
       addPlayerDialogVisible: this.perform === "add",
-      columnFilterVisible: false,
       addPlayerParams: reactive(new AddPlayerParams()),
       tableColumn: reactive<PlayerDataColumn>({
         player: {
@@ -515,5 +514,27 @@ export default defineComponent({
       width: 319px;
     }
   }
+}
+</style>
+<style>
+.el-checkbox.el-checkbox--large{
+  background-image: url(/assets/images/uncheckbox.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  width:20px;
+  height:20px;
+}
+.el-checkbox.el-checkbox--large.is-checked{
+  background-image: url(/assets/images/checkbox.png);
+
+}
+.el-checkbox-button.is-checked .el-checkbox-button__inner {
+    color: var(--el-checkbox-button-checked-text-color);
+    background-color: #208eff;
+    border-color: var(--el-checkbox-button-checked-border-color);
+    box-shadow: -1px 0 0 0 var(--el-color-primary-light-7);
+}
+.el-checkbox.el-checkbox--large .el-checkbox__inner{
+  display:none;
 }
 </style>

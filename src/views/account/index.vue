@@ -19,15 +19,15 @@
                   </template>
                   <div >
                     <el-row style="margin-bottom: 0px">
-                      <el-col :span="24">
+                      <el-col :span="24" style="margin-bottom: 10px">
                         <div class="popover-title">{{ t('updateEmail') }}</div>
                       </el-col>
-                      <el-col :span="24">
+                      <el-col :span="24" style="margin-bottom: 10px">
                         <div class="input-row-no-label">
                           <el-input
                             v-model="state.email"
                             class="textInput"
-                            :disabled="state.sceneEmail === 1"
+                            :disabled="state.sceneEmail === 1 && state.isemptyEmail === false"
                             :placeholder="t('email')"
                             clearable
                           />
@@ -43,14 +43,15 @@
                               <div v-if="state.timer === 60">
                                 <el-button
                                   type="primary"
-                                  :disabled="state.email === ''"
+                                  class="btn-custom"
+                                  :disabled="state.email === null || state.email === ''"
                                   @click="getVerificationCodeForEmail"
                                 >
                                   {{ t('requestCode') }}
                                 </el-button>
                               </div>
                               <div v-else>
-                                <el-button>
+                                <el-button class="btn-custom">
                                   {{ t('resend') }}
                                   {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
                                 </el-button>
@@ -66,7 +67,7 @@
                             {{ t('back') }}
                           </el-button>
                           <el-button type="primary" @click="onUpdateEmail"
-                          :disabled="updateEmail.validatecode === '' || state.email === ''"
+                          :disabled="updateEmail.validatecode === '' || state.email === '' || state.email === null"
                           >
                             {{ t('submit') }}
                           </el-button></el-row>
@@ -99,13 +100,13 @@
               <div class="title">{{ $t('loginpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterResetPass">
+                <el-popover trigger="click" placement="right" :width="500" @before-enter="onEnterResetPass">
                   <template #reference>
-                    <el-button ref="buttonRef" type="primary">{{ t('resetPassword') }}</el-button>
+                    <el-button ref="buttonRef" style="width:170px" type="primary">{{ t('resetPassword') }}</el-button>
                   </template>
                   <div>
-                    <el-row style="margin-bottom: 0px">
-                      <el-col :span="24">
+                    <el-row style="margin-bottom: 10px">
+                      <el-col :span="24" style="margin-bottom: 10px">
                         <div class="popover-title">{{ t('loginpassword') }}</div>
                       </el-col>
                       <el-col :span="24">
@@ -152,7 +153,9 @@
                       </el-col>
                       <el-col :span="24">
                         <el-row justify="end"
-                          ><el-button type="primary" @click="updateNewPassword">
+                          ><el-button type="primary"
+                          :disabled="updatePassword.oldpwd === '' || updatePassword.newpwd === '' || updatePassword.newpwd !== state.confirmpassword"
+                          @click="updateNewPassword">
                             {{ t('submit') }}
                           </el-button></el-row
                         >
@@ -168,14 +171,14 @@
               <div class="data">
                 <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterChangeWithdrawalPass">
                   <template #reference>
-                    <el-button>{{ t('withdrawpassword') }}</el-button>
+                    <el-button style="width:170px">{{ t('withdrawpassword') }}</el-button>
                   </template>
                   <div v-if="state.scene === 1">
-                    <el-row style="margin-bottom: 0px">
-                      <el-col :span="24">
+                    <el-row >
+                      <el-col :span="24" style="margin-bottom: 10px">
                         <div class="popover-title">{{ t('withdrawpassword') }}</div>
                       </el-col>
-                      <el-col :span="24">
+                      <el-col :span="24" style="margin-bottom: 10px">
                         <div class="input-row-no-label">
                           <el-input
                             v-model="state.email"
@@ -195,15 +198,16 @@
                             <template #append>
                               <div v-if="state.timer === 60">
                                 <el-button
+                                  class="btn-custom"
                                   type="primary"
-                                  :disabled="state.email === ''"
+                                  :disabled="state.isemptyEmail === true"
                                   @click="getVerificationCodeForWithdrawalPassword"
                                 >
                                   {{ t('requestCode') }}
                                 </el-button>
                               </div>
                               <div v-else>
-                                <el-button>
+                                <el-button class="btn-custom">
                                   {{ t('resend') }}
                                   {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
                                 </el-button>
@@ -216,7 +220,7 @@
                         <el-row justify="end"
                           ><el-button
                             type="primary"
-                            :disabled="updateWithdrawalPassword.validatecode === ''"
+                            :disabled="updateWithdrawalPassword.validatecode === '' || state.email === '' || state.email === null"
                             @click="state.scene = 2"
                           >
                             {{ t('nextStep') }}
@@ -370,6 +374,7 @@ const state = reactive({
   scene: 1,
   sceneEmail:1,
   email: $state.user?.email,
+  isemptyEmail: $state.user?.email === null
 });
 
 const updatePassword = reactive({
@@ -685,5 +690,13 @@ const onVerfiyEmailCode = async () => {
     text-align: left;
   }
 
+}
+.btn-custom{
+  background-color: var(--el-color-primary) !important;
+  color: #fff !important;
+  &.is-disabled{
+    background-color: var(--el-button-disabled-bg-color) !important;
+    color: #fff !important;
+  }
 }
 </style>

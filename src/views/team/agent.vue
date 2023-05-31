@@ -159,9 +159,7 @@
                 <el-form-item :label="t('phone') + ':'">
                   {{ agentDetails.phone }}
                 </el-form-item>
-                <el-form-item :label="t('password') + ':'">
-                  <el-button type="primary">{{ t('resetPassword') }}</el-button>
-                </el-form-item>
+
               </el-form>
             </el-col>
           </el-row>
@@ -258,6 +256,95 @@
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
+
+
+    <el-dialog v-model="updateAgentDialogVisible" :title="t('agentInfo')" width="80%" :fullscreen="globalStore.isMobile">
+      <el-row>
+            <el-col :lg="12" :md="12" :xs="24">
+              <el-form label-position="right" label-width="150px">
+                <el-form-item :label="t('agentusername') + ':'">
+                  {{ agentDetails.username }}
+                </el-form-item>
+                <el-form-item :label="t('realName') + ':'">
+                  <el-input v-model="agentDetails.realname"></el-input>
+                </el-form-item>
+                <el-form-item :label="t('registeredOn') + ':'">
+                  {{ formatDateTime2(agentDetails.registeredon) }}
+                </el-form-item>
+                <el-form-item :label="t('balance') + ':'">
+                  {{ agentDetails.balance }}
+                </el-form-item>
+                <el-form-item :label="t('status') + ':'">
+                  {{ agentDetails.status }}
+                </el-form-item>
+                <el-form-item :label="t('type') + ':'">
+                  {{ agentDetails.type }}
+                </el-form-item>
+                <el-form-item :label="t('profitSharePT') + ':'">
+                  {{ agentDetails.dividendpercentage }}%
+                </el-form-item>
+              </el-form>
+            </el-col>
+            <el-col :lg="12" :md="12" :xs="24">
+              <el-form label-position="right" label-width="150px">
+                <el-form-item :label="t('email') + ':'">
+                  <el-input v-model="agentDetails.email"></el-input>
+     
+                </el-form-item>
+                <el-form-item :label="t('phone') + ':'">
+                  <el-input v-model="agentDetails.phone"></el-input>
+                </el-form-item>
+                <el-form-item :label="t('password') + ':'">
+                  <el-button type="primary" @click="onResetPasswordClick">{{ t('resetPassword') }}</el-button>
+                  <el-dialog
+                    v-model="resetPasswordDialogVisible"
+                    width="50%"
+                    :fullscreen="globalStore.isMobile"
+                    :title="t('resetPassword')"
+                    append-to-body
+                  >
+                    <el-form label-position="right" label-width="150px">
+                      <el-form-item :label="t('password')">
+                        <el-input
+                          v-model="updateAgentPasswordParams.password"
+                          size="large"
+                          :placeholder="$t('enterPassword')"
+                          clearable
+                          type="password"
+                        />
+                      </el-form-item>
+                      <el-form-item :label="t('confirmPassword')">
+                        <el-input
+                          v-model="updateAgentPasswordParams.confirmPassword"
+                          size="large"
+                          :placeholder="$t('reEnterPassword')"
+                          clearable
+                          type="password"
+                        />
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <div class="dialog-footer">
+                
+                        <el-button type="primary" @click="onUpdateAgentPasswordClick">
+                          {{ t('submit') }}
+                        </el-button>
+                      </div>
+                    </template>
+                  </el-dialog> 
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+          <template #footer>
+      <div class="dialog-footer">
+ 
+        <el-button type="primary" @click="onUpdateAgentClick">
+          {{ t('submit') }}
+        </el-button>
+      </div>
+    </template>
+    </el-dialog>
   </el-card>
 </template>
 <script lang="ts">
@@ -281,9 +368,10 @@ import {
   AccountChangesItems,
   AccountChangesParams,
   getTransactionTypeApi,
-  TransactionTypeData,
+  TransactionTypeData
 } from '@/api/agentreport';
-import { AddAgentParams, addAgentApi } from '@/api/agent';
+import { AddAgentParams, addAgentApi,
+  updateAgentApi,UpdateAgentParams, updateAgentPasswordApi, UpdateAgentPasswordParams } from '@/api/agent';
 
 export default defineComponent({
   name: 'MyComponent',
@@ -326,6 +414,9 @@ export default defineComponent({
       activeName: 'first',
       addAgentDialogVisible: this.perform === "add",
       viewAgentDialogVisible: false,
+      updateAgentDialogVisible:false,
+      resetPasswordDialogVisible:false,
+      updateAgentId:"",
       agentDetails: reactive<AgentDetailsData>({
         accumulatedprofitsharing: 0,
         agentdividendtype: '',
@@ -361,6 +452,7 @@ export default defineComponent({
         virtualsportsrebatepercentage: 0,
       }),
       addAgentParams: reactive(new AddAgentParams()),
+      updateAgentPasswordParams: reactive(new UpdateAgentPasswordParams()),
       searchForm: reactive<GetAgentListParams>({
         page: 1,
         rows: 10,
@@ -487,9 +579,42 @@ export default defineComponent({
       this.agentDetails = result.data;
       this.viewAgentDialogVisible = true;
     },
-    onEditClick(id: string) {
-      return '';
+    async onEditClick(id: string) {
+      this.updateAgentId = id;
+      const response = await getAgentDetailsApi();
+      const result = await response.runAsync(id);
+      this.agentDetails = result.data;
+      this.updateAgentDialogVisible = true;
     },
+    async onUpdateAgentClick() {
+      
+     
+      const params = new UpdateAgentParams();
+      params.email = this.agentDetails.email;
+      params.phone = this.agentDetails.phone;
+      params.realName = this.agentDetails.realname;
+      params.subAgentId = this.updateAgentId;
+      const response = await updateAgentApi()(params);
+      if(response.err ===0){
+        
+      }
+   
+  
+    },
+    async onUpdateAgentPasswordClick() {
+      
+     
+      this.updateAgentPasswordParams.subAgentId = this.updateAgentId;
+      const response = await updateAgentPasswordApi()(this.updateAgentPasswordParams);
+      if(response.err === 0){
+        this.resetPasswordDialogVisible = false;
+      }
+      
+   
+  
+    },
+
+    
     async onRegister() {
       if(this.addAgentParams.userName === ''){
         ElMessage.error(this.$t('usernameCannotEmpty'));
@@ -515,6 +640,10 @@ export default defineComponent({
       this.getItems();
       this.resetAddAgent();
       this.addAgentDialogVisible = false;
+    },
+    onResetPasswordClick(){
+      this.resetPasswordDialogVisible=true;
+      this.updateAgentPasswordParams = new UpdateAgentPasswordParams();
     },
     resetAddAgent() {
       this.addAgentParams = new AddAgentParams();
@@ -546,7 +675,7 @@ export default defineComponent({
       const response = await accountChangesApi();
       const result = await response.runAsync(searchForm);
       this.accountChange.tableData = result.data.items;
-      console.log(this.accountChange.tableData);
+
       this.accountChange.totalRowCount = result.data.totalcount;
     },
   },

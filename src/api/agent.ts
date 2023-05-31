@@ -74,7 +74,17 @@ export interface UpdateWithdrawalPasswordParams {
 export interface UpdateWithdrawalPasswordResult extends BaseResult {
   data: string;
 }
-
+export class UpdateAgentPasswordParams {
+  confirmPassword= "";
+  password= "";
+  subAgentId= "";
+}
+export class UpdateAgentParams {
+  email= "";
+  phone= "";
+  realName= "";
+  subAgentId= "";
+}
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddAgentResult, [AddAgentParams], T>(
     (params) => ({
@@ -182,6 +192,29 @@ export function verifyEmailCode<T extends boolean = true>(
     (params) => ({
       url: 'agent/email',
       method: 'put',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+export function updateAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateAgentParams], T>(
+    (params) => ({
+      url: 'subagent/info',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+
+export function updateAgentPasswordApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateAgentPasswordParams], T>(
+    (params) => ({
+      url: 'subagent/password',
+      method: 'PATCH',
       data: params,
     }),
     { needAll: true },

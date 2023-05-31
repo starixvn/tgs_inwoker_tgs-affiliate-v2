@@ -91,9 +91,21 @@
           <div class="another-big-title">{{ $t('teamOverview') }}</div>
           <div class="content">
             <div class="statistic-container">
-              <div v-for="item in statistic" :key="item.name" class="statistic" :class="`${item.color}-gradient`">
-                <div class="name">{{ $t(item.name) }}</div>
-                <div class="data">{{ item.data }}</div>
+              <div class="statistic" :class="`blue-gradient`">
+                <div class="name">{{ $t("directAgent") }}</div>
+                <div class="data">{{ teamData.directAgentCount }}</div>
+              </div>
+              <div class="statistic" :class="`purple-gradient`">
+                <div class="name">{{ $t("indirectAgent") }}</div>
+                <div class="data">{{ teamData.indirectAgentCount }}</div>
+              </div>
+              <div class="statistic" :class="`yellow-gradient`">
+                <div class="name">{{ $t("directPlayer") }}</div>
+                <div class="data">{{ teamData.directPlayerCount }}</div>
+              </div>
+              <div class="statistic" :class="`pink-gradient`">
+                <div class="name">{{ $t("indirectPlayer") }}</div>
+                <div class="data">{{ teamData.indirectPlayerCount }}</div>
               </div>
             </div>
           </div>
@@ -125,8 +137,18 @@ import { useUserStore } from '@/store';
 import { CopyDocument, Wallet, Download } from '@element-plus/icons-vue';
 import { router } from '@/router';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import { onMounted } from 'vue';
 import { useLocalesI18n } from '@/locales/hooks';
+import {
+  getInfoApi, InfoData
+} from '@/api/agentTeam';
 
+let teamData = reactive<InfoData>({ 
+  directAgentCount: 0,
+  directPlayerCount: 0,
+  indirectAgentCount: 0,
+  indirectPlayerCount: 0
+} );
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
@@ -192,12 +214,6 @@ function performCopyText(text: string) {
   ElMessage.success(t('copied'));
 }
 
-const statistic = reactive([
-  { name: 'directAgent', data: '29', color: 'blue' },
-  { name: 'indirectAgent', data: '76', color: 'purple' },
-  { name: 'directPlayer', data: '12', color: 'yellow' },
-  { name: 'indirectPlayer', data: '133', color: 'pink' },
-]);
 
 const overview = reactive([
   { name: 'estimatedProfitShare', data: '123456', color: 'blue' },
@@ -209,6 +225,17 @@ const overview = reactive([
   { name: 'totalDeposit', data: '123456', color: 'darkgreen' },
   { name: 'totalWithdraw', data: '123456', color: 'maroon' },
 ]);
+onMounted(async () => {
+  // Code to be executed when the component is mounted
+
+  const status = await getInfoApi();
+  const result = await status.runAsync();
+  teamData.directAgentCount  = result.data.directAgentCount;
+  teamData.indirectAgentCount  = result.data.indirectAgentCount;
+  teamData.directPlayerCount  = result.data.directPlayerCount;
+  teamData.indirectPlayerCount  = result.data.indirectPlayerCount;
+
+});
 </script>
 
 <style lang="scss" scoped>

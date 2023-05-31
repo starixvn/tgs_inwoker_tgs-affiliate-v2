@@ -49,7 +49,9 @@ service.interceptors.response.use(
   (error) => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    if (error.response.data.err === 900) {
+    console.log(error.response.data.err)
+    if (error.response.data.err === 900 && error.response.data.errmsg == 'Agent login token is expired') {
+
       useUserStore().logOut();
     }
     log.error(error); // for debug
@@ -116,7 +118,7 @@ export function request<R, P extends unknown[] = [], T = boolean>(
       }
 
       // 401：认证失败
-      if (res.err === 900) {
+      if (res.err === 900 && res.errmsg == 'Agent login token is expired') {
  
         await useUserStore().logOut();
         return res;

@@ -66,22 +66,26 @@
     <el-row>
       <el-col :span="24">
         <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
-          <el-table-column v-if="tableColumn.type.isShow" :label="t('type')" prop="type" :formatter="formatType" align="right"/>
+          <el-table-column  :label="t('player')" >
+            <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
+            <el-table-column v-if="tableColumn.type.isShow" :label="t('type')" prop="type" :formatter="formatType" align="right"/>
+            
+          </el-table-column>
           <el-table-column v-if="tableColumn.depositAmount.isShow" :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" align="right" />
-          <el-table-column
-          v-if="tableColumn.withdrawalAmount.isShow"
-            :label="t('withdrawalAmount')"
-            prop="withdrawalAmount"
-            :formatter="formatPrice" align="right"
-          />
-          <el-table-column v-if="tableColumn.bonusAmount.isShow" :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" align="right" />
-          <el-table-column
-            v-if="tableColumn.bonusAdjustAmount.isShow"
-            :label="t('bonusAdjustAmount')"
-            prop="bonusAdjustAmount"
-            :formatter="formatPrice" align="right"
-          />
+            <el-table-column
+            v-if="tableColumn.withdrawalAmount.isShow"
+              :label="t('withdrawalAmount')"
+              prop="withdrawalAmount"
+              :formatter="formatPrice" align="right"
+            />
+            <el-table-column v-if="tableColumn.bonusAmount.isShow" :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" align="right" />
+            <el-table-column
+              v-if="tableColumn.bonusAdjustAmount.isShow"
+              :label="t('bonusAdjustAmount')"
+              prop="bonusAdjustAmount"
+              :formatter="formatPrice" align="right"
+            />
+            
           <el-table-column
           v-if="tableColumn.agentAdjustAmount.isShow"
             :label="t('agentAdjustAmount')"

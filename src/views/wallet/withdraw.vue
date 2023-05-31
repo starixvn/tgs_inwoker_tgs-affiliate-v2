@@ -94,6 +94,11 @@
           <el-button class="delete-btn" type="danger" icon="mel-icon-delete" circle @click="onDeleteCard(bankInfo)" />
         </div>
         <div class="bank-card-body">
+          <div v-if="bankInfo.banktype === 'Crypto'">
+   
+            <div class="text item" >{{addCardInfoList.filter(a=> a.channelid === bankInfo.paymentchannelid).length > 0 && addCardInfoList.filter(a=> a.channelid === bankInfo.paymentchannelid)[0].channelcode}}</div>
+           
+          </div>
           <div v-if="bankInfo.banktype === 'Bank'">
             <div class="text item">{{ bankInfo.detail.bankName }} - {{ bankInfo.detail.bankBranch }}</div>
             <div class="text item">{{ bankInfo.detail.name }}</div>

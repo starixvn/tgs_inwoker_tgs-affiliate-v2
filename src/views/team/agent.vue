@@ -596,7 +596,7 @@ export default defineComponent({
       params.subAgentId = this.updateAgentId;
       const response = await updateAgentApi()(params);
       if(response.err ===0){
-        
+        this.updateAgentDialogVisible = false;
       }
    
   

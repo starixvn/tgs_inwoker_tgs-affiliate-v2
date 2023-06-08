@@ -31,8 +31,23 @@
         </el-form>
       </el-col>
     </el-row>
+
     <el-row>
-      <el-col :span="24" >
+      <el-col :span="22">
+        <div class="legends">
+          <div>
+            <el-button type="primary" icon="me-icon-info"  @click="showlegends = !showlegends" />
+          </div>
+          <div v-show="showlegends === true">
+            <div v-for="(legend, index) in legends" :key="index">
+              <div>- {{ t(legend) }}</div>
+            </div>
+          </div>
+        </div>
+        
+      </el-col>
+      <el-col :span="2" >
+        
         <el-popover
           style="float:right"
           placement="left-start"
@@ -231,6 +246,11 @@ export default defineComponent({
       showAgent: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
+      showlegends:false,
+      legends: [
+        'rl_winloss_row1',
+        'rl_winloss_row2'
+      ],
       tableColumn: reactive<DataColumn>({
         username: {
           isShow: true,
@@ -431,5 +451,25 @@ export default defineComponent({
       width: 319px;
     }
   }
+}
+.legends {
+  display: flex;
+  gap: 20px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.legendsToggle {
+  background: var(--el-color-primary);
+  color: #fff;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
 }
 </style>

@@ -24,6 +24,9 @@ export interface PlayerData {
   playercode: string;
   registeredtime: string;
   registerhost: string;
+  lastloginon: string;
+  totaldepositamount: number;
+  totalwithdrawamount: number;
   status: number;
   username: string;
   viplevel: number;

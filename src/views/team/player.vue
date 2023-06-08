@@ -78,6 +78,7 @@
           <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow"/>
           <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow"/>
           <el-table-column :label="t('registeredtime')" prop="registeredtime"  :formatter="formatDateTime" width="180" v-if="tableColumn.registeredtime.isShow" />
+          <el-table-column :label="t('lastloginon')" prop="lastloginon"  :formatter="formatDateTime" width="180" v-if="tableColumn.lastloginon.isShow" />
           <el-table-column :label="t('registerhost')" prop="registerhost"  v-if="tableColumn.registerhost.isShow" />
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
@@ -112,6 +113,8 @@
               </el-popover>
             </template>
           </el-table-column>
+          <el-table-column :label="t('totaldepositamount')" :formatter="formatPrice" prop="totaldepositamount" align="center" width="150" v-if="tableColumn.totaldepositamount.isShow"></el-table-column>  
+          <el-table-column :label="t('totalwithdrawamount')" :formatter="formatPrice" prop="totalwithdrawamount" align="center" width="150" v-if="tableColumn.totalwithdrawamount.isShow"></el-table-column>  
           <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" v-if="tableColumn.status.isShow"/>
 
           <template #empty>
@@ -249,11 +252,23 @@ interface PlayerDataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
+  lastloginon: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
   registerhost: {
     isShow: boolean;
     mustShow: boolean;
   };
   balance: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  totaldepositamount: {
+    isShow: boolean;
+    mustShow: boolean;
+  };
+  totalwithdrawamount: {
     isShow: boolean;
     mustShow: boolean;
   };
@@ -309,6 +324,10 @@ export default defineComponent({
           isShow: true,
           mustShow: false
         },
+        lastloginon: {
+          isShow: true,
+          mustShow: false
+        },
         registerhost: {
           isShow: false,
           mustShow: false
@@ -316,6 +335,14 @@ export default defineComponent({
         balance: {
           isShow: true,
           mustShow: true
+        },
+        totaldepositamount: {
+          isShow: true,
+          mustShow: false
+        },
+        totalwithdrawamount: {
+          isShow: true,
+          mustShow: false
         },
         status: {
           isShow: true,

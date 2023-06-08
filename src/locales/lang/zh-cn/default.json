@@ -168,9 +168,9 @@
   "deposit": "存款",
 
   "directAgent": "直属代理",
-  "indirectAgent": "间接代理",
+  "indirectAgent": "下線代理",
   "directPlayer": "直属玩家",
-  "indirectPlayer": "间接玩家",
+  "indirectPlayer": "下線玩家",
 
   "estimatedProfitShare": "预估分红",
   "totalNetWorth": "總淨盈利",
@@ -203,6 +203,8 @@
 
   "usernameCannotBeEmpty": "用户名不能为空",
   "dateCannotBeEmpty": "结算时间不能为空",
+  "rl_winloss_row1": "红利金额 = 红利金额 (活动优惠、VIP 红利 + VIP 返水)+ 红利调整 + 产品费用",
+  "rl_winloss_row2": "产品费用 = (输赢金额) * 10%",
   "rl_bonusAmount": "红利金额 = 活动优惠 + VIP福利 + VIP返水",
   "rl_agentCoveredBonus": "代理承担红利 = 红利金额 * 占成",
   "rl_agentCoveredBonusAdjust": "代理承担优惠调帐 = 优惠调帐 * 占成",
@@ -242,6 +244,9 @@
   "playercode":"玩家代码",
   "areacode":"区号",
   "registerhost":"注册域名",
+  "lastloginon":"最後登入時間",
+  "totaldepositamount":"總存款金額",
+  "totalwithdrawamount":"總提款金額",
   "agentInfo":"代理详情",
   "dividentAlert": "需小于或等于目前的分红占成 {0}",
   "plsEnterRemark":"备注不能为空",

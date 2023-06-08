@@ -198,6 +198,8 @@
 
   "usernameCannotBeEmpty": "Username cannot be empty",
   "dateCannotBeEmpty": "Date cannot be empty",
+  "rl_winloss_row1": "Bonus = Bonus(Promotions, VIP Bonus + VIP Rebate) + Bonus Adjust + Product Fee.",
+  "rl_winloss_row2": "Product Fee = (Player Winloss) * 10%.",
   "rl_bonusAmount": "Bonus = Promotion Bonus + VIP Bonus + VIP Rebate ",
   "rl_agentCoveredBonus": "Bonus (Agent) = Bonus * P/T.",
   "rl_agentCoveredBonusAdjust": "Bonus Adjust (Agent) = Bonus Adjust * P/T.",
@@ -236,6 +238,9 @@
   "playercode":"Player Code",
   "areacode":"Area Code",
   "registerhost":"Register Host",
+  "lastloginon":"Latest Login",
+  "totaldepositamount":"Total Deposit",
+  "totalwithdrawamount":"Total Withdraw",
   "agentInfo":"Agent Info",
   "dividentAlert": "Must be equal or less than {0}",
   "plsEnterRemark":"Remark cannot be empty",

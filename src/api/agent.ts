@@ -1,5 +1,4 @@
-import request from '@/utils/request';
-
+import { request, RequestOptions } from '@/utils/request';
 // 登录
 export class AddAgentParams {
   userName = '';
@@ -30,6 +29,13 @@ export interface AddAgentResult extends BaseResult {
 export interface ForgotPasswordParams {
   email: string;
 }
+export interface GetSubAgentDividendResult extends BaseResult  {
+  data: GetSubAgentDividendData;
+}
+export interface GetSubAgentDividendData  {
+  min: number;
+  max: number;
+}
 
 export interface ForgotPasswordResult extends BaseResult {
   data: string;
@@ -50,6 +56,11 @@ export interface UpdatePasswordParams {
   oldpwd: string;
 }
 
+export class UpdateDividendParams  {
+  subAgentId = "";
+  dividendPercentage = 0;
+  
+}
 export interface UpdatePasswordResult extends BaseResult {
   data: string;
 }
@@ -60,6 +71,7 @@ export interface GetWithdrawalPasswordVerificationCodeResult extends BaseResult 
 export interface GetEmailVerificationCodeResult extends BaseResult {
   data: string;
 }
+
 export class GetEmailVerificationCodeParams  {
   email = '';
   
@@ -80,9 +92,12 @@ export class UpdateAgentPasswordParams {
   subAgentId= "";
 }
 export class UpdateAgentParams {
+  realName= "";
+  subAgentId= "";
+}
+export class UpdateAgentContactParams {
   email= "";
   phone= "";
-  realName= "";
   subAgentId= "";
 }
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
@@ -209,7 +224,17 @@ export function updateAgentApi<T extends boolean = true>(returnAxios: T = true a
     returnAxios,
   );
 }
-
+export function updateAgentContactApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateAgentContactParams], T>(
+    (params) => ({
+      url: 'subagent/contact',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
 export function updateAgentPasswordApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<BaseResult, [UpdateAgentPasswordParams], T>(
     (params) => ({
@@ -218,6 +243,27 @@ export function updateAgentPasswordApi<T extends boolean = true>(returnAxios: T 
       data: params,
     }),
     { needAll: true },
+    returnAxios,
+  );
+}
+export function updateDividendApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateDividendParams], T>(
+    (params) => ({
+      url: 'subagent/dividend',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+export function getSubAgentDividendsApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<GetSubAgentDividendResult, [string], T>(
+    (params) => ({
+      url: 'subagent/'+ params +'/dividendrange',
+      method: 'get',
+    }),
+    { noLoading },
     returnAxios,
   );
 }

@@ -119,6 +119,7 @@
   "CancelWithdrawal": "Cancel Withdraw",
   "all": "All",
   "profitSharePT": "Profit Share P/T",
+  "updateProfitSharePT": "Update Profit Share P/T",
   "setting": "Setting",
 
   "registeredOn": "Registered On",
@@ -178,7 +179,8 @@
   "noRecord": "No Record",
 
   "resetPassword": "Reset Password",
-
+  "updateRealName": "Update Real name",
+  
   
   "externalRoundId": "External ID",
   "roundId": "ID",

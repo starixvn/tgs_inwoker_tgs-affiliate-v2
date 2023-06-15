@@ -266,7 +266,35 @@
                   {{ agentDetails.username }}
                 </el-form-item>
                 <el-form-item :label="t('realName') + ':'">
-                  <el-input v-model="agentDetails.realname"></el-input>
+                  {{ agentDetails.realname }}
+                  <el-button type="primary" style="margin-left:10px" @click="onUpdateRealNameClick">{{ t('updateRealName') }}</el-button>
+                  <el-dialog
+                    v-model="updateRealNameDialogVisible"
+                    width="30%"
+                    :fullscreen="globalStore.isMobile"
+                    :title="t('updateRealName')"
+                    append-to-body
+                  >
+                    <el-form label-position="right" label-width="150px">
+                      <el-form-item :label="t('realName')">
+                        <el-input
+                          v-model="updateAgentParams.realName"
+                          size="large"
+                          :placeholder="$t('realName')"
+                          clearable
+                        />
+                      </el-form-item>
+                     
+                    </el-form>
+                    <template #footer>
+                      <div class="dialog-footer">
+                
+                        <el-button type="primary" @click="onSubmitAgentRealNameClick">
+                          {{ t('submit') }}
+                        </el-button>
+                      </div>
+                    </template>
+                  </el-dialog> 
                 </el-form-item>
                 <el-form-item :label="t('registeredOn') + ':'">
                   {{ formatDateTime2(agentDetails.registeredon) }}
@@ -282,6 +310,31 @@
                 </el-form-item>
                 <el-form-item :label="t('profitSharePT') + ':'">
                   {{ agentDetails.dividendpercentage }}%
+                  <el-button v-if="agentDetails.agentdividendtype === 'OneLayer'" type="primary" style="margin-left:10px" @click="onUpdateProfitSharePTClick">{{ t('updateProfitSharePT') }}</el-button>
+                  <el-dialog
+                    v-model="updateProfitSharePTDialogVisible"
+                    width="30%"
+                    :fullscreen="globalStore.isMobile"
+                    :title="t('updateProfitSharePT')"
+                    append-to-body
+                  >
+                    <el-form label-position="left" label-width="150px">
+                      <el-form-item :label="t('profitSharePT')">
+                        <el-input-number v-model="updateDividendParams.dividendPercentage" :min="agentDividendRange.min" :max="agentDividendRange.max" size="large"  
+                          />
+                       
+                      </el-form-item>
+                     
+                    </el-form>
+                    <template #footer>
+                      <div class="dialog-footer">
+                
+                        <el-button type="primary" @click="onSubmitUpdateProfitSharePTClick">
+                          {{ t('submit') }}
+                        </el-button>
+                      </div>
+                    </template>
+                  </el-dialog> 
                 </el-form-item>
               </el-form>
             </el-col>
@@ -339,7 +392,7 @@
           <template #footer>
       <div class="dialog-footer">
  
-        <el-button type="primary" @click="onUpdateAgentClick">
+        <el-button type="primary" @click="onUpdateAgentContactClick">
           {{ t('submit') }}
         </el-button>
       </div>
@@ -370,8 +423,8 @@ import {
   getTransactionTypeApi,
   TransactionTypeData
 } from '@/api/agentreport';
-import { AddAgentParams, addAgentApi,
-  updateAgentApi,UpdateAgentParams, updateAgentPasswordApi, UpdateAgentPasswordParams } from '@/api/agent';
+import { AddAgentParams, addAgentApi,getSubAgentDividendsApi,UpdateDividendParams,updateDividendApi,GetSubAgentDividendData,
+  updateAgentApi,UpdateAgentParams, UpdateAgentContactParams, updateAgentPasswordApi,updateAgentContactApi, UpdateAgentPasswordParams } from '@/api/agent';
 
 export default defineComponent({
   name: 'MyComponent',
@@ -416,7 +469,13 @@ export default defineComponent({
       viewAgentDialogVisible: false,
       updateAgentDialogVisible:false,
       resetPasswordDialogVisible:false,
+      updateRealNameDialogVisible:false,
+      updateProfitSharePTDialogVisible:false,
       updateAgentId:"",
+      agentDividendRange : reactive<GetSubAgentDividendData>({
+          min : 0,
+          max: 0
+      }),
       agentDetails: reactive<AgentDetailsData>({
         accumulatedprofitsharing: 0,
         agentdividendtype: '',
@@ -453,6 +512,9 @@ export default defineComponent({
       }),
       addAgentParams: reactive(new AddAgentParams()),
       updateAgentPasswordParams: reactive(new UpdateAgentPasswordParams()),
+      updateAgentParams: reactive(new UpdateAgentParams()),
+      updateAgentContactParams: reactive(new UpdateAgentContactParams()),
+      updateDividendParams: reactive(new UpdateDividendParams()),
       searchForm: reactive<GetAgentListParams>({
         page: 1,
         rows: 10,
@@ -584,17 +646,23 @@ export default defineComponent({
       const response = await getAgentDetailsApi();
       const result = await response.runAsync(id);
       this.agentDetails = result.data;
+
+      const response2 = await getSubAgentDividendsApi();
+      const result2 = await response2.runAsync(id);
+      this.agentDividendRange = result2.data;
       this.updateAgentDialogVisible = true;
+
+
+
     },
-    async onUpdateAgentClick() {
+    async onUpdateAgentContactClick() {
       
      
-      const params = new UpdateAgentParams();
+      const params = new UpdateAgentContactParams();
       params.email = this.agentDetails.email;
       params.phone = this.agentDetails.phone;
-      params.realName = this.agentDetails.realname;
       params.subAgentId = this.updateAgentId;
-      const response = await updateAgentApi()(params);
+      const response = await updateAgentContactApi()(params);
       if(response.err ===0){
         this.updateAgentDialogVisible = false;
       }
@@ -644,6 +712,35 @@ export default defineComponent({
     onResetPasswordClick(){
       this.resetPasswordDialogVisible=true;
       this.updateAgentPasswordParams = new UpdateAgentPasswordParams();
+    },
+    onUpdateProfitSharePTClick(){
+      this.updateProfitSharePTDialogVisible=true;
+      this.updateDividendParams = new UpdateDividendParams();
+      this.updateDividendParams.dividendPercentage = this.agentDetails.dividendpercentage;
+      this.updateDividendParams.subAgentId = this.updateAgentId;
+    },
+    async onSubmitUpdateProfitSharePTClick(){
+      const response = await updateDividendApi()(this.updateDividendParams);
+      if(response.err ===0){
+        this.agentDetails.dividendpercentage =  this.updateDividendParams.dividendPercentage;
+        this.updateProfitSharePTDialogVisible = false;
+      }
+    },
+    onUpdateRealNameClick(){
+      this.updateRealNameDialogVisible=true;
+      this.updateAgentParams = new UpdateAgentParams();
+      this.updateAgentParams.realName = this.agentDetails.realname;
+      this.updateAgentParams.subAgentId = this.updateAgentId;
+    },
+    async onSubmitAgentRealNameClick(){
+
+      const response = await updateAgentApi()(this.updateAgentParams);
+      if(response.err ===0){
+        this.agentDetails.realname =  this.updateAgentParams.realName;
+        this.updateRealNameDialogVisible = false;
+      }
+   
+
     },
     resetAddAgent() {
       this.addAgentParams = new AddAgentParams();

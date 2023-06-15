@@ -118,6 +118,7 @@
   "CancelWithdrawal": "取消提款",
   "all": "全部",
   "profitSharePT": "分红比例",
+  "updateProfitSharePT": "修改分红比例",
   "setting": "设置",
 
   "registeredOn": "注册时间",
@@ -184,6 +185,7 @@
   "noRecord": "没有记录",
 
   "resetPassword": "重置密码",
+  "updateRealName": "修改真实姓名",
 
   "externalRoundId": "三方订单ID",
   "roundId": "订单ID",

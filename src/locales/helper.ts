@@ -98,7 +98,6 @@ export const setLocaleMessage = (i18n: GlobaleI18n, locale: string, messageImpor
  * @returns
  */
 export const setI18nLanguage = async (locale: string, isLoading = true, i18n?: GlobaleI18n) => {
-
   if (!i18n) {
     i18n = useGlobalStore().i18n;
     if (!i18n) {

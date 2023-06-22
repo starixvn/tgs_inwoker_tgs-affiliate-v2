@@ -1,8 +1,7 @@
 <template>
   <div class="total-panel">
-    <el-row :gutter="30" style="justify-content: space-between;">
-      
-      <el-col v-for="(item, index) in list" :key="index" :xs="24"  :sm="12" :md="12" :lg="6" :xl="6">
+    <el-row :gutter="30" style="justify-content: space-between">
+      <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
         <div class="card" @click="navigateTo(item.path, item.params)">
           <div class="card-icon">
             <img :src="getImgUrl(item.title)" style="width: 50%" />
@@ -26,7 +25,6 @@ function getImgUrl(pic: string) {
 }
 
 function navigateTo(path: string, params: any = {}) {
-
   router.push({ path: path, query: { ...params } });
 }
 
@@ -73,7 +71,7 @@ const list = reactive([
   {
     title: 'winlossreport',
     icon: 'mel-icon-user-filled',
-    path: '/report/round',
+    path: '/report/contribute',
   },
   {
     title: 'helpcenter',

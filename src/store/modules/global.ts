@@ -17,15 +17,15 @@ interface Features {
   [key: string]: string;
 }
 interface GlobalState {
-  i18n: Ref<Composer<unknown, unknown, unknown>>,
-  isMobile: Ref<boolean>,
-  layoutLoaded: boolean,
-  localization: Localization,
-  features: Features
+  i18n: Ref<Composer<unknown, unknown, unknown>>;
+  isMobile: Ref<boolean>;
+  layoutLoaded: boolean;
+  localization: Localization;
+  features: Features;
 }
 export default defineStore({
   id: 'global',
-  state: ():  GlobalState  => {
+  state: (): GlobalState => {
     let _i18n: Composer<unknown, unknown, unknown>;
     return {
       i18n: customRef((track, trigger) => {
@@ -50,12 +50,9 @@ export default defineStore({
     };
   },
   actions: {
-    init: async function (tokenValue?: string) {
-       
-    },
+    init: async function (tokenValue?: string) {},
     // 登录
     getFeature: async function () {
-
       const res = await getFeatures()();
       this.features = res;
     },

@@ -1,5 +1,4 @@
-import request from '@/utils/request';
-
+import { request, RequestOptions } from '@/utils/request';
 // 登录
 export class AddAgentParams {
   userName = '';
@@ -30,6 +29,13 @@ export interface AddAgentResult extends BaseResult {
 export interface ForgotPasswordParams {
   email: string;
 }
+export interface GetSubAgentDividendResult extends BaseResult {
+  data: GetSubAgentDividendData;
+}
+export interface GetSubAgentDividendData {
+  min: number;
+  max: number;
+}
 
 export interface ForgotPasswordResult extends BaseResult {
   data: string;
@@ -50,6 +56,10 @@ export interface UpdatePasswordParams {
   oldpwd: string;
 }
 
+export class UpdateDividendParams {
+  subAgentId = '';
+  dividendPercentage = 0;
+}
 export interface UpdatePasswordResult extends BaseResult {
   data: string;
 }
@@ -60,9 +70,9 @@ export interface GetWithdrawalPasswordVerificationCodeResult extends BaseResult 
 export interface GetEmailVerificationCodeResult extends BaseResult {
   data: string;
 }
-export class GetEmailVerificationCodeParams  {
+
+export class GetEmailVerificationCodeParams {
   email = '';
-  
 }
 
 export interface UpdateWithdrawalPasswordParams {
@@ -75,15 +85,18 @@ export interface UpdateWithdrawalPasswordResult extends BaseResult {
   data: string;
 }
 export class UpdateAgentPasswordParams {
-  confirmPassword= "";
-  password= "";
-  subAgentId= "";
+  confirmPassword = '';
+  password = '';
+  subAgentId = '';
 }
 export class UpdateAgentParams {
-  email= "";
-  phone= "";
-  realName= "";
-  subAgentId= "";
+  realName = '';
+  subAgentId = '';
+}
+export class UpdateAgentContactParams {
+  email = '';
+  phone = '';
+  subAgentId = '';
 }
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddAgentResult, [AddAgentParams], T>(
@@ -150,7 +163,10 @@ export function performGetChangeWithdrawalPasswordVerificationCode<T extends boo
   );
 }
 
-export function performGetChangeEmailVerificationCode<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+export function performGetChangeEmailVerificationCode<T extends boolean = true>(
+  returnAxios: T = true as T,
+  noLoading = false,
+) {
   return request<GetEmailVerificationCodeResult, [GetEmailVerificationCodeParams], T>(
     (params) => ({
       url: 'agent/email',
@@ -177,17 +193,14 @@ export function performUpdateWithdrawalPassword<T extends boolean = true>(
   );
 }
 
-export class VerifyEmailCodeParams  {
+export class VerifyEmailCodeParams {
   securitykey = '';
   validatecode = '';
 }
 export interface VerifyEmailCodeResult extends BaseResult {
   data: string;
 }
-export function verifyEmailCode<T extends boolean = true>(
-  returnAxios: T = true as T,
-  noLoading = false,
-) {
+export function verifyEmailCode<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<VerifyEmailCodeResult, [VerifyEmailCodeParams], T>(
     (params) => ({
       url: 'agent/email',
@@ -209,7 +222,17 @@ export function updateAgentApi<T extends boolean = true>(returnAxios: T = true a
     returnAxios,
   );
 }
-
+export function updateAgentContactApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateAgentContactParams], T>(
+    (params) => ({
+      url: 'subagent/contact',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
 export function updateAgentPasswordApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<BaseResult, [UpdateAgentPasswordParams], T>(
     (params) => ({
@@ -218,6 +241,27 @@ export function updateAgentPasswordApi<T extends boolean = true>(returnAxios: T 
       data: params,
     }),
     { needAll: true },
+    returnAxios,
+  );
+}
+export function updateDividendApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [UpdateDividendParams], T>(
+    (params) => ({
+      url: 'subagent/dividend',
+      method: 'PATCH',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+export function getSubAgentDividendsApi<T extends boolean = false>(returnAxios: T = false as T, noLoading = false) {
+  return request<GetSubAgentDividendResult, [string], T>(
+    (params) => ({
+      url: 'subagent/' + params + '/dividendrange',
+      method: 'get',
+    }),
+    { noLoading },
     returnAxios,
   );
 }

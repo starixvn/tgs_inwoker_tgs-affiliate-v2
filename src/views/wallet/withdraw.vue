@@ -5,7 +5,8 @@
       <el-col :xl="6" :lg="6" :md="8" :sm="8" :xs="24">
         <div class="balance boxshadow">
           <div class="user-balance">
-            <span class="balance-label">{{t('balance')}}</span><br/>
+            <span class="balance-label">{{ t('balance') }}</span
+            ><br />
             {{ formatNumber({ truncate: 2, padRight: 2 })(userStore.user.balance) }}
           </div>
         </div>
@@ -14,9 +15,13 @@
         <div class="sub-title">{{ $t('withdraw') }}</div>
         <el-form label-width="auto" label-position="left" style="margin-top: 10px">
           <el-form-item :label="t('bankCard')">
-            <el-select v-model="withdrawalParams.bankinfoid" size="large" style="width: 100%" 
-            :placeholder="bankInfoList.length > 0 ? $t('select') : $t('plsSelectBankCard')"
-            @change="onCardChange()">
+            <el-select
+              v-model="withdrawalParams.bankinfoid"
+              size="large"
+              style="width: 100%"
+              :placeholder="bankInfoList.length > 0 ? $t('select') : $t('plsSelectBankCard')"
+              @change="onCardChange()"
+            >
               <el-option
                 v-for="(bankInfo, key) in bankInfoList"
                 :key="key"
@@ -54,9 +59,16 @@
             >
             </el-input>
           </el-form-item>
-          <el-button type="primary" style="width: 100%" size="large" 
-          :disabled="withdrawalParams.amount <=0 || withdrawalParams.bankinfoid == '' || withdrawalParams.paypassword == ''"
-          @click="onSubmit">{{ $t('submit').toUpperCase() }}</el-button>
+          <el-button
+            type="primary"
+            style="width: 100%"
+            size="large"
+            :disabled="
+              withdrawalParams.amount <= 0 || withdrawalParams.bankinfoid == '' || withdrawalParams.paypassword == ''
+            "
+            @click="onSubmit"
+            >{{ $t('submit').toUpperCase() }}</el-button
+          >
         </el-form>
       </el-col>
       <el-col :xl="6" :lg="6" :md="8" :sm="24" :xs="24">
@@ -95,9 +107,12 @@
         </div>
         <div class="bank-card-body">
           <div v-if="bankInfo.banktype === 'Crypto'">
-   
-            <div class="text item" >{{addCardInfoList.filter(a=> a.channelid === bankInfo.paymentchannelid).length > 0 && addCardInfoList.filter(a=> a.channelid === bankInfo.paymentchannelid)[0].channelcode}}</div>
-           
+            <div class="text item">
+              {{
+                addCardInfoList.filter((a) => a.channelid === bankInfo.paymentchannelid).length > 0 &&
+                addCardInfoList.filter((a) => a.channelid === bankInfo.paymentchannelid)[0].channelcode
+              }}
+            </div>
           </div>
           <div v-if="bankInfo.banktype === 'Bank'">
             <div class="text item">{{ bankInfo.detail.bankName }} - {{ bankInfo.detail.bankBranch }}</div>
@@ -266,7 +281,6 @@ export default defineComponent({
     const result = await response.runAsync();
     this.addCardInfoList = result.data;
 
-  
     for (var i = 0; i < this.addCardInfoList.length; i++) {
       if (this.bankTypeList.indexOf(this.addCardInfoList[i].banktype) < 0) {
         this.bankTypeList.push(this.addCardInfoList[i].banktype);
@@ -276,8 +290,9 @@ export default defineComponent({
     if (this.bankTypeList.length > 0) {
       this.addCardParams.banktype = this.bankTypeList[0];
 
-      this.addCardParams.paymentchannelid = this.addCardInfoList.filter((a) => a.banktype === this.addCardParams.banktype )[0].channelid;
-   
+      this.addCardParams.paymentchannelid = this.addCardInfoList.filter(
+        (a) => a.banktype === this.addCardParams.banktype,
+      )[0].channelid;
     }
     this.findMinMax();
   },
@@ -289,38 +304,31 @@ export default defineComponent({
       this.bankInfoList = result.data;
       if (this.bankInfoList.length > 0) {
         this.withdrawalParams.bankinfoid = this.bankInfoList[0].id;
-      
       }
       this.onCardChange();
     },
-    findMinMax(){
-        let min = 9999;
-        let max = 0;
-        let isfound = false;
-        for (var i = 0; i < this.addCardInfoList.length; i++) {
-         if(this.addCardInfoList[i].channelid ===  this.selectedbankInfo.paymentchannelid){
-            if (this.addCardInfoList[i].transferlimit.from < min) {
-              min = this.addCardInfoList[i].transferlimit.from;
-            }
-            if (this.addCardInfoList[i].transferlimit.to > max) {
-              max = this.addCardInfoList[i].transferlimit.to;
-            }
-            isfound = true;
+    findMinMax() {
+      let min = 9999;
+      let max = 0;
+      let isfound = false;
+      for (var i = 0; i < this.addCardInfoList.length; i++) {
+        if (this.addCardInfoList[i].channelid === this.selectedbankInfo.paymentchannelid) {
+          if (this.addCardInfoList[i].transferlimit.from < min) {
+            min = this.addCardInfoList[i].transferlimit.from;
           }
-        
+          if (this.addCardInfoList[i].transferlimit.to > max) {
+            max = this.addCardInfoList[i].transferlimit.to;
+          }
+          isfound = true;
         }
-        if(isfound == false){
-          this.minWithdrawal = 0;
-          this.maxWithdrawal = 0;
-
-        }else{
-
-          this.minWithdrawal = min;
-          this.maxWithdrawal = max;
-        }
-        
- 
-
+      }
+      if (isfound == false) {
+        this.minWithdrawal = 0;
+        this.maxWithdrawal = 0;
+      } else {
+        this.minWithdrawal = min;
+        this.maxWithdrawal = max;
+      }
     },
     formatLabel(bankInfo: IBankInfoData) {
       if (bankInfo.banktype == 'Bank') {
@@ -397,32 +405,32 @@ export default defineComponent({
     onCardChange() {
       var bankinfoList = this.bankInfoList.filter((a) => a.id == this.withdrawalParams.bankinfoid);
 
-      if(bankinfoList.length > 0){
+      if (bankinfoList.length > 0) {
         this.selectedbankInfo = this.bankInfoList.filter((a) => a.id == this.withdrawalParams.bankinfoid)[0];
         this.withdrawalParams.bankinfoid = this.selectedbankInfo.id;
-      }else{
+      } else {
         this.selectedbankInfo = {
           banktype: '--',
-            id: '',
-            paymentchannelid: '',
-            detail: reactive<IBankInfoDataDetails>({
-              bankAccount: '--',
-              bankBranch: '--',
-              bankName: '--',
-              name: '--',
-              address: '--',
-            }),
-
+          id: '',
+          paymentchannelid: '',
+          detail: reactive<IBankInfoDataDetails>({
+            bankAccount: '--',
+            bankBranch: '--',
+            bankName: '--',
+            name: '--',
+            address: '--',
+          }),
         };
         this.withdrawalParams = new WithdrawalParams();
       }
-    
+
       this.findMinMax();
     },
     resetAddCard() {
-
       this.addCardParams.detail = new AddCardDetailParams();
-      this.addCardParams.paymentchannelid = this.addCardInfoList.filter((a) => a.banktype === this.addCardParams.banktype )[0].channelid;
+      this.addCardParams.paymentchannelid = this.addCardInfoList.filter(
+        (a) => a.banktype === this.addCardParams.banktype,
+      )[0].channelid;
     },
   },
 });
@@ -478,7 +486,7 @@ export default defineComponent({
     background-size: cover;
     height: inherit;
     border-radius: 20px;
-    > .balance-label{
+    > .balance-label {
       font-weight: normal;
     }
   }

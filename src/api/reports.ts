@@ -4,7 +4,7 @@ export interface AgentStatusesResult extends BaseResult {
   data: AgentStatusesData;
 }
 
-export interface AgentStatusesData  {
+export interface AgentStatusesData {
   [key: string]: string;
 }
 export interface AgentDetailsResult extends BaseResult {
@@ -30,7 +30,7 @@ export interface AgentData {
   username: string;
   virtualsportsrebatepercentage: number;
 }
-export interface AgentDetailsData extends AgentData{
+export interface AgentDetailsData extends AgentData {
   accumulatedprofitsharing: number;
   agentdividendtype: string;
   agentdomains: string;
@@ -46,8 +46,6 @@ export interface AgentDetailsData extends AgentData{
   qq: string;
   realname: string;
   wechat: string;
-
-
 }
 interface AgentListResult extends BaseResult {
   data: {

@@ -1,19 +1,18 @@
 <template>
   <el-card shadow="never" class="table">
-    <el-row >
+    <el-row>
       <el-col :span="24">
         <div class="big-title">{{ $t('orderTracking') }}</div>
       </el-col>
     </el-row>
-    <el-row style="margin-bottom: 10px;">
+    <el-row style="margin-bottom: 10px">
       <el-col :span="24">
         <el-form :inline="true">
-          <el-row :gutter="20" >
-
+          <el-row :gutter="20">
             <el-col>
-              <el-row :gutter="20" style="margin-bottom: 0px;">
+              <el-row :gutter="20" style="margin-bottom: 0px">
                 <el-col :span="24">
-                  <el-row :gutter="20" style="margin-bottom: 0px;">
+                  <el-row :gutter="20" style="margin-bottom: 0px">
                     <el-col :span="12">
                       <el-row>
                         <el-col :span="8">
@@ -53,8 +52,6 @@
                           />
                         </el-select>
                       </el-form-item>
-
-             
                     </el-col>
                   </el-row>
                 </el-col>
@@ -72,68 +69,105 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
-                <el-date-picker v-model="searchForm.dateRange" type="daterange" 
-            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
+                <el-date-picker
+                  v-model="searchForm.dateRange"
+                  type="daterange"
+                  size="large"
+                  @change="daterangeChange"
+                  :disabled-date="disabledDate"
+                />
               </el-form-item>
               <el-form-item>
-                        <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
-                          t('search')
-                        }}</el-button>
-                      </el-form-item>
+                <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{
+                  t('search')
+                }}</el-button>
+              </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-col>
     </el-row>
-    <el-row >
+    <el-row>
       <el-col :span="24">
-        <el-row style="margin-bottom: 5px;">
-      <el-col :span="24">
-        <el-popover
-          placement="left-start"
-          :width="200"
-          trigger="click"
-          content="this is content, this is content, this is content"
-        >
-          <template #reference>
-            <el-button
-                      type="primary"
-                      class="btnsearch"
-                      size="large"
-                      style="float: right"
-                      icon="mel-icon-filter"
-        
-                      >
-                    </el-button>
-          </template>
-          <template #default>
-            <div
-                class="demo-rich-conent"
-                style="display: flex; gap: 5px; flex-direction: column"
-              >
-                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
-                
-            </div>
-          </template>
-        </el-popover>
-      </el-col>
-    </el-row>
+        <el-row style="margin-bottom: 5px">
+          <el-col :span="24">
+            <el-popover
+              placement="left-start"
+              :width="200"
+              trigger="click"
+              content="this is content, this is content, this is content"
+            >
+              <template #reference>
+                <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-filter">
+                </el-button>
+              </template>
+              <template #default>
+                <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                  <el-checkbox
+                    v-for="(item, index) in tableColumn"
+                    :key="index"
+                    :label="$t(index)"
+                    :disabled="item.mustShow"
+                    v-model="item.isShow"
+                  />
+                </div>
+              </template>
+            </el-popover>
+          </el-col>
+        </el-row>
         <el-table :data="tableData" stripe scrollbar-always-on resizable>
           <el-table-column :label="t('username')" prop="playerName" />
-          <el-table-column prop="externalRoundId" :label="t('externalRoundId')" align="right"   v-if="tableColumn.externalRoundId.isShow"/>
-          <el-table-column prop="id" :label="t('roundId')" align="right"  v-if="tableColumn.roundId.isShow"/>
-          <el-table-column prop="createdOn" :label="t('betTime')" align="right" :formatter="formatTime"  v-if="tableColumn.betTime.isShow"/>
-          <el-table-column prop="closedOn" :label="t('closeTime')" align="right" :formatter="formatTime" v-if="tableColumn.closeTime.isShow" />
-          <el-table-column prop="gameProviderName" :label="t('brandProvider')" align="right"  v-if="tableColumn.brandProvider.isShow" />
-          <el-table-column prop="subGameProviderName" :label="t('childBrandProvider')" align="right"  v-if="tableColumn.childBrandProvider.isShow" />
-          <el-table-column prop="status" :label="t('status')" align="right" :formatter="formatStatus" v-if="tableColumn.status.isShow"/>
-          <el-table-column prop="currencyCode" :label="t('currency')" align="right"  v-if="tableColumn.currency.isShow" />
+          <el-table-column
+            prop="externalRoundId"
+            :label="t('externalRoundId')"
+            align="right"
+            v-if="tableColumn.externalRoundId.isShow"
+          />
+          <el-table-column prop="id" :label="t('roundId')" align="right" v-if="tableColumn.roundId.isShow" />
+          <el-table-column
+            prop="createdOn"
+            :label="t('betTime')"
+            align="right"
+            :formatter="formatTime"
+            v-if="tableColumn.betTime.isShow"
+          />
+          <el-table-column
+            prop="closedOn"
+            :label="t('closeTime')"
+            align="right"
+            :formatter="formatTime"
+            v-if="tableColumn.closeTime.isShow"
+          />
+          <el-table-column
+            prop="gameProviderName"
+            :label="t('brandProvider')"
+            align="right"
+            v-if="tableColumn.brandProvider.isShow"
+          />
+          <el-table-column
+            prop="subGameProviderName"
+            :label="t('childBrandProvider')"
+            align="right"
+            v-if="tableColumn.childBrandProvider.isShow"
+          />
+          <el-table-column
+            prop="status"
+            :label="t('status')"
+            align="right"
+            :formatter="formatStatus"
+            v-if="tableColumn.status.isShow"
+          />
+          <el-table-column
+            prop="currencyCode"
+            :label="t('currency')"
+            align="right"
+            v-if="tableColumn.currency.isShow"
+          />
           <el-table-column
             prop="betAmount"
             :label="t('betAmount')"
             align="right"
             :formatter="formatPrice"
-     
             v-if="tableColumn.betAmount.isShow"
           />
           <el-table-column
@@ -141,19 +175,29 @@
             :label="t('effectiveBet')"
             align="right"
             :formatter="formatPrice"
-         
             v-if="tableColumn.effectiveBet.isShow"
           />
-          <el-table-column prop="turnover" :label="t('turnover')" align="right" :formatter="formatPrice" v-if="tableColumn.turnover.isShow"/>
+          <el-table-column
+            prop="turnover"
+            :label="t('turnover')"
+            align="right"
+            :formatter="formatPrice"
+            v-if="tableColumn.turnover.isShow"
+          />
           <el-table-column
             prop="settleAmount"
             :label="t('payout')"
             align="right"
             :formatter="formatPrice"
-         
             v-if="tableColumn.payout.isShow"
           />
-          <el-table-column prop="winLoss" v-if="tableColumn.winLose.isShow" :label="t('winLose')" align="right" :formatter="formatPrice"  />
+          <el-table-column
+            prop="winLoss"
+            v-if="tableColumn.winLose.isShow"
+            :label="t('winLose')"
+            align="right"
+            :formatter="formatPrice"
+          />
 
           <template #empty>
             {{ t('noRecord') }}
@@ -255,7 +299,7 @@ interface DataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
- 
+
   payout: {
     isShow: boolean;
     mustShow: boolean;
@@ -285,7 +329,7 @@ interface ISearchForm {
   Status: string;
   From: string;
   To: string;
-  dateRange:[Date, Date],
+  dateRange: [Date, Date];
   ClosedFrom: string;
   ClosedTo: string;
 }
@@ -315,66 +359,64 @@ export default defineComponent({
       statuses: reactive<any[]>([]),
       tableColumn: reactive<DataColumn>({
         username: {
-            isShow: true,
-            mustShow: true
-          },
-          externalRoundId: {
-            isShow: true,
-            mustShow: false
-          },
-          roundId: {
-            isShow: true,
-            mustShow: false
-          },
-          betTime: {
-            isShow: true,
-            mustShow: false
-          },
-          closeTime: {
-            isShow: true,
-            mustShow: false
-          },
-          brandProvider: {
-            isShow: true,
-            mustShow: false
-          },
-          childBrandProvider: {
-            isShow: true,
-            mustShow: false
-          },
-          status: {
-            isShow: true,
-            mustShow: false
-          },
-          currency: {
-            isShow: true,
-            mustShow: false
-          },
-          betAmount: {
-            isShow: true,
-            mustShow: false
-          },
-          effectiveBet: {
-            isShow: true,
-            mustShow: false
-          },
-          turnover: {
-            isShow: true,
-            mustShow: false
-          },
-        
-          payout: {
-            isShow: true,
-            mustShow: false
-          },
+          isShow: true,
+          mustShow: true,
+        },
+        externalRoundId: {
+          isShow: true,
+          mustShow: false,
+        },
+        roundId: {
+          isShow: true,
+          mustShow: false,
+        },
+        betTime: {
+          isShow: true,
+          mustShow: false,
+        },
+        closeTime: {
+          isShow: true,
+          mustShow: false,
+        },
+        brandProvider: {
+          isShow: true,
+          mustShow: false,
+        },
+        childBrandProvider: {
+          isShow: true,
+          mustShow: false,
+        },
+        status: {
+          isShow: true,
+          mustShow: false,
+        },
+        currency: {
+          isShow: true,
+          mustShow: false,
+        },
+        betAmount: {
+          isShow: true,
+          mustShow: false,
+        },
+        effectiveBet: {
+          isShow: true,
+          mustShow: false,
+        },
+        turnover: {
+          isShow: true,
+          mustShow: false,
+        },
 
-          winLose: {
-            isShow: true,
-            mustShow: false
-          }
-          
+        payout: {
+          isShow: true,
+          mustShow: false,
+        },
 
-       }),
+        winLose: {
+          isShow: true,
+          mustShow: false,
+        },
+      }),
       searchForm: reactive<ISearchForm>({
         page: 1,
         rows: 10,
@@ -388,7 +430,7 @@ export default defineComponent({
         Status: '',
         From: '',
         To: '',
-        dateRange:[new Date(), new Date()],
+        dateRange: [new Date(), new Date()],
         ClosedFrom: '',
         ClosedTo: '',
       }),
@@ -397,9 +439,8 @@ export default defineComponent({
   beforeMount() {
     this.getGameProviderId();
     this.getRoundReportStatus();
- 
+
     this.onDateTypeChange();
- 
   },
   methods: {
     async getGameProviderId() {
@@ -472,12 +513,10 @@ export default defineComponent({
     formatTime(row: any, column: TableColumnCtx<ISubitems>) {
       return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
     },
-    disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    disabledDate(time: Date) {
+      return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
-    daterangeChange(){
-
-
+    daterangeChange() {
       this.searchForm.ClosedFrom = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.ClosedTo = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
@@ -507,7 +546,10 @@ export default defineComponent({
         this.searchForm.ClosedFrom = moment().subtract(1, 'years').startOf('year').toISOString();
         this.searchForm.ClosedTo = moment().subtract(1, 'years').endOf('year').toISOString();
       }
-      this.searchForm.dateRange = [moment(this.searchForm.ClosedFrom).toDate(), moment(this.searchForm.ClosedTo).toDate()];
+      this.searchForm.dateRange = [
+        moment(this.searchForm.ClosedFrom).toDate(),
+        moment(this.searchForm.ClosedTo).toDate(),
+      ];
       this.searchForm.page = 1;
     },
     onSearch() {

@@ -10,90 +10,93 @@
               <div class="profile-info">
                 <div class="title">{{ $t(item.name) }}:</div>
 
-                <div class="data" >{{ item.value }} 
-                  <el-popover   trigger="click"  placement="right" :width="400" v-if="item.editable" @before-enter="resetUpdateEmail" @after-leave="resetUpdateEmail">
-                  <template #reference>
-                    <el-button size="small" type="primary" :icon="Edit"  >
-                  
-                </el-button>
-                  </template>
-                  <div >
-                    <el-row style="margin-bottom: 0px">
-                      <el-col :span="24" style="margin-bottom: 10px">
-                        <div class="popover-title">{{ t('updateEmail') }}</div>
-                      </el-col>
-                      <el-col :span="24" style="margin-bottom: 10px">
-                        <div class="input-row-no-label">
-                          <el-input
-                            v-model="state.email"
-                            class="textInput"
-                            :disabled="state.sceneEmail === 1 && state.isemptyEmail === false"
-                            :placeholder="t('email')"
-                            clearable
-                          />
-                        </div>
-                        <div class="input-row-no-label">
-                          <el-input
-                            v-model="updateEmail.validatecode"
-                            class="textInput"
-                            :placeholder="t('verificationCode')"
-                            clearable
-                          >
-                            <template #append>
-                              <div v-if="state.timer === 60">
-                                <el-button
-                                  type="primary"
-                                  class="btn-custom"
-                                  :disabled="state.email === null || state.email === ''"
-                                  @click="getVerificationCodeForEmail"
-                                >
-                                  {{ t('requestCode') }}
-                                </el-button>
-                              </div>
-                              <div v-else>
-                                <el-button class="btn-custom">
-                                  {{ t('resend') }}
-                                  {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
-                                </el-button>
-                              </div>
-                            </template></el-input
-                          >
-                        </div>
-                      </el-col>
-   
-                      <el-col :span="24" v-if="state.sceneEmail === 2">
-                        <el-row justify="end"
-                          ><el-button @click="onBackClick">
-                            {{ t('back') }}
-                          </el-button>
-                          <el-button type="primary" @click="onUpdateEmail"
-                          :disabled="updateEmail.validatecode === '' || state.email === '' || state.email === null"
-                          >
-                            {{ t('submit') }}
-                          </el-button></el-row>
-                      </el-col>
-              
-                      <el-col :span="24" v-if="state.sceneEmail === 1"  >
-                        <el-row justify="end"
-                          ><el-button
-                            type="primary"
-                            :disabled="updateEmail.validatecode === ''"
-                            @click="onVerfiyEmailCode"
-                          >
-                            {{ t('nextStep') }}
-                          </el-button>
-                        </el-row>
-                      </el-col>
-                    </el-row>
-                  </div>
-                 
-                </el-popover>
-            
-                </div>
-       
-                 
-          
+                <div class="data">
+                  {{ item.value }}
+                  <el-popover
+                    trigger="click"
+                    placement="right"
+                    :width="400"
+                    v-if="item.editable"
+                    @before-enter="resetUpdateEmail"
+                    @after-leave="resetUpdateEmail"
+                  >
+                    <template #reference>
+                      <el-button size="small" type="primary" :icon="Edit"> </el-button>
+                    </template>
+                    <div>
+                      <el-row style="margin-bottom: 0px">
+                        <el-col :span="24" style="margin-bottom: 10px">
+                          <div class="popover-title">{{ t('updateEmail') }}</div>
+                        </el-col>
+                        <el-col :span="24" style="margin-bottom: 10px">
+                          <div class="input-row-no-label">
+                            <el-input
+                              v-model="state.email"
+                              class="textInput"
+                              :disabled="state.sceneEmail === 1 && state.isemptyEmail === false"
+                              :placeholder="t('email')"
+                              clearable
+                            />
+                          </div>
+                          <div class="input-row-no-label">
+                            <el-input
+                              v-model="updateEmail.validatecode"
+                              class="textInput"
+                              :placeholder="t('verificationCode')"
+                              clearable
+                            >
+                              <template #append>
+                                <div v-if="state.timer === 60">
+                                  <el-button
+                                    type="primary"
+                                    class="btn-custom"
+                                    :disabled="state.email === null || state.email === ''"
+                                    @click="getVerificationCodeForEmail"
+                                  >
+                                    {{ t('requestCode') }}
+                                  </el-button>
+                                </div>
+                                <div v-else>
+                                  <el-button class="btn-custom">
+                                    {{ t('resend') }}
+                                    {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
+                                  </el-button>
+                                </div>
+                              </template></el-input
+                            >
+                          </div>
+                        </el-col>
 
+                        <el-col :span="24" v-if="state.sceneEmail === 2">
+                          <el-row justify="end"
+                            ><el-button @click="onBackClick">
+                              {{ t('back') }}
+                            </el-button>
+                            <el-button
+                              type="primary"
+                              @click="onUpdateEmail"
+                              :disabled="updateEmail.validatecode === '' || state.email === '' || state.email === null"
+                            >
+                              {{ t('submit') }}
+                            </el-button></el-row
+                          >
+                        </el-col>
+
+                        <el-col :span="24" v-if="state.sceneEmail === 1">
+                          <el-row justify="end"
+                            ><el-button
+                              type="primary"
+                              :disabled="updateEmail.validatecode === ''"
+                              @click="onVerfiyEmailCode"
+                            >
+                              {{ t('nextStep') }}
+                            </el-button>
+                          </el-row>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </el-popover>
+                </div>
               </div>
             </div>
             <div class="profile-info">
@@ -102,7 +105,7 @@
               <div class="data">
                 <el-popover trigger="click" placement="right" :width="500" @before-enter="onEnterResetPass">
                   <template #reference>
-                    <el-button ref="buttonRef" style="width:170px" type="primary">{{ t('resetPassword') }}</el-button>
+                    <el-button ref="buttonRef" style="width: 170px" type="primary">{{ t('resetPassword') }}</el-button>
                   </template>
                   <div>
                     <el-row style="margin-bottom: 10px">
@@ -153,9 +156,15 @@
                       </el-col>
                       <el-col :span="24">
                         <el-row justify="end"
-                          ><el-button type="primary"
-                          :disabled="updatePassword.oldpwd === '' || updatePassword.newpwd === '' || updatePassword.newpwd !== state.confirmpassword"
-                          @click="updateNewPassword">
+                          ><el-button
+                            type="primary"
+                            :disabled="
+                              updatePassword.oldpwd === '' ||
+                              updatePassword.newpwd === '' ||
+                              updatePassword.newpwd !== state.confirmpassword
+                            "
+                            @click="updateNewPassword"
+                          >
                             {{ t('submit') }}
                           </el-button></el-row
                         >
@@ -171,10 +180,10 @@
               <div class="data">
                 <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterChangeWithdrawalPass">
                   <template #reference>
-                    <el-button style="width:170px">{{ t('withdrawpassword') }}</el-button>
+                    <el-button style="width: 170px">{{ t('withdrawpassword') }}</el-button>
                   </template>
                   <div v-if="state.scene === 1">
-                    <el-row >
+                    <el-row>
                       <el-col :span="24" style="margin-bottom: 10px">
                         <div class="popover-title">{{ t('withdrawpassword') }}</div>
                       </el-col>
@@ -220,7 +229,9 @@
                         <el-row justify="end"
                           ><el-button
                             type="primary"
-                            :disabled="updateWithdrawalPassword.validatecode === '' || state.email === '' || state.email === null"
+                            :disabled="
+                              updateWithdrawalPassword.validatecode === '' || state.email === '' || state.email === null
+                            "
                             @click="state.scene = 2"
                           >
                             {{ t('nextStep') }}
@@ -323,34 +334,29 @@ import {
   performGetChangeEmailVerificationCode,
   performUpdateWithdrawalPassword,
   GetEmailVerificationCodeParams,
-  verifyEmailCode,VerifyEmailCodeParams
+  verifyEmailCode,
+  VerifyEmailCodeParams,
 } from '@/api/agent';
 import { useLocalesI18n } from '@/locales/hooks';
 import { useUserStore } from '@/store';
 import { Link } from '@element-plus/icons-vue';
-import { reactive,ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-
-  Edit,
-
-} from '@element-plus/icons-vue'
-
+import { Edit } from '@element-plus/icons-vue';
 
 // Props
 const props = defineProps({
-  perform: String
+  perform: String,
 });
 const buttonRef = ref(null);
 onMounted(() => {
-  if(props.perform === "changePass"){
+  if (props.perform === 'changePass') {
     buttonRef.value?.$el?.click();
   }
 });
 
 const { $state } = useUserStore();
 //from $state get the data
-
 
 let { t } = useLocalesI18n();
 
@@ -372,9 +378,9 @@ const state = reactive({
   confirmwithdrawpassword: '',
   timer: 60,
   scene: 1,
-  sceneEmail:1,
+  sceneEmail: 1,
   email: $state.user?.email,
-  isemptyEmail: $state.user?.email === null
+  isemptyEmail: $state.user?.email === null,
 });
 
 const updatePassword = reactive({
@@ -433,33 +439,29 @@ const getVerificationCodeForWithdrawalPassword = async () => {
     startTimer();
   }
 };
-const getVerificationCodeForEmail= async () => {
+const getVerificationCodeForEmail = async () => {
+  const getEmailVerificationCodeParams = new GetEmailVerificationCodeParams();
+  getEmailVerificationCodeParams.email = state.email;
 
+  const res = await performGetChangeEmailVerificationCode()(getEmailVerificationCodeParams);
 
-    const getEmailVerificationCodeParams = new GetEmailVerificationCodeParams();
-    getEmailVerificationCodeParams.email = state.email;
-
-    const res = await performGetChangeEmailVerificationCode()(getEmailVerificationCodeParams);
-
-    if (res) {
-      updateEmail.securitykey = res.data;
-      startTimer();
-    }
-
+  if (res) {
+    updateEmail.securitykey = res.data;
+    startTimer();
+  }
 };
-const onEnterResetPass= () => {
+const onEnterResetPass = () => {
   state.email = $state.user?.email;
   updatePassword.newpwd = '';
   updatePassword.oldpwd = '';
   state.confirmpassword = '';
-  
 };
 const onEnterChangeWithdrawalPass = () => {
   state.email = $state.user?.email;
   updateWithdrawalPassword.newpwd = '';
   updateWithdrawalPassword.securitykey = '';
   updateWithdrawalPassword.validatecode = '';
-  state.confirmwithdrawpassword= '';
+  state.confirmwithdrawpassword = '';
 };
 const updateTheWithdrawalPassword = async () => {
   if (updateWithdrawalPassword.newpwd !== state.confirmwithdrawpassword) {
@@ -467,26 +469,24 @@ const updateTheWithdrawalPassword = async () => {
     return;
   }
   const res = await performUpdateWithdrawalPassword()(updateWithdrawalPassword);
-  if(res.err ===0){
+  if (res.err === 0) {
     ElMessage.success(t('withdrawalPasswordResetSuccess'));
     updateWithdrawalPassword.newpwd = '';
     updateWithdrawalPassword.securitykey = '';
     updateWithdrawalPassword.validatecode = '';
-    document.getElementsByTagName("body")[0].click();
+    document.getElementsByTagName('body')[0].click();
   }
 };
 
 interface ListItem {
   name: string;
   value: string;
-  editable:boolean;
+  editable: boolean;
 }
 
-
 const profileInfo = reactive({
-  list: [] as ListItem[]
+  list: [] as ListItem[],
 });
-
 
 profileInfo.list.push({ name: 'agentusername', value: $state.user?.username, editable: false });
 profileInfo.list.push({ name: 'realname', value: $state.user?.realname, editable: false });
@@ -498,72 +498,61 @@ profileInfo.list.push({ name: 'profitSharePT', value: $state.user?.dividendperce
 profileInfo.list.push({ name: 'email', value: $state.user?.email, editable: true });
 profileInfo.list.push({ name: 'phone', value: $state.user?.phone, editable: false });
 
-
-
 const updateNewPassword = async () => {
   if (updatePassword.newpwd !== state.confirmpassword) {
     ElMessage.error(t('passwordNotSame'));
     return;
   }
   const res = await performUpdatePassword()(updatePassword);
-  if(res.err ===0){
+  if (res.err === 0) {
     ElMessage.success(t('passwordResetSuccess'));
     updatePassword.newpwd = '';
     updatePassword.oldpwd = '';
-    document.getElementsByTagName("body")[0].click();
+    document.getElementsByTagName('body')[0].click();
   }
 };
-const resetUpdateEmail = () =>{
-
+const resetUpdateEmail = () => {
   updateEmail.validatecode = '';
   state.sceneEmail = 1;
   state.timer = 60;
 
-
   clearInterval(autoSaveInterval);
-    
-}
-const onBackClick = () =>{
-
-  document.getElementsByTagName("body")[0].click();
-}
+};
+const onBackClick = () => {
+  document.getElementsByTagName('body')[0].click();
+};
 const onUpdateEmail = async () => {
-
-const res = await onVerfiyEmailCode();
+  const res = await onVerfiyEmailCode();
 };
 
 const onVerfiyEmailCode = async () => {
   const verifyEmailCodeParams = new VerifyEmailCodeParams();
   verifyEmailCodeParams.securitykey = updateEmail.securitykey;
   verifyEmailCodeParams.validatecode = updateEmail.validatecode;
-  
+
   const res = await verifyEmailCode()(verifyEmailCodeParams);
-  if(res.err ===0){
-    if(state.sceneEmail === 1){
+  if (res.err === 0) {
+    if (state.sceneEmail === 1) {
       state.sceneEmail = 2;
       state.email = '';
       state.timer = 60;
       clearInterval(autoSaveInterval);
       updateEmail.validatecode = '';
-    }else{
+    } else {
       await useUserStore().init();
 
-
-      const itemIndex = profileInfo.list.findIndex(item => item.name === 'email');
+      const itemIndex = profileInfo.list.findIndex((item) => item.name === 'email');
       if (itemIndex !== -1) {
         profileInfo.list[itemIndex].value = state.email;
       }
 
       ElMessage.success(t('emailUpdateSuccess'));
-      document.getElementsByTagName("body")[0].click();
+      document.getElementsByTagName('body')[0].click();
     }
-    
-  }else{
+  } else {
     ElMessage.error(t('invalidCode'));
-
   }
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -689,12 +678,11 @@ const onVerfiyEmailCode = async () => {
   .data {
     text-align: left;
   }
-
 }
-.btn-custom{
+.btn-custom {
   background-color: var(--el-color-primary) !important;
   color: #fff !important;
-  &.is-disabled{
+  &.is-disabled {
     background-color: var(--el-button-disabled-bg-color) !important;
     color: #fff !important;
   }

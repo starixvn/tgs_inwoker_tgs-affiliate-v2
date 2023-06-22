@@ -8,13 +8,11 @@ export interface LocalizationResult extends BaseResult {
   data: Localization;
 }
 
-
 interface FeatureResult {
   [key: string]: string;
 }
 
 export function getLocalization<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
-
   return request<LocalizationResult, [], T>(
     () => ({
       url: 'localization',

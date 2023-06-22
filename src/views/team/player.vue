@@ -5,7 +5,7 @@
         <div class="big-title">{{ $t('playerList') }}</div>
       </el-col>
     </el-row>
-    <el-row style="margin-bottom: 10px;">
+    <el-row style="margin-bottom: 10px">
       <el-col :md="18" :sm="24">
         <el-form :inline="true">
           <el-form-item>
@@ -24,62 +24,67 @@
       </el-col>
 
       <el-col :md="6" :sm="24">
-        
         <el-button
-                type="primary"
-                class="btnsearch"
-                size="large"
-                style="float: right"
-                icon="mel-icon-plus"
-                @click="addPlayerDialogVisible = true"
-                >{{ $t('addPlayer') }}</el-button
-              >
+          type="primary"
+          class="btnsearch"
+          size="large"
+          style="float: right"
+          icon="mel-icon-plus"
+          @click="addPlayerDialogVisible = true"
+          >{{ $t('addPlayer') }}</el-button
+        >
       </el-col>
     </el-row>
-   
+
     <el-row>
       <el-col :span="24">
-        <el-row style="margin-bottom: 5px;">
-      <el-col :span="24">
-        <el-popover
-          placement="left-start"
-          :width="200"
-          trigger="click"
-          content="this is content, this is content, this is content"
-        >
-          <template #reference>
-            <el-button
-                      type="primary"
-                      class="btnsearch"
-                      size="large"
-                      style="float: right"
-                      icon="mel-icon-filter"
-        
-                      >
-                    </el-button>
-          </template>
-          <template #default>
-            <div
-                class="demo-rich-conent"
-                style="display: flex; gap: 5px; flex-direction: column"
-              >
-                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
-                
-            </div>
-          </template>
-        </el-popover>
-      </el-col>
-    </el-row>
+        <el-row style="margin-bottom: 5px">
+          <el-col :span="24">
+            <el-popover
+              placement="left-start"
+              :width="200"
+              trigger="click"
+              content="this is content, this is content, this is content"
+            >
+              <template #reference>
+                <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-filter">
+                </el-button>
+              </template>
+              <template #default>
+                <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                  <el-checkbox
+                    v-for="(item, index) in tableColumn"
+                    :key="index"
+                    :label="$t(index)"
+                    :disabled="item.mustShow"
+                    v-model="item.isShow"
+                  />
+                </div>
+              </template>
+            </el-popover>
+          </el-col>
+        </el-row>
         <el-table :data="tableData" border>
-
           <el-table-column :label="t('player')" prop="username" min-width="150" />
           <el-table-column :label="t('playercode')" prop="playercode" v-if="tableColumn.playercode.isShow" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" v-if="tableColumn.viplevel.isShow"/>
-          <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow"/>
-          <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow"/>
-          <el-table-column :label="t('registeredtime')" prop="registeredtime"  :formatter="formatDateTime" width="180" v-if="tableColumn.registeredtime.isShow" />
-          <el-table-column :label="t('lastloginon')" prop="lastloginon"  :formatter="formatDateTime" width="180" v-if="tableColumn.lastloginon.isShow" />
-          <el-table-column :label="t('registerhost')" prop="registerhost"  v-if="tableColumn.registerhost.isShow" />
+          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" v-if="tableColumn.viplevel.isShow" />
+          <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow" />
+          <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow" />
+          <el-table-column
+            :label="t('registeredtime')"
+            prop="registeredtime"
+            :formatter="formatDateTime"
+            width="180"
+            v-if="tableColumn.registeredtime.isShow"
+          />
+          <el-table-column
+            :label="t('lastloginon')"
+            prop="lastloginon"
+            :formatter="formatDateTime"
+            width="180"
+            v-if="tableColumn.lastloginon.isShow"
+          />
+          <el-table-column :label="t('registerhost')" prop="registerhost" v-if="tableColumn.registerhost.isShow" />
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="300">
@@ -113,9 +118,28 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column :label="t('totaldepositamount')" :formatter="formatPrice" prop="totaldepositamount" align="center" width="150" v-if="tableColumn.totaldepositamount.isShow"></el-table-column>  
-          <el-table-column :label="t('totalwithdrawamount')" :formatter="formatPrice" prop="totalwithdrawamount" align="center" width="150" v-if="tableColumn.totalwithdrawamount.isShow"></el-table-column>  
-          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" v-if="tableColumn.status.isShow"/>
+          <el-table-column
+            :label="t('totaldepositamount')"
+            :formatter="formatPrice"
+            prop="totaldepositamount"
+            align="center"
+            width="150"
+            v-if="tableColumn.totaldepositamount.isShow"
+          ></el-table-column>
+          <el-table-column
+            :label="t('totalwithdrawamount')"
+            :formatter="formatPrice"
+            prop="totalwithdrawamount"
+            align="center"
+            width="150"
+            v-if="tableColumn.totalwithdrawamount.isShow"
+          ></el-table-column>
+          <el-table-column
+            :label="t('status')"
+            prop="status"
+            :formatter="formatStatus"
+            v-if="tableColumn.status.isShow"
+          />
 
           <template #empty>
             {{ t('noRecord') }}
@@ -282,7 +306,6 @@ export default defineComponent({
   name: 'MyComponent',
   props: ['perform'],
   setup() {
-
     const globalStore = useGlobalStore();
     const { t } = useI18n();
     return {
@@ -297,59 +320,58 @@ export default defineComponent({
       tableData: reactive<PlayerData[]>([]),
       statuses: reactive<PlayerStatusData>({}),
       totalRowCount: 0,
-      addPlayerDialogVisible: this.perform === "add",
+      addPlayerDialogVisible: this.perform === 'add',
       addPlayerParams: reactive(new AddPlayerParams()),
       tableColumn: reactive<PlayerDataColumn>({
         player: {
           isShow: true,
-          mustShow: true
+          mustShow: true,
         },
         playercode: {
           isShow: false,
-          mustShow: false
+          mustShow: false,
         },
         viplevel: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         areacode: {
           isShow: false,
-          mustShow: false
+          mustShow: false,
         },
         phone: {
           isShow: false,
-          mustShow: false
+          mustShow: false,
         },
         registeredtime: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         lastloginon: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         registerhost: {
           isShow: false,
-          mustShow: false
+          mustShow: false,
         },
         balance: {
           isShow: true,
-          mustShow: true
+          mustShow: true,
         },
         totaldepositamount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         totalwithdrawamount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         status: {
           isShow: true,
-          mustShow: false
-        }
-
-       }),
+          mustShow: false,
+        },
+      }),
       playerBalance: {
         balanceVisible: false,
         username: '--',
@@ -373,13 +395,10 @@ export default defineComponent({
   },
 
   beforeMount() {
-
     this.getItems();
     this.getStatuses();
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     async getItems() {
       const response = await getPlayerList();
@@ -544,24 +563,23 @@ export default defineComponent({
 }
 </style>
 <style>
-.el-checkbox.el-checkbox--large{
+.el-checkbox.el-checkbox--large {
   background-image: url(/assets/images/uncheckbox.png);
   background-repeat: no-repeat;
   background-size: contain;
-  width:20px;
-  height:20px;
+  width: 20px;
+  height: 20px;
 }
-.el-checkbox.el-checkbox--large.is-checked{
+.el-checkbox.el-checkbox--large.is-checked {
   background-image: url(/assets/images/checkbox.png);
-
 }
 .el-checkbox-button.is-checked .el-checkbox-button__inner {
-    color: var(--el-checkbox-button-checked-text-color);
-    background-color: #208eff;
-    border-color: var(--el-checkbox-button-checked-border-color);
-    box-shadow: -1px 0 0 0 var(--el-color-primary-light-7);
+  color: var(--el-checkbox-button-checked-text-color);
+  background-color: #208eff;
+  border-color: var(--el-checkbox-button-checked-border-color);
+  box-shadow: -1px 0 0 0 var(--el-color-primary-light-7);
 }
-.el-checkbox.el-checkbox--large .el-checkbox__inner{
-  display:none;
+.el-checkbox.el-checkbox--large .el-checkbox__inner {
+  display: none;
 }
 </style>

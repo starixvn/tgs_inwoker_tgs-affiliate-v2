@@ -20,8 +20,13 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="searchForm.dateRange" type="daterange" 
-            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
+            <el-date-picker
+              v-model="searchForm.dateRange"
+              type="daterange"
+              size="large"
+              @change="daterangeChange"
+              :disabled-date="disabledDate"
+            />
           </el-form-item>
 
           <el-form-item>
@@ -32,53 +37,44 @@
     </el-row>
 
     <div v-show="scene === 'total'">
-  
-  
       <el-row>
         <el-col :span="22">
-        <div class="legends">
-          <div>
-            <el-button type="primary" icon="me-icon-info"  @click="showlegends = !showlegends" />
-
-          </div>
-          <div v-show="showlegends === true">
-            <div v-for="(legend, index) in legends" :key="index">
-              <div>- {{ t(legend) }}</div>
+          <div class="legends">
+            <div>
+              <el-button type="primary" icon="me-icon-info" @click="showlegends = !showlegends" />
+            </div>
+            <div v-show="showlegends === true">
+              <div v-for="(legend, index) in legends" :key="index">
+                <div>- {{ t(legend) }}</div>
+              </div>
             </div>
           </div>
-        </div>
-        
-      </el-col>
-      <el-col :span="2">
-        <el-popover
-          style="float:right"
-          placement="left-start"
-          :width="200"
-          trigger="click"
-          content="this is content, this is content, this is content"
-        >
-          <template #reference>
-            <el-button
-                      type="primary"
-                      class="btnsearch"
-                      size="large"
-                      style="float: right"
-                      icon="mel-icon-filter"
-        
-                      >
-                    </el-button>
-          </template>
-          <template #default>
-            <div
-                class="demo-rich-conent"
-                style="display: flex; gap: 5px; flex-direction: column"
-              >
-                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
-                
-            </div>
-          </template>
-        </el-popover>
-      </el-col>
+        </el-col>
+        <el-col :span="2">
+          <el-popover
+            style="float: right"
+            placement="left-start"
+            :width="200"
+            trigger="click"
+            content="this is content, this is content, this is content"
+          >
+            <template #reference>
+              <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-filter">
+              </el-button>
+            </template>
+            <template #default>
+              <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                <el-checkbox
+                  v-for="(item, index) in tableColumn"
+                  :key="index"
+                  :label="$t(index)"
+                  :disabled="item.mustShow"
+                  v-model="item.isShow"
+                />
+              </div>
+            </template>
+          </el-popover>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
@@ -89,7 +85,13 @@
             stripe
             @row-click="getDividendDetails"
           >
-            <el-table-column v-if="tableColumn.agent.isShow" :label="t('agent')" prop="username" :formatter="customRowFormatter" min-width="150" />
+            <el-table-column
+              v-if="tableColumn.agent.isShow"
+              :label="t('agent')"
+              prop="username"
+              :formatter="customRowFormatter"
+              min-width="150"
+            />
             <el-table-column
               v-if="tableColumn.pt.isShow"
               prop="agentDividendPercentage"
@@ -114,7 +116,7 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
-            v-if="tableColumn.betAmount.isShow"
+              v-if="tableColumn.betAmount.isShow"
               prop="betAmount"
               :label="t('betAmount')"
               align="right"
@@ -122,7 +124,7 @@
               width="120"
             />
             <el-table-column
-            v-if="tableColumn.validBetAmount.isShow"
+              v-if="tableColumn.validBetAmount.isShow"
               prop="validBetAmount"
               :label="t('validBetAmount')"
               align="right"
@@ -130,7 +132,7 @@
               width="120"
             />
             <el-table-column
-            v-if="tableColumn.winloss.isShow"
+              v-if="tableColumn.winloss.isShow"
               prop="winLossAmount"
               :label="t('winloss')"
               align="right"
@@ -138,7 +140,7 @@
               width="120"
             />
             <el-table-column
-            v-if="tableColumn.netProfit.isShow"
+              v-if="tableColumn.netProfit.isShow"
               prop="netProfit"
               :label="t('netProfit')"
               align="right"
@@ -161,7 +163,7 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
-            v-if="tableColumn.agentAdjustAmount.isShow"
+              v-if="tableColumn.agentAdjustAmount.isShow"
               prop="agentAdjustAmount"
               :label="t('agentAdjustAmount')"
               align="right"
@@ -169,7 +171,7 @@
               width="150"
             />
             <el-table-column
-            v-if="tableColumn.agentDividendAmount.isShow"
+              v-if="tableColumn.agentDividendAmount.isShow"
               prop="agentDividendAmount"
               :label="t('agentDividendAmount')"
               align="right"
@@ -197,21 +199,31 @@
       </el-row>
     </div>
     <div v-show="scene === 'detail'">
-      <el-row style="justify-content: end;">
-        <div class="back-btn no-select"  @click="goBackResetEverything">« {{ t('goBack') }}</div></el-row
+      <el-row style="justify-content: end">
+        <div class="back-btn no-select" @click="goBackResetEverything">« {{ t('goBack') }}</div></el-row
       >
       <el-row>
         <el-col :span="24">
-          <el-table :data="tableData" stripe :summary-method="getSummaries"  show-summary>
-            <el-table-column :label="t('agent')" prop="username"  align="center"/>
-            <el-table-column prop="settlementDate" :label="t('settlementDate')" align="center" :formatter="formatDate" />
+          <el-table :data="tableData" stripe :summary-method="getSummaries" show-summary>
+            <el-table-column :label="t('agent')" prop="username" align="center" />
+            <el-table-column
+              prop="settlementDate"
+              :label="t('settlementDate')"
+              align="center"
+              :formatter="formatDate"
+            />
             <el-table-column
               props="settlementDateFrom, settlementDateTo"
               :label="t('settlementDateFromTo')"
               align="center"
               :formatter="formatIntervalDate"
             />
-            <el-table-column prop="agentDividendAmount" :label="t('menuProfitShare')" align="center" :formatter="formatPrice" />
+            <el-table-column
+              prop="agentDividendAmount"
+              :label="t('menuProfitShare')"
+              align="center"
+              :formatter="formatPrice"
+            />
 
             <template #empty>
               {{ t('noRecord') }}
@@ -269,7 +281,7 @@ interface SpanMethodProps {
 interface ISearchForm {
   From: string;
   To: string;
-  dateRange:[Date, Date],
+  dateRange: [Date, Date];
   page: number;
   rows: number;
   desc: boolean;
@@ -281,7 +293,7 @@ interface AgentDetailsSearchForm {
   AgentId: string;
   From: string;
   To: string;
-  dateRange:[Date, Date],
+  dateRange: [Date, Date];
   page: number;
   rows: number;
   desc: true;
@@ -294,10 +306,10 @@ interface DataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  pt:{
+  pt: {
     isShow: boolean;
     mustShow: boolean;
-  }
+  };
   bonus: {
     isShow: boolean;
     mustShow: boolean;
@@ -306,7 +318,7 @@ interface DataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  betAmount:{
+  betAmount: {
     isShow: boolean;
     mustShow: boolean;
   };
@@ -333,11 +345,11 @@ interface DataColumn {
   agentDividendAmount: {
     isShow: boolean;
     mustShow: boolean;
-  }; 
+  };
 }
 interface SummaryMethodProps<T = ISubitems> {
-  columns: TableColumnCtx<T>[]
-  data: T[]
+  columns: TableColumnCtx<T>[];
+  data: T[];
 }
 export default defineComponent({
   name: 'MyComponent',
@@ -359,49 +371,48 @@ export default defineComponent({
       tableColumn: reactive<DataColumn>({
         agent: {
           isShow: true,
-          mustShow: true
+          mustShow: true,
         },
-        pt:{
+        pt: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         bonus: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         bonusAdjust: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         betAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         validBetAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         winloss: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         netProfit: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         contribution: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         agentAdjustAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         agentDividendAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
-
       }),
       legends: [
         'rl_bonusAmount',
@@ -417,7 +428,7 @@ export default defineComponent({
       searchForm: reactive<ISearchForm>({
         From: '',
         To: '',
-        dateRange:[new Date(), new Date()],
+        dateRange: [new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -429,7 +440,7 @@ export default defineComponent({
         AgentId: '',
         From: '',
         To: '',
-        dateRange:[new Date(), new Date()],
+        dateRange: [new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -461,7 +472,7 @@ export default defineComponent({
     },
 
     async getDividendDetails(row: any) {
-      if(row.id != ''){
+      if (row.id != '') {
         this.scene = 'detail';
         this.selectedUserId = row.id || row.AgentId;
         this.selecterUserDividend = row.agentDividendPercentage;
@@ -475,9 +486,7 @@ export default defineComponent({
 
         this.tableData = [...result.data.items];
         this.totalAgentDetailRowCount = result.data.totalcount;
-
       }
-      
     },
 
     goBackResetEverything() {
@@ -494,32 +503,34 @@ export default defineComponent({
       return `${formatFrom} - ${formatTo}`;
     },
     getSummaries(param: SummaryMethodProps) {
-      const { columns, data } = param
-      const sums: string[] = []
+      const { columns, data } = param;
+      const sums: string[] = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t("total");
-          return
+          sums[index] = this.$t('total');
+          return;
         }
-        const values = data.map((item) => Number(item[column.property]))
+        const values = data.map((item) => Number(item[column.property]));
         if (!values.every((value) => Number.isNaN(value))) {
-          sums[index] = `${values.reduce((prev, curr) => {
-            const value = Number(curr)
-            if (!Number.isNaN(value)) {
-              return prev + curr
-            } else {
-              return prev
-            }
-          }, 0).toFixed(2)}`
+          sums[index] = `${values
+            .reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!Number.isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0)
+            .toFixed(2)}`;
         } else {
-          sums[index] = ''
+          sums[index] = '';
         }
-      })
+      });
 
-      return sums
+      return sums;
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
-      if (row.username === "") {
+      if (row.username === '') {
         return [1, 14];
       }
 
@@ -554,11 +565,11 @@ export default defineComponent({
         return '';
       }
     },
-    disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    disabledDate(time: Date) {
+      return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
-    daterangeChange(){
-      this.searchForm.dateRange 
+    daterangeChange() {
+      this.searchForm.dateRange;
 
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
@@ -608,11 +619,13 @@ export default defineComponent({
         this.dividendDetailSearchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
       this.searchForm.dateRange = [moment(this.searchForm.From).toDate(), moment(this.searchForm.To).toDate()];
-      this.dividendDetailSearchForm.dateRange = [moment(this.dividendDetailSearchForm.From).toDate(), moment(this.dividendDetailSearchForm.To).toDate()];
+      this.dividendDetailSearchForm.dateRange = [
+        moment(this.dividendDetailSearchForm.From).toDate(),
+        moment(this.dividendDetailSearchForm.To).toDate(),
+      ];
       this.searchForm.page = 1;
     },
     onSearch() {
-
       if (this.scene === 'total') {
         this.searchForm.rows = 10;
         this.searchForm.page = 1;
@@ -635,7 +648,6 @@ export default defineComponent({
     },
 
     handleSizeChange(val: number) {
-
       if (this.scene === 'total') {
         this.searchForm.rows = val;
         this.searchForm.page = 1;
@@ -645,12 +657,8 @@ export default defineComponent({
         this.dividendDetailSearchForm.page = 1;
         this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
       }
-
-
-
     },
     handleCurrentChange(val: number) {
-
       if (this.scene === 'total') {
         this.searchForm.page = val;
         this.getItems();
@@ -658,7 +666,6 @@ export default defineComponent({
         this.dividendDetailSearchForm.page = val;
         this.getDividendDetails({ AgentId: this.selectedUserId, agentDividendPercentage: this.selecterUserDividend });
       }
-
     },
   },
 });
@@ -715,29 +722,25 @@ export default defineComponent({
 
 .back-btn {
   cursor: pointer;
- color: var(--el-color-primary);
- font-weight: bold;
- text-decoration: underline;
+  color: var(--el-color-primary);
+  font-weight: bold;
+  text-decoration: underline;
 }
 </style>
 <style lang="scss">
-
-table thead tr th{
-  .cell{
-    text-align:center;
+table thead tr th {
+  .cell {
+    text-align: center;
   }
- 
 }
-.el-table__footer{
- tr{
-  background-color: #eeeeee;
-  >td{
-
+.el-table__footer {
+  tr {
+    background-color: #eeeeee;
+    > td {
+    }
   }
- }
-
 }
-.el-table__footer-wrapper tbody td.el-table__cell{
+.el-table__footer-wrapper tbody td.el-table__cell {
   background-color: #eeeeee;
   font-weight: bold;
 }

@@ -43,11 +43,23 @@
       <el-col :span="24">
         <el-table :data="tableData" border resizable fit>
           <el-table-column :label="t('agent')" prop="username" min-width="150" align="center" />
-          <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" align="center"/>
-          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" :formatter="formatPercentage" width="150" align="center"/>
-          <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" align="center"/>
+          <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" align="center" />
+          <el-table-column
+            :label="t('profitSharePT')"
+            prop="dividendpercentage"
+            :formatter="formatPercentage"
+            width="150"
+            align="center"
+          />
+          <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" align="center" />
           <el-table-column align="center" :label="t('balance')" prop="balance" :formatter="formatPrice" />
-          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" min-width="120" align="center" />
+          <el-table-column
+            :label="t('status')"
+            prop="status"
+            :formatter="formatStatus"
+            min-width="120"
+            align="center"
+          />
           <el-table-column :label="t('setting')" align="center" width="150">
             <template #default="scope">
               <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />
@@ -103,12 +115,11 @@
           <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
             <template #append>%</template>
           </el-input>
-          <el-alert type="error"  :closable="false">
-            {{$t("dividentAlert", [userStore.user.dividendpercentage])}}%
-        </el-alert>
+          <el-alert type="error" :closable="false">
+            {{ $t('dividentAlert', [userStore.user.dividendpercentage]) }}%
+          </el-alert>
         </el-form-item>
-       
-    
+
         <el-form-item :label="t('remarks')">
           <el-input v-model="addAgentParams.remarks" size="large" type="textarea" />
         </el-form-item>
@@ -146,9 +157,7 @@
                 <el-form-item :label="t('type') + ':'">
                   {{ agentDetails.type }}
                 </el-form-item>
-                <el-form-item :label="t('profitSharePT') + ':'">
-                  {{ agentDetails.dividendpercentage }}%
-                </el-form-item>
+                <el-form-item :label="t('profitSharePT') + ':'"> {{ agentDetails.dividendpercentage }}% </el-form-item>
               </el-form>
             </el-col>
             <el-col :lg="12" :md="12" :xs="24">
@@ -159,7 +168,6 @@
                 <el-form-item :label="t('phone') + ':'">
                   {{ agentDetails.phone }}
                 </el-form-item>
-
               </el-form>
             </el-col>
           </el-row>
@@ -175,7 +183,6 @@
                     style="width: 100%"
                     :placeholder="$t('transactionType')"
                   >
-   
                     <el-option
                       v-for="(value, propertyName) in accountChange.transactionTypeList"
                       :key="propertyName"
@@ -201,10 +208,13 @@
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-
-                  <el-date-picker v-model="accountChange.searchForm.dateRange" type="daterange" 
-            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
-
+                  <el-date-picker
+                    v-model="accountChange.searchForm.dateRange"
+                    type="daterange"
+                    size="large"
+                    @change="daterangeChange"
+                    :disabled-date="disabledDate"
+                  />
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" class="btnsearch" size="large" @click="onSearchAccountChange()">{{
@@ -257,146 +267,154 @@
       </el-tabs>
     </el-dialog>
 
-
-    <el-dialog v-model="updateAgentDialogVisible" :title="t('agentInfo')" width="80%" :fullscreen="globalStore.isMobile">
+    <el-dialog
+      v-model="updateAgentDialogVisible"
+      :title="t('agentInfo')"
+      width="80%"
+      :fullscreen="globalStore.isMobile"
+    >
       <el-row>
-            <el-col :lg="12" :md="12" :xs="24">
-              <el-form label-position="right" label-width="150px">
-                <el-form-item :label="t('agentusername') + ':'">
-                  {{ agentDetails.username }}
-                </el-form-item>
-                <el-form-item :label="t('realName') + ':'">
-                  {{ agentDetails.realname }}
-                  <el-button type="primary" style="margin-left:10px" @click="onUpdateRealNameClick">{{ t('updateRealName') }}</el-button>
-                  <el-dialog
-                    v-model="updateRealNameDialogVisible"
-                    width="30%"
-                    :fullscreen="globalStore.isMobile"
-                    :title="t('updateRealName')"
-                    append-to-body
-                  >
-                    <el-form label-position="right" label-width="150px">
-                      <el-form-item :label="t('realName')">
-                        <el-input
-                          v-model="updateAgentParams.realName"
-                          size="large"
-                          :placeholder="$t('realName')"
-                          clearable
-                        />
-                      </el-form-item>
-                     
-                    </el-form>
-                    <template #footer>
-                      <div class="dialog-footer">
-                
-                        <el-button type="primary" @click="onSubmitAgentRealNameClick">
-                          {{ t('submit') }}
-                        </el-button>
-                      </div>
-                    </template>
-                  </el-dialog> 
-                </el-form-item>
-                <el-form-item :label="t('registeredOn') + ':'">
-                  {{ formatDateTime2(agentDetails.registeredon) }}
-                </el-form-item>
-                <el-form-item :label="t('balance') + ':'">
-                  {{ agentDetails.balance }}
-                </el-form-item>
-                <el-form-item :label="t('status') + ':'">
-                  {{ agentDetails.status }}
-                </el-form-item>
-                <el-form-item :label="t('type') + ':'">
-                  {{ agentDetails.type }}
-                </el-form-item>
-                <el-form-item :label="t('profitSharePT') + ':'">
-                  {{ agentDetails.dividendpercentage }}%
-                  <el-button v-if="agentDetails.agentdividendtype === 'OneLayer'" type="primary" style="margin-left:10px" @click="onUpdateProfitSharePTClick">{{ t('updateProfitSharePT') }}</el-button>
-                  <el-dialog
-                    v-model="updateProfitSharePTDialogVisible"
-                    width="30%"
-                    :fullscreen="globalStore.isMobile"
-                    :title="t('updateProfitSharePT')"
-                    append-to-body
-                  >
-                    <el-form label-position="left" label-width="150px">
-                      <el-form-item :label="t('profitSharePT')">
-                        <el-input-number v-model="updateDividendParams.dividendPercentage" :min="agentDividendRange.min" :max="agentDividendRange.max" size="large"  
-                          />
-                       
-                      </el-form-item>
-                     
-                    </el-form>
-                    <template #footer>
-                      <div class="dialog-footer">
-                
-                        <el-button type="primary" @click="onSubmitUpdateProfitSharePTClick">
-                          {{ t('submit') }}
-                        </el-button>
-                      </div>
-                    </template>
-                  </el-dialog> 
-                </el-form-item>
-              </el-form>
-            </el-col>
-            <el-col :lg="12" :md="12" :xs="24">
-              <el-form label-position="right" label-width="150px">
-                <el-form-item :label="t('email') + ':'">
-                  <el-input v-model="agentDetails.email"></el-input>
-     
-                </el-form-item>
-                <el-form-item :label="t('phone') + ':'">
-                  <el-input v-model="agentDetails.phone"></el-input>
-                </el-form-item>
-                <el-form-item :label="t('password') + ':'">
-                  <el-button type="primary" @click="onResetPasswordClick">{{ t('resetPassword') }}</el-button>
-                  <el-dialog
-                    v-model="resetPasswordDialogVisible"
-                    width="50%"
-                    :fullscreen="globalStore.isMobile"
-                    :title="t('resetPassword')"
-                    append-to-body
-                  >
-                    <el-form label-position="right" label-width="150px">
-                      <el-form-item :label="t('password')">
-                        <el-input
-                          v-model="updateAgentPasswordParams.password"
-                          size="large"
-                          :placeholder="$t('enterPassword')"
-                          clearable
-                          type="password"
-                        />
-                      </el-form-item>
-                      <el-form-item :label="t('confirmPassword')">
-                        <el-input
-                          v-model="updateAgentPasswordParams.confirmPassword"
-                          size="large"
-                          :placeholder="$t('reEnterPassword')"
-                          clearable
-                          type="password"
-                        />
-                      </el-form-item>
-                    </el-form>
-                    <template #footer>
-                      <div class="dialog-footer">
-                
-                        <el-button type="primary" @click="onUpdateAgentPasswordClick">
-                          {{ t('submit') }}
-                        </el-button>
-                      </div>
-                    </template>
-                  </el-dialog> 
-                </el-form-item>
-              </el-form>
-            </el-col>
-          </el-row>
-          <template #footer>
-      <div class="dialog-footer">
- 
-        <el-button type="primary" @click="onUpdateAgentContactClick">
-          {{ t('submit') }}
-        </el-button>
-      </div>
-    </template>
+        <el-col :lg="12" :md="12" :xs="24">
+          <el-form label-position="right" label-width="150px">
+            <el-form-item :label="t('agentusername') + ':'">
+              {{ agentDetails.username }}
+            </el-form-item>
+            <el-form-item :label="t('realName') + ':'">
+              {{ agentDetails.realname }}
+              <el-button type="primary" style="margin-left: 10px" @click="onUpdateRealNameClick">{{
+                t('updateRealName')
+              }}</el-button>
+              <el-dialog
+                v-model="updateRealNameDialogVisible"
+                width="30%"
+                :fullscreen="globalStore.isMobile"
+                :title="t('updateRealName')"
+                append-to-body
+              >
+                <el-form label-position="right" label-width="150px">
+                  <el-form-item :label="t('realName')">
+                    <el-input
+                      v-model="updateAgentParams.realName"
+                      size="large"
+                      :placeholder="$t('realName')"
+                      clearable
+                    />
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+                  <div class="dialog-footer">
+                    <el-button type="primary" @click="onSubmitAgentRealNameClick">
+                      {{ t('submit') }}
+                    </el-button>
+                  </div>
+                </template>
+              </el-dialog>
+            </el-form-item>
+            <el-form-item :label="t('registeredOn') + ':'">
+              {{ formatDateTime2(agentDetails.registeredon) }}
+            </el-form-item>
+            <el-form-item :label="t('balance') + ':'">
+              {{ agentDetails.balance }}
+            </el-form-item>
+            <el-form-item :label="t('status') + ':'">
+              {{ agentDetails.status }}
+            </el-form-item>
+            <el-form-item :label="t('type') + ':'">
+              {{ agentDetails.type }}
+            </el-form-item>
+            <el-form-item :label="t('profitSharePT') + ':'">
+              {{ agentDetails.dividendpercentage }}%
+              <el-button
+                v-if="agentDetails.agentdividendtype === 'OneLayer'"
+                type="primary"
+                style="margin-left: 10px"
+                @click="onUpdateProfitSharePTClick"
+                >{{ t('updateProfitSharePT') }}</el-button
+              >
+              <el-dialog
+                v-model="updateProfitSharePTDialogVisible"
+                width="30%"
+                :fullscreen="globalStore.isMobile"
+                :title="t('updateProfitSharePT')"
+                append-to-body
+              >
+                <el-form label-position="left" label-width="150px">
+                  <el-form-item :label="t('profitSharePT')">
+                    <el-input-number
+                      v-model="updateDividendParams.dividendPercentage"
+                      :min="agentDividendRange.min"
+                      :max="agentDividendRange.max"
+                      size="large"
+                    />
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+                  <div class="dialog-footer">
+                    <el-button type="primary" @click="onSubmitUpdateProfitSharePTClick">
+                      {{ t('submit') }}
+                    </el-button>
+                  </div>
+                </template>
+              </el-dialog>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :lg="12" :md="12" :xs="24">
+          <el-form label-position="right" label-width="150px">
+            <el-form-item :label="t('email') + ':'">
+              <el-input v-model="agentDetails.email"></el-input>
+            </el-form-item>
+            <el-form-item :label="t('phone') + ':'">
+              <el-input v-model="agentDetails.phone"></el-input>
+            </el-form-item>
+            <el-form-item :label="t('password') + ':'">
+              <el-button type="primary" @click="onResetPasswordClick">{{ t('resetPassword') }}</el-button>
+              <el-dialog
+                v-model="resetPasswordDialogVisible"
+                width="50%"
+                :fullscreen="globalStore.isMobile"
+                :title="t('resetPassword')"
+                append-to-body
+              >
+                <el-form label-position="right" label-width="150px">
+                  <el-form-item :label="t('password')">
+                    <el-input
+                      v-model="updateAgentPasswordParams.password"
+                      size="large"
+                      :placeholder="$t('enterPassword')"
+                      clearable
+                      type="password"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('confirmPassword')">
+                    <el-input
+                      v-model="updateAgentPasswordParams.confirmPassword"
+                      size="large"
+                      :placeholder="$t('reEnterPassword')"
+                      clearable
+                      type="password"
+                    />
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+                  <div class="dialog-footer">
+                    <el-button type="primary" @click="onUpdateAgentPasswordClick">
+                      {{ t('submit') }}
+                    </el-button>
+                  </div>
+                </template>
+              </el-dialog>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="onUpdateAgentContactClick">
+            {{ t('submit') }}
+          </el-button>
+        </div>
+      </template>
     </el-dialog>
   </el-card>
 </template>
@@ -421,10 +439,22 @@ import {
   AccountChangesItems,
   AccountChangesParams,
   getTransactionTypeApi,
-  TransactionTypeData
+  TransactionTypeData,
 } from '@/api/agentreport';
-import { AddAgentParams, addAgentApi,getSubAgentDividendsApi,UpdateDividendParams,updateDividendApi,GetSubAgentDividendData,
-  updateAgentApi,UpdateAgentParams, UpdateAgentContactParams, updateAgentPasswordApi,updateAgentContactApi, UpdateAgentPasswordParams } from '@/api/agent';
+import {
+  AddAgentParams,
+  addAgentApi,
+  getSubAgentDividendsApi,
+  UpdateDividendParams,
+  updateDividendApi,
+  GetSubAgentDividendData,
+  updateAgentApi,
+  UpdateAgentParams,
+  UpdateAgentContactParams,
+  updateAgentPasswordApi,
+  updateAgentContactApi,
+  UpdateAgentPasswordParams,
+} from '@/api/agent';
 
 export default defineComponent({
   name: 'MyComponent',
@@ -436,7 +466,7 @@ export default defineComponent({
     return {
       t,
       globalStore,
-      userStore
+      userStore,
     };
   },
 
@@ -449,14 +479,14 @@ export default defineComponent({
         searchForm: reactive<AccountChangesParams>({
           From: '',
           To: '',
-          dateRange:[new Date(), new Date()],
+          dateRange: [new Date(), new Date()],
           page: 1,
           rows: 10,
           desc: true,
           sort: 'recordedOn',
           all: false,
           transactiontype: '',
-          id: '', 
+          id: '',
         }),
         dateType: 'today',
       },
@@ -465,16 +495,16 @@ export default defineComponent({
       statuses: reactive<AgentStatusesData>({}),
       totalRowCount: 0,
       activeName: 'first',
-      addAgentDialogVisible: this.perform === "add",
+      addAgentDialogVisible: this.perform === 'add',
       viewAgentDialogVisible: false,
-      updateAgentDialogVisible:false,
-      resetPasswordDialogVisible:false,
-      updateRealNameDialogVisible:false,
-      updateProfitSharePTDialogVisible:false,
-      updateAgentId:"",
-      agentDividendRange : reactive<GetSubAgentDividendData>({
-          min : 0,
-          max: 0
+      updateAgentDialogVisible: false,
+      resetPasswordDialogVisible: false,
+      updateRealNameDialogVisible: false,
+      updateProfitSharePTDialogVisible: false,
+      updateAgentId: '',
+      agentDividendRange: reactive<GetSubAgentDividendData>({
+        min: 0,
+        max: 0,
       }),
       agentDetails: reactive<AgentDetailsData>({
         accumulatedprofitsharing: 0,
@@ -585,16 +615,14 @@ export default defineComponent({
     },
     formatPercentage(row: any, column: TableColumnCtx<AgentData>) {
       let percentage = '%' as string;
-     return row[column.property] + percentage;
+      return row[column.property] + percentage;
     },
-    disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    disabledDate(time: Date) {
+      return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
-    daterangeChange(){
-
-
-    this.accountChange.searchForm.From = moment(this.accountChange.searchForm.dateRange[0]).format('YYYY-MM-DD');
-    this.accountChange.searchForm.To = moment(this.accountChange.searchForm.dateRange[1]).format('YYYY-MM-DD');
+    daterangeChange() {
+      this.accountChange.searchForm.From = moment(this.accountChange.searchForm.dateRange[0]).format('YYYY-MM-DD');
+      this.accountChange.searchForm.To = moment(this.accountChange.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     onDateTypeChange() {
       if (this.accountChange.dateType == 'today') {
@@ -622,7 +650,10 @@ export default defineComponent({
         this.accountChange.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.accountChange.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }
-      this.accountChange.searchForm.dateRange = [moment(this.accountChange.searchForm.From).toDate(), moment(this.accountChange.searchForm.To).toDate()];
+      this.accountChange.searchForm.dateRange = [
+        moment(this.accountChange.searchForm.From).toDate(),
+        moment(this.accountChange.searchForm.To).toDate(),
+      ];
       this.accountChange.searchForm.page = 1;
       //this.getItems();
     },
@@ -651,48 +682,35 @@ export default defineComponent({
       const result2 = await response2.runAsync(id);
       this.agentDividendRange = result2.data;
       this.updateAgentDialogVisible = true;
-
-
-
     },
     async onUpdateAgentContactClick() {
-      
-     
       const params = new UpdateAgentContactParams();
       params.email = this.agentDetails.email;
       params.phone = this.agentDetails.phone;
       params.subAgentId = this.updateAgentId;
       const response = await updateAgentContactApi()(params);
-      if(response.err ===0){
+      if (response.err === 0) {
         this.updateAgentDialogVisible = false;
       }
-   
-  
     },
     async onUpdateAgentPasswordClick() {
-      
-     
       this.updateAgentPasswordParams.subAgentId = this.updateAgentId;
       const response = await updateAgentPasswordApi()(this.updateAgentPasswordParams);
-      if(response.err === 0){
+      if (response.err === 0) {
         this.resetPasswordDialogVisible = false;
       }
-      
-   
-  
     },
 
-    
     async onRegister() {
-      if(this.addAgentParams.userName === ''){
+      if (this.addAgentParams.userName === '') {
         ElMessage.error(this.$t('usernameCannotEmpty'));
         return;
       }
-      if(this.addAgentParams.password === ''){
+      if (this.addAgentParams.password === '') {
         ElMessage.error(this.$t('passwordCannotEmpty'));
         return;
       }
-      if(this.addAgentParams.confirmPassword !== this.addAgentParams.password){
+      if (this.addAgentParams.confirmPassword !== this.addAgentParams.password) {
         ElMessage.error(this.$t('passwordNotSame'));
         return;
       }
@@ -709,38 +727,42 @@ export default defineComponent({
       this.resetAddAgent();
       this.addAgentDialogVisible = false;
     },
-    onResetPasswordClick(){
-      this.resetPasswordDialogVisible=true;
+    onResetPasswordClick() {
+      this.resetPasswordDialogVisible = true;
       this.updateAgentPasswordParams = new UpdateAgentPasswordParams();
     },
-    onUpdateProfitSharePTClick(){
-      this.updateProfitSharePTDialogVisible=true;
+    onUpdateProfitSharePTClick() {
+      this.updateProfitSharePTDialogVisible = true;
       this.updateDividendParams = new UpdateDividendParams();
       this.updateDividendParams.dividendPercentage = this.agentDetails.dividendpercentage;
       this.updateDividendParams.subAgentId = this.updateAgentId;
     },
-    async onSubmitUpdateProfitSharePTClick(){
+    async onSubmitUpdateProfitSharePTClick() {
       const response = await updateDividendApi()(this.updateDividendParams);
-      if(response.err ===0){
-        this.agentDetails.dividendpercentage =  this.updateDividendParams.dividendPercentage;
+      if (response.err === 0) {
+        this.agentDetails.dividendpercentage = this.updateDividendParams.dividendPercentage;
+        for(var i=0;i<this.tableData.length;i++){
+          if(this.tableData[i].id === this.updateAgentId){
+            this.tableData[i].dividendpercentage = this.updateDividendParams.dividendPercentage;
+            break;
+          }
+        }
+        
         this.updateProfitSharePTDialogVisible = false;
       }
     },
-    onUpdateRealNameClick(){
-      this.updateRealNameDialogVisible=true;
+    onUpdateRealNameClick() {
+      this.updateRealNameDialogVisible = true;
       this.updateAgentParams = new UpdateAgentParams();
       this.updateAgentParams.realName = this.agentDetails.realname;
       this.updateAgentParams.subAgentId = this.updateAgentId;
     },
-    async onSubmitAgentRealNameClick(){
-
+    async onSubmitAgentRealNameClick() {
       const response = await updateAgentApi()(this.updateAgentParams);
-      if(response.err ===0){
-        this.agentDetails.realname =  this.updateAgentParams.realName;
+      if (response.err === 0) {
+        this.agentDetails.realname = this.updateAgentParams.realName;
         this.updateRealNameDialogVisible = false;
       }
-   
-
     },
     resetAddAgent() {
       this.addAgentParams = new AddAgentParams();

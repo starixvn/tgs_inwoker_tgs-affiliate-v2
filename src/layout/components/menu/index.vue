@@ -11,7 +11,6 @@
           <layout-menu-item v-for="route in routeStore.routes" :key="route.path" :item="route" />
         </el-menu>
       </el-scrollbar>
-     
     </div>
   </div>
 </template>

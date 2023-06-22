@@ -35,92 +35,88 @@
         <el-button text @click="dialogVisible = true" class="button-forgot">
           {{ $t('iForgotMyPassword') }}
         </el-button>
-       
+
         <me-locale-select v-if="localeConfig.localeList.length > 1" class="item"></me-locale-select>
       </div>
-        
-        <el-dialog v-model="dialogVisible" width="40%"  :title="$t('iForgotMyPassword')">
-          <div v-if="forgotPassword.scene === 1">
-            <el-form ref="formRef" :model="loginParams" label-width="150px">
-              <el-form-item :label="t('email')">
-                <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
-                </el-input>
-              </el-form-item>
 
-              <el-form-item :label="t('verificationCode')">
-                <el-input
-              v-model="resetPassword.validatecode"
-              class="textInput"
-              :placeholder="t('verificationCode')"
-              :maxlength="6"
-              autofocus
-              clearable
-            >
-              <template #append>
-                <div v-if="forgotPassword.timer === 60">
-                  <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
-                    {{ t('requestCode') }}
-                  </el-button>
-                </div>
-                <div v-else>
-                  <el-button>
-                    {{ t('resend') }}
-                    {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
-                  </el-button>
-                </div>
-              </template></el-input>
-              </el-form-item>
-            </el-form>
-    
-            
-          </div>
-          <div v-else>
-            <el-form ref="formRef" :model="loginParams" label-width="100px">
-              <el-form-item :label="t('password')">
-                <el-input
-                              v-model="resetPassword.newpwd"
-                              class="textInput"
-                              type="password"
-                              :placeholder="t('password')"
-                              clearable
-                              show-password
-                            />
-              </el-form-item>
+      <el-dialog v-model="dialogVisible" width="40%" :title="$t('iForgotMyPassword')">
+        <div v-if="forgotPassword.scene === 1">
+          <el-form ref="formRef" :model="loginParams" label-width="150px">
+            <el-form-item :label="t('email')">
+              <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
+              </el-input>
+            </el-form-item>
 
-              <el-form-item :label="t('confirmPassword')">
-                <el-input
-                    v-model="forgotPassword.confirmpass"
-                    class="textInput"
-                    type="password"
-                    :placeholder="t('confirmPassword')"
-                    clearable
-                    show-password
-                  />
-              </el-form-item>
-            </el-form>
-              
-  
+            <el-form-item :label="t('verificationCode')">
+              <el-input
+                v-model="resetPassword.validatecode"
+                class="textInput"
+                :placeholder="t('verificationCode')"
+                :maxlength="6"
+                autofocus
+                clearable
+              >
+                <template #append>
+                  <div v-if="forgotPassword.timer === 60">
+                    <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
+                      {{ t('requestCode') }}
+                    </el-button>
+                  </div>
+                  <div v-else>
+                    <el-button>
+                      {{ t('resend') }}
+                      {{ forgotPassword.timer > 0 ? '(' + forgotPassword.timer + ')' : '' }}
+                    </el-button>
+                  </div>
+                </template></el-input
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+        <div v-else>
+          <el-form ref="formRef" :model="loginParams" label-width="100px">
+            <el-form-item :label="t('password')">
+              <el-input
+                v-model="resetPassword.newpwd"
+                class="textInput"
+                type="password"
+                :placeholder="t('password')"
+                clearable
+                show-password
+              />
+            </el-form-item>
+
+            <el-form-item :label="t('confirmPassword')">
+              <el-input
+                v-model="forgotPassword.confirmpass"
+                class="textInput"
+                type="password"
+                :placeholder="t('confirmPassword')"
+                clearable
+                show-password
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <template #footer>
+          <span class="dialog-footer">
+            <div v-if="forgotPassword.scene === 1">
+              <el-button
+                type="primary"
+                :disabled="forgotPassword.email === '' || resetPassword.validatecode === ''"
+                @click="forgotPassword.scene = 2"
+              >
+                {{ t('nextStep') }}
+              </el-button>
             </div>
-  
-          <template #footer>
-            <span class="dialog-footer">
-              <div v-if="forgotPassword.scene === 1">
-                <el-button
-                  type="primary"
-                  :disabled="forgotPassword.email === '' || resetPassword.validatecode === ''"
-                  @click="forgotPassword.scene = 2"
-                >
-                  {{ t('nextStep') }}
-                </el-button>
-              </div>
-              <div v-else>
-                <el-button type="text" @click="forgotPassword.scene = 1"> {{ t('back') }} </el-button>
-                <el-button type="primary" @click="performResetPassword"> {{ t('resetPassword') }} </el-button>
-              </div>
-            </span>
-          </template>
-        </el-dialog>
-    
+            <div v-else>
+              <el-button type="text" @click="forgotPassword.scene = 1"> {{ t('back') }} </el-button>
+              <el-button type="primary" @click="performResetPassword"> {{ t('resetPassword') }} </el-button>
+            </div>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -303,14 +299,13 @@ const login = async () => {
       display: block;
     }
   }
-  .btm-container{
-   
-    display:flex;
+  .btm-container {
+    display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction:column;
-    .button-forgot{
-      font-size:16px;
+    flex-direction: column;
+    .button-forgot {
+      font-size: 16px;
       margin-bottom: 20px;
     }
   }

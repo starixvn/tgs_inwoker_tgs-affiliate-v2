@@ -14,7 +14,9 @@
             <div class="data">
               <div>{{ user.balance.toFixed(2) }}</div>
               <router-link :to="'/wallet/withdraw'">
-                <el-button type="primary" size="large" icon="me-icon-dollar" class="custom-btn"> {{ $t('wallet') }} </el-button>
+                <el-button type="primary" size="large" icon="me-icon-dollar" class="custom-btn">
+                  {{ $t('wallet') }}
+                </el-button>
               </router-link>
             </div>
           </div>
@@ -42,14 +44,23 @@
               {{ affiliatelink }}
             </div>
             <div class="button-container">
-              <el-button type="primary" class="custom-btn" size="large" :icon="CopyDocument" @click="performCopyText(affiliatelink)">{{
-                $t('copy')
-              }}</el-button>
+              <el-button
+                type="primary"
+                class="custom-btn"
+                size="large"
+                :icon="CopyDocument"
+                @click="performCopyText(affiliatelink)"
+                >{{ $t('copy') }}</el-button
+              >
               <router-link :to="{ name: 'agent', path: '/team/agent', query: { perform: 'add' } }">
-                <el-button type="primary" size="large" icon="me-icon-addagent" class="custom-btn"> {{ $t('addagent') }} </el-button>
+                <el-button type="primary" size="large" icon="me-icon-addagent" class="custom-btn">
+                  {{ $t('addagent') }}
+                </el-button>
               </router-link>
               <router-link :to="{ name: 'player', path: '/team/player', query: { perform: 'add' } }">
-                <el-button type="primary" class="custom-btn" size="large" icon="me-icon-addplayer"> {{ $t('addplayer') }} </el-button>
+                <el-button type="primary" class="custom-btn" size="large" icon="me-icon-addplayer">
+                  {{ $t('addplayer') }}
+                </el-button>
               </router-link>
 
               <custom-button />
@@ -64,7 +75,7 @@
               </div>
               <div class="qrcode-button">
                 <el-button
-                class="custom-btn"
+                  class="custom-btn"
                   type="primary"
                   size="large"
                   :icon="Download"
@@ -73,7 +84,7 @@
                   >{{ $t('download') }}</el-button
                 >
                 <el-button
-                class="custom-btn"
+                  class="custom-btn"
                   type="primary"
                   size="large"
                   :icon="CopyDocument"
@@ -92,19 +103,19 @@
           <div class="content">
             <div class="statistic-container">
               <div class="statistic" :class="`blue-gradient`">
-                <div class="name">{{ $t("directAgent") }}</div>
+                <div class="name">{{ $t('directAgent') }}</div>
                 <div class="data">{{ teamData.directAgentCount }}</div>
               </div>
               <div class="statistic" :class="`purple-gradient`">
-                <div class="name">{{ $t("indirectAgent") }}</div>
+                <div class="name">{{ $t('indirectAgent') }}</div>
                 <div class="data">{{ teamData.indirectAgentCount }}</div>
               </div>
               <div class="statistic" :class="`yellow-gradient`">
-                <div class="name">{{ $t("directPlayer") }}</div>
+                <div class="name">{{ $t('directPlayer') }}</div>
                 <div class="data">{{ teamData.directPlayerCount }}</div>
               </div>
               <div class="statistic" :class="`pink-gradient`">
-                <div class="name">{{ $t("indirectPlayer") }}</div>
+                <div class="name">{{ $t('indirectPlayer') }}</div>
                 <div class="data">{{ teamData.indirectPlayerCount }}</div>
               </div>
             </div>
@@ -139,16 +150,14 @@ import { router } from '@/router';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import { onMounted } from 'vue';
 import { useLocalesI18n } from '@/locales/hooks';
-import {
-  getInfoApi, InfoData
-} from '@/api/agentTeam';
+import { getInfoApi, InfoData } from '@/api/agentTeam';
 
-let teamData = reactive<InfoData>({ 
+let teamData = reactive<InfoData>({
   directAgentCount: 0,
   directPlayerCount: 0,
   indirectAgentCount: 0,
-  indirectPlayerCount: 0
-} );
+  indirectPlayerCount: 0,
+});
 //get data from userStore
 const { $state } = useUserStore();
 //from $state get the data
@@ -214,7 +223,6 @@ function performCopyText(text: string) {
   ElMessage.success(t('copied'));
 }
 
-
 const overview = reactive([
   { name: 'estimatedProfitShare', data: '123456', color: 'blue' },
   { name: 'totalNetWorth', data: '123456', color: 'purple' },
@@ -230,11 +238,10 @@ onMounted(async () => {
 
   const status = await getInfoApi();
   const result = await status.runAsync();
-  teamData.directAgentCount  = result.data.directAgentCount;
-  teamData.indirectAgentCount  = result.data.indirectAgentCount;
-  teamData.directPlayerCount  = result.data.directPlayerCount;
-  teamData.indirectPlayerCount  = result.data.indirectPlayerCount;
-
+  teamData.directAgentCount = result.data.directAgentCount;
+  teamData.indirectAgentCount = result.data.indirectAgentCount;
+  teamData.directPlayerCount = result.data.directPlayerCount;
+  teamData.indirectPlayerCount = result.data.indirectPlayerCount;
 });
 </script>
 
@@ -316,18 +323,18 @@ onMounted(async () => {
     font-weight: bold;
   }
   &.blue-gradient {
-    background: linear-gradient(90deg, #134190 0%, #2E72E5 100%);
+    background: linear-gradient(90deg, #134190 0%, #2e72e5 100%);
   }
 
   &.purple-gradient {
-    background: linear-gradient(90deg, #261A47 0%, #8372B6 100%);
+    background: linear-gradient(90deg, #261a47 0%, #8372b6 100%);
   }
   &.yellow-gradient {
-    background: linear-gradient(90deg, #E89941 0%, #FDDE91 100%);
+    background: linear-gradient(90deg, #e89941 0%, #fdde91 100%);
   }
 
   &.pink-gradient {
-    background: linear-gradient(90deg, #D817B9 0%, #DBC3E6 100%);
+    background: linear-gradient(90deg, #d817b9 0%, #dbc3e6 100%);
   }
 }
 
@@ -434,19 +441,14 @@ onMounted(async () => {
       margin: 0;
     }
   }
- 
-
 }
-
 </style>
 <style lang="scss">
-.custom-btn {   
- 
+.custom-btn {
   .el-icon {
     width: 1.3em;
     height: 1.3em;
-
-  } 
+  }
   .el-icon > svg {
     width: 1.3em;
     height: 1.3em;

@@ -27,11 +27,9 @@ watch(
   },
 );
 
-
-
 const init = async () => {
   const globalStore = useGlobalStore();
- 
+
   await globalStore.getFeature();
   //const res2 = await getFeatures(settingConfig.brands)();
 

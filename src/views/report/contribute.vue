@@ -5,7 +5,7 @@
         <div class="big-title">{{ $t('winlossReport') }}</div>
       </el-col>
     </el-row>
-    
+
     <el-row>
       <el-col :span="24">
         <el-form :inline="true">
@@ -20,10 +20,13 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker v-model="searchForm.dateRange" type="daterange" 
-            size="large" @change="daterangeChange" :disabled-date="disabledDate" />
-
- 
+            <el-date-picker
+              v-model="searchForm.dateRange"
+              type="daterange"
+              size="large"
+              @change="daterangeChange"
+              :disabled-date="disabledDate"
+            />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
@@ -36,7 +39,7 @@
       <el-col :span="22">
         <div class="legends">
           <div>
-            <el-button type="primary" icon="me-icon-info"  @click="showlegends = !showlegends" />
+            <el-button type="primary" icon="me-icon-info" @click="showlegends = !showlegends" />
           </div>
           <div v-show="showlegends === true">
             <div v-for="(legend, index) in legends" :key="index">
@@ -44,35 +47,28 @@
             </div>
           </div>
         </div>
-        
       </el-col>
-      <el-col :span="2" >
-        
+      <el-col :span="2">
         <el-popover
-          style="float:right"
+          style="float: right"
           placement="left-start"
           :width="200"
           trigger="click"
           content="this is content, this is content, this is content"
         >
           <template #reference>
-            <el-button
-                      type="primary"
-                      class="btnsearch"
-                      size="large"
-                      style="float: right"
-                      icon="mel-icon-filter"
-        
-                      >
-                    </el-button>
+            <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-filter">
+            </el-button>
           </template>
           <template #default>
-            <div
-                class="demo-rich-conent"
-                style="display: flex; gap: 5px; flex-direction: column"
-              >
-                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)" :disabled="item.mustShow" v-model="item.isShow" />
-                
+            <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+              <el-checkbox
+                v-for="(item, index) in tableColumn"
+                :key="index"
+                :label="$t(index)"
+                :disabled="item.mustShow"
+                v-model="item.isShow"
+              />
             </div>
           </template>
         </el-popover>
@@ -81,37 +77,87 @@
     <el-row>
       <el-col :span="24">
         <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column  :label="t('player')" >
+          <el-table-column :label="t('player')">
             <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
-            <el-table-column v-if="tableColumn.type.isShow" :label="t('type')" prop="type" :formatter="formatType" align="right"/>
-            
+            <el-table-column
+              v-if="tableColumn.type.isShow"
+              :label="t('type')"
+              prop="type"
+              :formatter="formatType"
+              align="right"
+            />
           </el-table-column>
-          <el-table-column v-if="tableColumn.depositAmount.isShow" :label="t('depositAmount')" prop="depositAmount" :formatter="formatPrice" align="right" />
-            <el-table-column
-            v-if="tableColumn.withdrawalAmount.isShow"
-              :label="t('withdrawalAmount')"
-              prop="withdrawalAmount"
-              :formatter="formatPrice" align="right"
-            />
-            <el-table-column v-if="tableColumn.bonusAmount.isShow" :label="t('bonusAmount')" prop="bonusAmount" :formatter="formatPrice" align="right" />
-            <el-table-column
-              v-if="tableColumn.bonusAdjustAmount.isShow"
-              :label="t('bonusAdjustAmount')"
-              prop="bonusAdjustAmount"
-              :formatter="formatPrice" align="right"
-            />
-            
           <el-table-column
-          v-if="tableColumn.agentAdjustAmount.isShow"
+            v-if="tableColumn.depositAmount.isShow"
+            :label="t('depositAmount')"
+            prop="depositAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.withdrawalAmount.isShow"
+            :label="t('withdrawalAmount')"
+            prop="withdrawalAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.bonusAmount.isShow"
+            :label="t('bonusAmount')"
+            prop="bonusAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.bonusAdjustAmount.isShow"
+            :label="t('bonusAdjustAmount')"
+            prop="bonusAdjustAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+
+          <el-table-column
+            v-if="tableColumn.agentAdjustAmount.isShow"
             :label="t('agentAdjustAmount')"
             prop="agentAdjustAmount"
-            :formatter="formatPrice" align="right"
+            :formatter="formatPrice"
+            align="right"
           />
-          <el-table-column v-if="tableColumn.betAmount.isShow" :label="t('betAmount')" prop="betAmount" :formatter="formatPrice" align="right" />
-          <el-table-column v-if="tableColumn.validBetAmount.isShow" :label="t('validBetAmount')" prop="validBetAmount" :formatter="formatPrice" align="right"/>
-          <el-table-column v-if="tableColumn.turnover.isShow" :label="t('turnover')" prop="turnover" :formatter="formatPrice" align="right"/>
-          <el-table-column v-if="tableColumn.winLossAmount.isShow" :label="t('winLossAmount')" prop="winLossAmount" :formatter="formatPrice" align="right"/>
-          <el-table-column v-if="tableColumn.netProfit.isShow" :label="t('netProfit')" prop="netProfit" :formatter="formatPrice" align="right"/>
+          <el-table-column
+            v-if="tableColumn.betAmount.isShow"
+            :label="t('betAmount')"
+            prop="betAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.validBetAmount.isShow"
+            :label="t('validBetAmount')"
+            prop="validBetAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.turnover.isShow"
+            :label="t('turnover')"
+            prop="turnover"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.winLossAmount.isShow"
+            :label="t('winLossAmount')"
+            prop="winLossAmount"
+            :formatter="formatPrice"
+            align="right"
+          />
+          <el-table-column
+            v-if="tableColumn.netProfit.isShow"
+            :label="t('netProfit')"
+            prop="netProfit"
+            :formatter="formatPrice"
+            align="right"
+          />
 
           <template #empty>
             {{ t('noRecord') }}
@@ -130,11 +176,10 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
-        <template #sizes>
-          <span>{{ totalRowCount }} Rows</span>
-        </template>
-        </el-pagination>  
-  
+          <template #sizes>
+            <span>{{ totalRowCount }} Rows</span>
+          </template>
+        </el-pagination>
       </div>
     </el-row>
   </el-card>
@@ -173,7 +218,7 @@ interface ISearchForm {
   dateType: string;
   From: string;
   To: string;
-  dateRange:[Date, Date],
+  dateRange: [Date, Date];
   page: number;
   rows: number;
   desc: boolean;
@@ -185,10 +230,10 @@ interface DataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  type:{
+  type: {
     isShow: boolean;
     mustShow: boolean;
-  }
+  };
   depositAmount: {
     isShow: boolean;
     mustShow: boolean;
@@ -197,7 +242,7 @@ interface DataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  bonusAmount:{
+  bonusAmount: {
     isShow: boolean;
     mustShow: boolean;
   };
@@ -224,11 +269,11 @@ interface DataColumn {
   winLossAmount: {
     isShow: boolean;
     mustShow: boolean;
-  }; 
+  };
   netProfit: {
     isShow: boolean;
     mustShow: boolean;
-  }; 
+  };
 }
 export default defineComponent({
   name: 'MyComponent',
@@ -241,72 +286,67 @@ export default defineComponent({
   },
 
   data() {
-    
     return {
       showAgent: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
-      showlegends:false,
-      legends: [
-        'rl_winloss_row1',
-        'rl_winloss_row2'
-      ],
+      showlegends: false,
+      legends: ['rl_winloss_row1', 'rl_winloss_row2'],
       tableColumn: reactive<DataColumn>({
         username: {
           isShow: true,
-          mustShow: true
+          mustShow: true,
         },
-        type:{
+        type: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         depositAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         withdrawalAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
-        bonusAmount:{
+        bonusAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         bonusAdjustAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         agentAdjustAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         betAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         validBetAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         turnover: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         winLossAmount: {
           isShow: true,
-          mustShow: false
+          mustShow: false,
         },
         netProfit: {
           isShow: true,
-          mustShow: false
-        }
-
+          mustShow: false,
+        },
       }),
       searchForm: reactive<ISearchForm>({
         dateType: 'today',
         From: '',
         To: '',
-        dateRange:[new Date(), new Date()],
+        dateRange: [new Date(), new Date()],
         page: 1,
         rows: 10,
         desc: true,
@@ -366,23 +406,20 @@ export default defineComponent({
     formatType(row: any, column: TableColumnCtx<ISubitems>) {
       const { t } = useI18n();
       if (row[column.property] === 1) {
-
-        return t("agent");
-      } else  if (row[column.property] === 2) {
-        return t("player");
-      }else{
-        return "";
+        return t('agent');
+      } else if (row[column.property] === 2) {
+        return t('player');
+      } else {
+        return '';
       }
     },
     onSearch() {
       this.getItems();
     },
-    disabledDate (time: Date)  {
-        return time.getTime() > Date.now() || time.getTime() < moment().add(-1,'d').add(-6,'M').toDate().getTime();
+    disabledDate(time: Date) {
+      return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
-    daterangeChange(){
-
-
+    daterangeChange() {
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
@@ -390,7 +427,6 @@ export default defineComponent({
       if (this.searchForm.dateType == 'today') {
         this.searchForm.From = moment().format('YYYY-MM-DD');
         this.searchForm.To = moment().format('YYYY-MM-DD');
-
       } else if (this.searchForm.dateType == 'yesterday') {
         this.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');

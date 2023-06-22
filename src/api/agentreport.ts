@@ -93,7 +93,7 @@ export interface AccountChangesParams extends BasePageParams {
   id: string;
   From: string;
   To: string;
-  dateRange:[Date, Date];
+  dateRange: [Date, Date];
 }
 export interface AgentDividendsParams extends BasePageParams {
   From: string;

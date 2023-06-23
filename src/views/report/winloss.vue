@@ -646,10 +646,26 @@ export default defineComponent({
         if (column.property !== 'agentDividendPercentage') {
           percentage = '';
         }
-        return row[column.property].toFixed(2) + percentage;
+        
+        return this.formatTo2Decimal(row[column.property]) + percentage;
       } else {
         return '';
       }
+    },
+    formatTo2Decimal(val : number){
+      var spt = val.toString().split(".");
+      var stringVal = spt[0] + ".";
+      if(spt.length >1){
+        if(spt[1].length > 2){
+          stringVal += spt[1].substring(0,2);
+        }else{
+          stringVal += spt[1];
+        }
+        
+      }else{
+        stringVal += "00";
+      }
+      return stringVal;
     },
     formatDate(datetime: string) {
       return moment(datetime).format('YYYY/MM/DD');
@@ -662,7 +678,7 @@ export default defineComponent({
       return t('roundStatus'+status);
     },
     formatPrice2(val: number) {
-      return val.toFixed(2);
+      return this.formatTo2Decimal(val);
     },
     formatPricePercentage(row: any, column: TableColumnCtx<WinlossReportItem>) {
       return row[column.property].toFixed(2) + '%';

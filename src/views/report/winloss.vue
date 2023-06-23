@@ -660,6 +660,10 @@ export default defineComponent({
           stringVal += spt[1].substring(0,2);
         }else{
           stringVal += spt[1];
+          if(spt[1].length === 1){
+            stringVal+= "0";
+          }
+          
         }
         
       }else{

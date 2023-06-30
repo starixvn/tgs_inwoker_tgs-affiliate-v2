@@ -507,7 +507,8 @@ export default defineComponent({
     },
 
     formatStatus(row: any, column: TableColumnCtx<ISubitems>) {
-      return this.$t(this.statuses[row[column.property]]);
+
+      return this.$t(this.statuses.filter(a=> a.name == row[column.property])[0].data);
     },
 
     formatTime(row: any, column: TableColumnCtx<ISubitems>) {

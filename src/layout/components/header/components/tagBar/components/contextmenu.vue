@@ -13,7 +13,7 @@
       style="outline: none"
       role="menuitem"
     >
-      <li class="el-dropdown-menu__item" @click="reload"><mel-icon-refresh /> {{ $t('重新加载') }}</li>
+      <li class="el-dropdown-menu__item" @click="reload"><mel-icon-refresh /> {{ $t('reload') }}</li>
       <li
         :class="{
           'el-dropdown-menu__item': true,
@@ -21,7 +21,7 @@
         }"
         @click="closeCurrent"
       >
-        <mel-icon-close /> {{ $t('关闭') }}{{ $t(' ') }}{{ $t('当前') }}
+        <mel-icon-close /> {{ $t('close') }}{{ $t(' ') }}{{ $t('current') }}
       </li>
       <li
         :class="{
@@ -30,7 +30,7 @@
         }"
         @click="closeLeft"
       >
-        <mel-icon-download style="transform: rotate(90deg)" />{{ $t('关闭') }}{{ $t(' ') }}{{ $t('左侧') }}
+        <mel-icon-download style="transform: rotate(90deg)" />{{ $t('close') }}{{ $t(' ') }}{{ $t('leftSide') }}
       </li>
       <li
         :class="{
@@ -39,7 +39,7 @@
         }"
         @click="closeRight"
       >
-        <mel-icon-download style="transform: rotate(270deg)" />{{ $t('关闭') }}{{ $t(' ') }}{{ $t('右侧') }}
+        <mel-icon-download style="transform: rotate(270deg)" />{{ $t('close') }}{{ $t(' ') }}{{ $t('rightSide') }}
       </li>
       <li
         :class="{
@@ -48,7 +48,7 @@
         }"
         @click="closeOther"
       >
-        <mel-icon-document-delete /> {{ $t('关闭') }}{{ $t(' ') }}{{ $t('其他') }}
+        <mel-icon-document-delete /> {{ $t('close') }}{{ $t(' ') }}{{ $t('other') }}
       </li>
       <li
         :class="{
@@ -57,7 +57,7 @@
         }"
         @click="closeAll"
       >
-        <mel-icon-minus /> {{ $t('关闭') }}{{ $t(' ') }}{{ $t('全部') }}
+        <mel-icon-minus /> {{ $t('close') }}{{ $t(' ') }}{{ $t('all') }}
       </li>
     </ul>
   </el-popover>

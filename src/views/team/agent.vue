@@ -152,10 +152,10 @@
                   {{ agentDetails.balance }}
                 </el-form-item>
                 <el-form-item :label="t('status') + ':'">
-                  {{ agentDetails.status }}
+                  {{ t(agentDetails.status) }}
                 </el-form-item>
                 <el-form-item :label="t('type') + ':'">
-                  {{ agentDetails.type }}
+                  {{ t(agentDetails.type) }}
                 </el-form-item>
                 <el-form-item :label="t('profitSharePT') + ':'"> {{ agentDetails.dividendpercentage }}% </el-form-item>
               </el-form>
@@ -317,10 +317,10 @@
               {{ agentDetails.balance }}
             </el-form-item>
             <el-form-item :label="t('status') + ':'">
-              {{ agentDetails.status }}
+              {{ t(agentDetails.status) }}
             </el-form-item>
             <el-form-item :label="t('type') + ':'">
-              {{ agentDetails.type }}
+              {{ t(agentDetails.type) }}
             </el-form-item>
             <el-form-item :label="t('profitSharePT') + ':'">
               {{ agentDetails.dividendpercentage }}%
@@ -741,13 +741,13 @@ export default defineComponent({
       const response = await updateDividendApi()(this.updateDividendParams);
       if (response.err === 0) {
         this.agentDetails.dividendpercentage = this.updateDividendParams.dividendPercentage;
-        for(var i=0;i<this.tableData.length;i++){
-          if(this.tableData[i].id === this.updateAgentId){
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].id === this.updateAgentId) {
             this.tableData[i].dividendpercentage = this.updateDividendParams.dividendPercentage;
             break;
           }
         }
-        
+
         this.updateProfitSharePTDialogVisible = false;
       }
     },

@@ -21,10 +21,6 @@ const { themeConfig } = useSettingStore();
     height: 100%;
   }
 
-  .item:hover {
-    background-color: var(--el-fill-color);
-  }
-
   .no-hover:hover {
     background-color: unset;
   }

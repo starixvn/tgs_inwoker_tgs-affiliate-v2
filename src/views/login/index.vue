@@ -305,7 +305,6 @@ const login = async () => {
     justify-content: center;
     flex-direction: column;
     .button-forgot {
-      font-size: 16px;
       margin-bottom: 20px;
     }
   }

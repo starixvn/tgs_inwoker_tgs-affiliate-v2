@@ -71,7 +71,7 @@ const list = reactive([
   {
     title: 'winlossreport',
     icon: 'mel-icon-user-filled',
-    path: '/report/contribute',
+    path: '/report/winloss',
   },
   {
     title: 'helpcenter',
@@ -105,11 +105,23 @@ const list = reactive([
   //     }
   //   }
   // }
+
+  &:hover {
+    background-color: var(--el-color-primary);
+    div {
+      color: #fff;
+    }
+
+    .card-icon {
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    }
+  }
 }
 
 .card-icon {
   height: 100px;
   width: 100px;
+  pointer-events: none;
 
   display: flex;
   justify-content: center;

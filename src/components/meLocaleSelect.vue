@@ -1,6 +1,6 @@
 <template>
   <el-dropdown trigger="click" class="dropdown">
-    <span>
+    <span class="dropdown-menu">
       {{ localeConfig.localeList.filter((a) => a.locale === $i18n.locale)[0].text }}
       <el-icon>
         <mel-icon-arrow-down />
@@ -38,10 +38,16 @@ const setLanguage = (locale: string) => {
     }
   }
 }
+
 .dropdown {
-  font-size: 16px;
   :hover {
     cursor: pointer;
   }
+}
+
+.dropdown-menu {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 </style>

@@ -5,6 +5,8 @@ import { mixColor } from '@/utils/helper';
 const { css } = useStyleTag('');
 
 const primarycolor = '#07b5bc';
+const warningColor = '#fbc02d';
+const warningAlertBg = '#fffbe7';
 
 const useSettingStore = defineStore('setting', {
   state: () => ({
@@ -19,6 +21,8 @@ const useSettingStore = defineStore('setting', {
       const style = [];
       const darkStyle = [];
       style.push(`--el-color-primary: ${primarycolor}  !important`);
+      style.push(`--el-color-warning: ${warningColor}  !important`);
+      style.push(`--el-color-warning-light-9:${warningAlertBg}   !important`);
       darkStyle.push(`--el-color-primary: ${primarycolor} !important`);
       style.push('--el-color-primary-rgb:' + mixColor(primarycolor, '#000000', 0) + ' !important');
       darkStyle.push('--el-color-primary-rgb:' + mixColor(primarycolor, '#000000', 0) + ' !important');

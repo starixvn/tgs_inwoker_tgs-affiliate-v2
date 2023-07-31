@@ -46,7 +46,8 @@
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
 
-            <el-button type="primary" @click="onExport()" size="large" class="custom-icon" icon="me-icon-save">
+            <el-button type="primary" @click="onExport()" size="large" class="custom-icon">
+              <img :src="getImgUrl('save')" id="saveIcon" />
             </el-button>
           </el-form-item>
         </el-form>
@@ -471,6 +472,7 @@ class BreadCrumb {
   id = '';
   username = '';
 }
+
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -636,6 +638,9 @@ export default defineComponent({
       }
 
       this.roundsTotalRowCount = result.data.totalCount;
+    },
+    getImgUrl(pic: string) {
+      return '../assets/images/' + pic + '.svg';
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
       if (row.memberType == '') {
@@ -955,6 +960,7 @@ export default defineComponent({
     }
   }
 }
+
 .legends {
   display: flex;
   gap: 20px;
@@ -1052,5 +1058,11 @@ export default defineComponent({
 }
 .input-with-select {
   width: 402px;
+}
+
+#saveIcon {
+  height: 15px;
+  width: 15px;
+  filter: invert(100%);
 }
 </style>

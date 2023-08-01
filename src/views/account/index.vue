@@ -174,11 +174,12 @@
                 </el-popover>
               </div>
             </div>
-            <div class="profile-info">
+            <!--
+   <div class="profile-info">
               <div class="title">{{ $t('withdrawpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterChangeWithdrawalPass">
+                <el-popover trigger="click" placement="right" :width="460" @before-enter="onEnterChangeWithdrawalPass">
                   <template #reference>
                     <el-button style="width: 170px">{{ t('withdrawpassword') }}</el-button>
                   </template>
@@ -287,6 +288,11 @@
                 </el-popover>
               </div>
             </div>
+
+
+
+
+         -->
           </div>
         </div>
       </div>
@@ -494,6 +500,11 @@ profileInfo.list.push({ name: 'registeron', value: convertDate($state.user?.regi
 profileInfo.list.push({ name: 'balance', value: $state.user?.balance, editable: false });
 profileInfo.list.push({ name: 'status', value: t($state.user?.status), editable: false });
 profileInfo.list.push({ name: 'type', value: t($state.user?.type), editable: false });
+profileInfo.list.push({
+  name: 'accumulatedProfitShare',
+  value: t($state.user?.accumulatedprofitsharing),
+  editable: false,
+});
 profileInfo.list.push({
   name: 'profitSharePT',
   value: $state.user?.dividendpercentage + '%',

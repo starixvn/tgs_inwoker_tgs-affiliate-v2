@@ -56,7 +56,7 @@
   "agentAdjustAmount": "Agent Adjustment",
   "betAmount": "Bet Amount",
   "validBetAmount": "Valid Bet",
-  "turnover": "Turnover",
+  "turnover": "Valid Bet",
   "winLossAmount": "WinLoss",
   "netProfit": "Net Profit",
   "total": "Total",
@@ -281,7 +281,7 @@
   "extOrderId": "Ext. Order ID",
   "createdOn": "Created On",
   "closedOn": "Closed On",
-  "subProvider": "Sub Provider",
+  "subProvider": "Provider",
   "gameName": "Game Name",
   "settlement": "Settlement",
   "roundStatus1": "Open",
@@ -299,5 +299,9 @@
 
   "invalidEmailFormat": "Invalid Email Format",
   "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%",
-  "copySuccess": "Copied"
+  "copySuccess": "Copied",
+  "usernameFormat": "Enter 6~16 characters(0~9, a~z)",
+  "phoneFormat": "Enter 6~32 digits",
+  "accumulatedProfitShare": "Accumulated Profit Share",
+  "checkAll": "Check All"
 }

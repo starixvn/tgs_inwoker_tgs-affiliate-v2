@@ -10,6 +10,10 @@
             <div class="data">{{ user.username }}</div>
           </div>
           <div class="account-container">
+            <div class="title">{{ $t('accumulatedProfitShare') }}</div>
+            <div class="data">{{ user.accumulatedprofitsharing }}</div>
+          </div>
+          <div class="account-container">
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
               <div>{{ user.balance.toFixed(2) }}</div>

@@ -338,12 +338,12 @@
           >
             <el-table-column :label="t('orderId')" width="140">
               <template #default="scope">
-                <div class="ellipsis" @click="doubleClickCopy(scope.row.id)">{{ scope.row.id }}</div>
+                <div class="ellipsis" @click="clickToCopy(scope.row.id)">{{ scope.row.id }}</div>
               </template>
             </el-table-column>
             <el-table-column :label="t('extOrderId')" prop="externalRoundId" width="140">
               <template #default="scope">
-                <div class="ellipsis" @click="doubleClickCopy(scope.row.externalRoundId)">
+                <div class="ellipsis" @click="clickToCopy(scope.row.externalRoundId)">
                   {{ scope.row.externalRoundId }}
                 </div>
               </template>
@@ -644,7 +644,7 @@ export default defineComponent({
     getImgUrl(pic: string) {
       return '../assets/images/' + pic + '.svg';
     },
-    doubleClickCopy(item: string) {
+    clickToCopy(item: string) {
       navigator.clipboard.writeText(item);
       ElNotification({
         message: this.t('copySuccess'),

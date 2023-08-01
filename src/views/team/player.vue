@@ -52,6 +52,9 @@
               </template>
               <template #default>
                 <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                  <el-checkbox v-model="isAllColumnsChecked" @change="toggleAllColumns">{{
+                    $t('checkAll')
+                  }}</el-checkbox>
                   <el-checkbox
                     v-for="(item, index) in tableColumn"
                     :key="index"
@@ -170,7 +173,7 @@
     <el-dialog v-model="addPlayerDialogVisible" :title="t('addPlayer')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
         <el-form-item :label="t('username')">
-          <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('enterUsername')" clearable />
+          <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('usernameFormat')" clearable />
         </el-form-item>
         <el-form-item :label="t('password')">
           <el-input
@@ -321,6 +324,7 @@ export default defineComponent({
 
   data() {
     return {
+      isAllColumnsChecked: false,
       showAgent: false,
       tableData: reactive<PlayerData[]>([]),
       statuses: reactive<PlayerStatusData>({}),
@@ -401,7 +405,25 @@ export default defineComponent({
     this.getStatuses();
   },
   mounted() {},
+  watch: {
+    tableColumn: {
+      deep: true,
+      handler(newValue) {
+        const allColumnsChecked = Object.values(newValue).every((item) => item.isShow);
+
+        this.isAllColumnsChecked = allColumnsChecked;
+      },
+    },
+  },
   methods: {
+    toggleAllColumns() {
+      // Loop through all tableColumn items and set their isShow property based on the state of isAllColumnsChecked
+      for (const key in this.tableColumn) {
+        if (Object.hasOwnProperty.call(this.tableColumn, key)) {
+          this.tableColumn[key].isShow = this.isAllColumnsChecked;
+        }
+      }
+    },
     async getItems() {
       const response = await getPlayerList();
       const result = await response.runAsync(this.searchForm);

@@ -338,12 +338,14 @@
           >
             <el-table-column :label="t('orderId')" width="140">
               <template #default="scope">
-                <div class="ellipsis">{{ scope.row.id }}</div>
+                <div class="ellipsis" @click="doubleClickCopy(scope.row.id)">{{ scope.row.id }}</div>
               </template>
             </el-table-column>
             <el-table-column :label="t('extOrderId')" prop="externalRoundId" width="140">
               <template #default="scope">
-                <div class="ellipsis">{{ scope.row.externalRoundId }}</div>
+                <div class="ellipsis" @click="doubleClickCopy(scope.row.externalRoundId)">
+                  {{ scope.row.externalRoundId }}
+                </div>
               </template>
             </el-table-column>
             <el-table-column :label="t('createdOn')" width="160">
@@ -641,6 +643,13 @@ export default defineComponent({
     },
     getImgUrl(pic: string) {
       return '../assets/images/' + pic + '.svg';
+    },
+    doubleClickCopy(item: string) {
+      navigator.clipboard.writeText(item);
+      ElNotification({
+        message: this.t('copySuccess'),
+        type: 'success',
+      });
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
       if (row.memberType == '') {

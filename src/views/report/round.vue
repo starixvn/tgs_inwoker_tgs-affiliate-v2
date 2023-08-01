@@ -122,8 +122,20 @@
             :label="t('externalRoundId')"
             align="right"
             v-if="tableColumn.externalRoundId.isShow"
-          />
-          <el-table-column prop="id" :label="t('roundId')" align="right" v-if="tableColumn.roundId.isShow" />
+          >
+            <template #default="{ row }">
+              <div class="copy-container">
+                <span @click="copyText(row.externalRoundId)">{{ row.externalRoundId }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="id" :label="t('roundId')" align="right" v-if="tableColumn.roundId.isShow">
+            <template #default="{ row }">
+              <div class="copy-container">
+                <span @click="copyText(row.id)">{{ row.id }}</span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="createdOn"
             :label="t('betTime')"
@@ -464,6 +476,21 @@ export default defineComponent({
         };
       });
     },
+    async copyText(textToCopy) {
+      try {
+        // Copy the text to the clipboard
+        await navigator.clipboard.writeText(textToCopy);
+
+        // Optionally, show a success message or perform other actions
+        ElNotification({
+          message: this.t('copySuccess'),
+          type: 'success',
+        });
+      } catch (error) {
+        // If copying fails, handle the error here
+        console.error('Failed to copy text: ', error);
+      }
+    },
     async getItems() {
       //check if username is null
       if (this.searchForm.Username === '') {
@@ -507,8 +534,7 @@ export default defineComponent({
     },
 
     formatStatus(row: any, column: TableColumnCtx<ISubitems>) {
-
-      return this.$t(this.statuses.filter(a=> a.name == row[column.property])[0].data);
+      return this.$t(this.statuses.filter((a) => a.name == row[column.property])[0].data);
     },
 
     formatTime(row: any, column: TableColumnCtx<ISubitems>) {

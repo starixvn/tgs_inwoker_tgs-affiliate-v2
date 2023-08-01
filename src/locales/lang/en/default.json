@@ -298,5 +298,6 @@
   "other": "Other",
 
   "invalidEmailFormat": "Invalid Email Format",
-  "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%"
+  "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%",
+  "copySuccess": "Copied"
 }

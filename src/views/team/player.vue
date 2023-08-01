@@ -67,7 +67,13 @@
         <el-table :data="tableData" border>
           <el-table-column :label="t('player')" prop="username" min-width="150" />
           <el-table-column :label="t('playercode')" prop="playercode" v-if="tableColumn.playercode.isShow" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" v-if="tableColumn.viplevel.isShow" />
+          <el-table-column
+            :label="t('viplevel')"
+            prop="viplevel"
+            align="center"
+            width="90"
+            v-if="tableColumn.viplevel.isShow"
+          />
           <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow" />
           <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow" />
           <el-table-column
@@ -84,7 +90,7 @@
             width="180"
             v-if="tableColumn.lastloginon.isShow"
           />
-          <el-table-column :label="t('registerhost')" prop="registerhost" v-if="tableColumn.registerhost.isShow" />
+
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="300">
@@ -122,7 +128,7 @@
             :label="t('totaldepositamount')"
             :formatter="formatPrice"
             prop="totaldepositamount"
-            align="center"
+            align="right"
             width="150"
             v-if="tableColumn.totaldepositamount.isShow"
           ></el-table-column>
@@ -130,13 +136,14 @@
             :label="t('totalwithdrawamount')"
             :formatter="formatPrice"
             prop="totalwithdrawamount"
-            align="center"
+            align="right"
             width="150"
             v-if="tableColumn.totalwithdrawamount.isShow"
           ></el-table-column>
           <el-table-column
             :label="t('status')"
             prop="status"
+            align="center"
             :formatter="formatStatus"
             v-if="tableColumn.status.isShow"
           />
@@ -215,7 +222,8 @@
               addPlayerParams.password === '' ||
               addPlayerParams.confirmPassword !== addPlayerParams.password ||
               addPlayerParams.phone === '' ||
-              addPlayerParams.tnc === false
+              addPlayerParams.tnc === false ||
+              addPlayerParams.email === ''
             "
             @click="onAddPlayer()"
           >
@@ -280,10 +288,7 @@ interface PlayerDataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  registerhost: {
-    isShow: boolean;
-    mustShow: boolean;
-  };
+
   balance: {
     isShow: boolean;
     mustShow: boolean;
@@ -351,10 +356,7 @@ export default defineComponent({
           isShow: true,
           mustShow: false,
         },
-        registerhost: {
-          isShow: false,
-          mustShow: false,
-        },
+
         balance: {
           isShow: true,
           mustShow: true,

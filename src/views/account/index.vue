@@ -600,7 +600,7 @@ const onVerfiyEmailCode = async () => {
   gap: 20px;
   background: #fff;
   padding: 20px;
-  border-radius: 20px 30px;
+  border-radius: 20px 20px;
 }
 
 .right-content {

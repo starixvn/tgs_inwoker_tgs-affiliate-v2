@@ -663,12 +663,25 @@ export default defineComponent({
     onSearch() {
       this.getItems();
     },
+    resetEverything() {
+      this.activeName = 'first';
+      this.accountChange.searchForm.From = '';
+      this.accountChange.searchForm.To = '';
+      this.accountChange.searchForm.dateRange = [new Date(), new Date()];
+      this.accountChange.searchForm.page = 1;
+      this.accountChange.searchForm.rows = 10;
+      this.accountChange.tableData = [];
+      this.accountChange.totalRowCount = 0;
+      this.accountChange.dateType = 'today';
+    },
     onSearchAccountChange() {
       this.getAccountChange();
     },
     async onViewClick(id: string) {
+      this.resetEverything();
       const response = await getAgentDetailsApi();
       const result = await response.runAsync(id);
+
       this.agentDetails = result.data;
       this.viewAgentDialogVisible = true;
     },

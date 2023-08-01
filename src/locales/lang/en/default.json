@@ -295,5 +295,7 @@
   "current": "Current",
   "leftSide": "Left Side",
   "rightSide": "Right Side",
-  "other": "Other"
+  "other": "Other",
+
+  "invalidEmailFormat": "Invalid Email Format"
 }

@@ -295,5 +295,7 @@
   "current": "当前",
   "leftSide": "左侧",
   "rightSide": "右侧",
-  "other": "其他"
+  "other": "其他",
+
+  "invalidEmailFormat": "請輸入有效的電子郵件"
 }

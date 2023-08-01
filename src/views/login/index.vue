@@ -58,7 +58,12 @@
               >
                 <template #append>
                   <div v-if="forgotPassword.timer === 60">
-                    <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
+                    <el-button
+                      type="primary"
+                      class="btn-custom"
+                      :disabled="forgotPassword.email === ''"
+                      @click="performRequestCode"
+                    >
                       {{ t('requestCode') }}
                     </el-button>
                   </div>
@@ -306,6 +311,15 @@ const login = async () => {
     flex-direction: column;
     .button-forgot {
       margin-bottom: 20px;
+    }
+  }
+  .btn-custom {
+    background-color: var(--el-color-primary) !important;
+    color: #fff !important;
+    border-radius: 0px;
+    &.is-disabled {
+      background-color: var(--el-button-disabled-bg-color) !important;
+      color: #fff !important;
     }
   }
 }

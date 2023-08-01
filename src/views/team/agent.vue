@@ -323,7 +323,7 @@
               {{ t(agentDetails.type) }}
             </el-form-item>
             <el-form-item :label="t('profitSharePT') + ':'">
-              {{ agentDetails.dividendpercentage }}%
+              {{ agentDetails.dividendpercentage.toFixed(2) }}%
               <el-button
                 v-if="agentDetails.agentdividendtype === 'OneLayer'"
                 type="primary"
@@ -346,6 +346,9 @@
                       :max="agentDividendRange.max"
                       size="large"
                     />
+                    <div>
+                      {{ t('profitShareCannotExceed', { percentage: agentDividendRange.max }) }}
+                    </div>
                   </el-form-item>
                 </el-form>
                 <template #footer>

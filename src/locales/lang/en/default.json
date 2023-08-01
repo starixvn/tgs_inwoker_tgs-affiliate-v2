@@ -297,5 +297,6 @@
   "rightSide": "Right Side",
   "other": "Other",
 
-  "invalidEmailFormat": "Invalid Email Format"
+  "invalidEmailFormat": "Invalid Email Format",
+  "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%"
 }

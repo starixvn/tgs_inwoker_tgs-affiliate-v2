@@ -297,5 +297,6 @@
   "rightSide": "右侧",
   "other": "其他",
 
-  "invalidEmailFormat": "請輸入有效的電子郵件"
+  "invalidEmailFormat": "請輸入有效的電子郵件",
+  "profitShareCannotExceed": "分紅占成需小于或等于{percentage}%"
 }

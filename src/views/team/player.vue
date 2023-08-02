@@ -194,7 +194,14 @@
           />
         </el-form-item>
         <el-form-item :label="t('phone')">
-          <el-input v-model="addPlayerParams.phone" size="large" :placeholder="t('enterPhoneNumber')">
+          <el-input
+            v-model="addPlayerParams.phone"
+            size="large"
+            :placeholder="t('phoneFormat')"
+            :type="number"
+            :minlength="6"
+            :maxlength="32"
+          >
             <template #prepend>
               <el-select v-model="addPlayerParams.areaCode" placeholder="Select" style="width: 100px" size="large">
                 <el-option label="+86" value="86" />
@@ -225,6 +232,8 @@
               addPlayerParams.password === '' ||
               addPlayerParams.confirmPassword !== addPlayerParams.password ||
               addPlayerParams.phone === '' ||
+              addPlayerParams.phone.length < 6 ||
+              addPlayerParams.phone.length > 32 ||
               addPlayerParams.tnc === false ||
               addPlayerParams.email === ''
             "
@@ -470,6 +479,24 @@ export default defineComponent({
       this.getItems();
     },
     async onAddPlayer() {
+      //check phone number length if less than 6 show error and only contain number
+      if (this.addPlayerParams.phone.length < 6 || isNaN(Number(this.addPlayerParams.phone))) {
+        ElMessage.error(this.t('phoneFormat'));
+        return;
+      }
+
+      //check username and must contain only 6-16alphanumberic
+      if (!/^[a-zA-Z0-9]{6,16}$/.test(this.addPlayerParams.username)) {
+        ElMessage.error(this.t('invalidUsername'));
+        return;
+      }
+
+      //check email must be email format
+      if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(this.addPlayerParams.email)) {
+        ElMessage.error(this.t('invalidEmailFormat'));
+        return;
+      }
+
       let param = new CheckConditionParams();
       param.username = this.addPlayerParams.username;
       param.data.areacode = this.addPlayerParams.areaCode;

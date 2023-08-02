@@ -298,6 +298,7 @@
   "other": "Other",
 
   "invalidEmailFormat": "Invalid Email Format",
+  "invalidUsername": "Invalid Username",
   "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%",
   "copySuccess": "Copied",
   "usernameFormat": "Enter 6~16 characters(0~9, a~z)",

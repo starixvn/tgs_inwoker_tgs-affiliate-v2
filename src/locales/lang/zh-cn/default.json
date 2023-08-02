@@ -298,6 +298,7 @@
   "other": "其他",
 
   "invalidEmailFormat": "請輸入有效的電子郵件",
+  "invalidUsername": "無效的用戶名",
   "profitShareCannotExceed": "分紅占成需小于或等于{percentage}%",
   "copySuccess": "复制成功",
   "usernameFormat": "請輸入6~16位英文字母或數字",

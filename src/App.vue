@@ -31,6 +31,7 @@ const init = async () => {
   const globalStore = useGlobalStore();
 
   await globalStore.getFeature();
+  await globalStore.getLiveChat();
   //const res2 = await getFeatures(settingConfig.brands)();
 
   // console.log(res2);

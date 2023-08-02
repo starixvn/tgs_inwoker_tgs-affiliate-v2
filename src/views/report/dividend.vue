@@ -64,6 +64,9 @@
             </template>
             <template #default>
               <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
+                  {{ t('checkAll') }}
+                </el-checkbox>
                 <el-checkbox
                   v-for="(item, index) in tableColumn"
                   :key="index"
@@ -253,6 +256,7 @@ import { useI18n } from 'vue-i18n';
 import { agentDividends, agentDividendDetails } from '@/api/agentreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
+
 interface ISubitems {
   agentAdjustAmount: number;
   agentCoveredBonus: number;
@@ -362,6 +366,8 @@ export default defineComponent({
   },
   data() {
     return {
+      checkAll: false,
+      isIndeterminate: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
       scene: 'total',
@@ -431,7 +437,7 @@ export default defineComponent({
         dateRange: [new Date(), new Date()],
         page: 1,
         rows: 10,
-        desc: true,
+        desc: false,
         sort: '',
         all: false,
       }),
@@ -443,7 +449,7 @@ export default defineComponent({
         dateRange: [new Date(), new Date()],
         page: 1,
         rows: 10,
-        desc: true,
+        desc: false,
         sort: '',
         all: false,
         agentDividendPercentage: 0,
@@ -457,6 +463,14 @@ export default defineComponent({
   },
 
   methods: {
+    handleCheckAllChange(value) {
+      for (const columnKey in this.tableColumn) {
+        if (!this.tableColumn[columnKey].mustShow) {
+          this.tableColumn[columnKey].isShow = value;
+        }
+      }
+      this.isIndeterminate = false;
+    },
     async getItems() {
       let searchForm = { ...this.searchForm };
       searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');

@@ -303,5 +303,6 @@
   "usernameFormat": "Enter 6~16 characters(0~9, a~z)",
   "phoneFormat": "Enter 6~32 digits",
   "accumulatedProfitShare": "Accumulated Profit Share",
-  "checkAll": "Check All"
+  "checkAll": "Check All",
+  "ifFailPressRefresh": "If fail, please refresh the page"
 }

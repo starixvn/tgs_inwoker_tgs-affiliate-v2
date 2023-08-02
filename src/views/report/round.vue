@@ -510,8 +510,8 @@ export default defineComponent({
       }
 
       let searchForm = { ...this.searchForm };
-      searchForm.ClosedFrom = moment(searchForm.ClosedFrom).add(-8, 'hours').toISOString();
-      searchForm.ClosedTo = moment(searchForm.ClosedTo).add(1, 'days').add(-8, 'hours').toISOString();
+      searchForm.ClosedFrom = moment(searchForm.ClosedFrom).toISOString();
+      searchForm.ClosedTo = moment(searchForm.ClosedTo).add(1, 'days').toISOString();
       const response = await roundReportApi();
       const result = await response.runAsync(searchForm);
       this.totalRowCount = result.data.totalcount;

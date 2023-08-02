@@ -303,5 +303,6 @@
   "usernameFormat": "請輸入6~16位英文字母或數字",
   "phoneFormat": "請輸入6~32位數字",
   "accumulatedProfitShare": "累计结算分红",
-  "checkAll": "全选"
+  "checkAll": "全选",
+  "ifFailPressRefresh": "如果您的浏览器无法自动重新加载，请按下刷新按钮"
 }

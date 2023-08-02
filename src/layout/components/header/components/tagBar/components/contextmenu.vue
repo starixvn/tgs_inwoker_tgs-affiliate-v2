@@ -120,6 +120,7 @@ const reload = () => {
   closeMenu();
 };
 // 关闭当前
+
 const closeCurrent = async () => {
   if (tags.value.length === 0 || props.current.meta.affix) {
     return;

@@ -111,7 +111,10 @@
         <el-form-item :label="t('realName')">
           <el-input v-model="addAgentParams.realname" size="large" :placeholder="$t('enterRealName')" clearable />
         </el-form-item>
-        <el-form-item :label="t('profitSharePT')">
+        <el-form-item :label="t('email')" required>
+          <el-input v-model="addAgentParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
+        </el-form-item>
+        <el-form-item :label="t('profitSharePT')" required>
           <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
             <template #append>%</template>
           </el-input>
@@ -700,6 +703,15 @@ export default defineComponent({
       this.updateAgentDialogVisible = true;
     },
     async onUpdateAgentContactClick() {
+      //check if email is valid
+      if (this.agentDetails.email !== '') {
+        const emailRegex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+        if (!emailRegex.test(this.agentDetails.email)) {
+          ElMessage.error(this.$t('invalidEmailFormat'));
+          return;
+        }
+      }
+
       const params = new UpdateAgentContactParams();
       params.email = this.agentDetails.email;
       params.phone = this.agentDetails.phone;
@@ -724,6 +736,21 @@ export default defineComponent({
       }
       if (this.addAgentParams.password === '') {
         ElMessage.error(this.$t('passwordCannotEmpty'));
+        return;
+      }
+
+      //check for email regex
+      if (this.addAgentParams.email !== '') {
+        const emailRegex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+        if (!emailRegex.test(this.addAgentParams.email)) {
+          ElMessage.error(this.$t('invalidEmailFormat'));
+          return;
+        }
+      }
+
+      const passwordRegex = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$');
+      if (!passwordRegex.test(this.addAgentParams.password)) {
+        ElMessage.error(this.$t('mustMatchPasswordFormat'));
         return;
       }
       if (this.addAgentParams.confirmPassword !== this.addAgentParams.password) {

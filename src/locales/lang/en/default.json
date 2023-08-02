@@ -53,7 +53,7 @@
   "withdrawalAmount": "Withdrawal",
   "bonusAmount": "Bonus ",
   "bonusAdjustAmount": "Bonus Adjustment",
-  "agentAdjustAmount": "Agent Adjustment",
+  "agentAdjustAmount": "Agent Adjust",
   "betAmount": "Bet Amount",
   "validBetAmount": "Valid Bet",
   "turnover": "Valid Bet",
@@ -63,7 +63,7 @@
   "pageTotal": "Page Total",
   "p/t": "P/T",
   "bonus": "Bonus",
-  "bonusAdjust": "Bonus Adjustment",
+  "bonusAdjust": "Bonus Adjust",
   "winloss": "Win/Loss",
   "special": "Special",
   "company": "Company",
@@ -71,7 +71,7 @@
   "totalOrder": "Total Orders",
   "settlePeriod": "Settle Period",
   "contribution": "Contribution",
-  "agentDividendAmount": "Agent Dividend",
+  "agentDividendAmount": "Profit Share",
   "productFee": "Product Fee",
   "viplevel": "VIP Level",
   "registeredtime": "Registered Time",
@@ -305,5 +305,7 @@
   "phoneFormat": "Enter 6~32 digits",
   "accumulatedProfitShare": "Accumulated Profit Share",
   "checkAll": "Check All",
-  "ifFailPressRefresh": "If fail, please refresh the page"
+  "ifFailPressRefresh": "If fail, please refresh the page",
+  "mustMatchPasswordFormat": "Password must be 8 characters and contain at least one alphabet",
+  "pt": "P/T"
 }

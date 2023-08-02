@@ -717,8 +717,8 @@ export default defineComponent({
 .empty-row {
   background-color: #000000;
 }
-.subtotal-row {
-  background-color: #000000;
+.el-table__row .subtotal-row {
+  font-weight: bold !important;
 }
 .table {
   .search {

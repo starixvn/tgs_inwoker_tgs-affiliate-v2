@@ -70,7 +70,7 @@
   "totalOrder": "订单数",
   "settlePeriod": "结算区间",
   "contribution": "贡献",
-  "agentDividendAmount": "代理分红金额",
+  "agentDividendAmount": "代理分紅",
   "productFee": "产品费用",
   "viplevel": "VIP等级",
   "registeredtime": "注册时间",
@@ -305,5 +305,7 @@
   "phoneFormat": "請輸入6~32位數字",
   "accumulatedProfitShare": "累计结算分红",
   "checkAll": "全选",
-  "ifFailPressRefresh": "如果您的浏览器无法自动重新加载，请按下刷新按钮"
+  "ifFailPressRefresh": "如果您的浏览器无法自动重新加载，请按下刷新按钮",
+  "mustMatchPasswordFormat": "密码必须8位以上、至少1字母",
+  "pt": "分紅比例"
 }

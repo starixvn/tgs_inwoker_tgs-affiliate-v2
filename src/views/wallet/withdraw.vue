@@ -376,11 +376,10 @@ export default defineComponent({
           center: true,
         })
           .then(() => {
-            return '';
+            this.userStore.init();
           })
-          .catch(() => {
-            return '';
-          });
+          .catch(() => {});
+      } else {
       }
     },
     async onDeleteCard(bankInfo: IBankInfoData) {

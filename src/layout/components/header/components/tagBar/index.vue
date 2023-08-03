@@ -67,6 +67,7 @@ import contextmenu from './components/contextmenu.vue';
 import { isExternal } from '@/utils/validate';
 import { resolve } from 'path-browserify';
 import $ from 'jquery';
+import { useUserStore } from '@/store';
 const { themeConfig } = useSettingStore();
 // 初始化tags
 const tags = reactive([] as RouteLocationNormalized[]);
@@ -180,9 +181,10 @@ const close = async (event: HTMLElement, current: RouteLocationNormalized) => {
   await nextTick();
   contextmenuRef.value?.closeCurrent();
 };
-const reload = () => {
+const reload = async () => {
   // 刷新
   router.replace('/redirect/' + encodeURIComponent(route.fullPath));
+  await useUserStore().init();
 };
 const reoadUrl = ref('');
 watch(route, () => {

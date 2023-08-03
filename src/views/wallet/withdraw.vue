@@ -43,7 +43,7 @@
                 style="width: 100%"
               />
             </el-form-item>
-            <el-alert type="error" show-icon :closable="false" class="withdraw-amount-alert">
+            <el-alert type="warning" show-icon :closable="false" class="withdraw-amount-alert">
               <p>{{ t('withdrawalRange', [minWithdrawal, maxWithdrawal]) }}</p>
             </el-alert>
           </el-space>
@@ -106,7 +106,7 @@
           <el-button class="delete-btn" type="danger" icon="mel-icon-delete" circle @click="onDeleteCard(bankInfo)" />
         </div>
         <div class="bank-card-body">
-          <div v-if="bankInfo.banktype === 'Crypto'">
+          <div v-if="bankInfo.banktype === 'Crypto' || bankInfo.banktype === 'ThirdParty'">
             <div class="text item">
               {{
                 addCardInfoList.filter((a) => a.channelid === bankInfo.paymentchannelid).length > 0 &&
@@ -114,6 +114,7 @@
               }}
             </div>
           </div>
+
           <div v-if="bankInfo.banktype === 'Bank'">
             <div class="text item">{{ bankInfo.detail.bankName }} - {{ bankInfo.detail.bankBranch }}</div>
             <div class="text item">{{ bankInfo.detail.name }}</div>
@@ -375,11 +376,10 @@ export default defineComponent({
           center: true,
         })
           .then(() => {
-            return '';
+            this.userStore.init();
           })
-          .catch(() => {
-            return '';
-          });
+          .catch(() => {});
+      } else {
       }
     },
     async onDeleteCard(bankInfo: IBankInfoData) {
@@ -486,6 +486,7 @@ export default defineComponent({
     background-size: cover;
     height: inherit;
     border-radius: 20px;
+    color: #fff;
     > .balance-label {
       font-weight: normal;
     }

@@ -111,7 +111,10 @@
         <el-form-item :label="t('realName')">
           <el-input v-model="addAgentParams.realname" size="large" :placeholder="$t('enterRealName')" clearable />
         </el-form-item>
-        <el-form-item :label="t('profitSharePT')">
+        <el-form-item :label="t('email')" required>
+          <el-input v-model="addAgentParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
+        </el-form-item>
+        <el-form-item :label="t('profitSharePT')" required>
           <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
             <template #append>%</template>
           </el-input>
@@ -152,10 +155,10 @@
                   {{ agentDetails.balance }}
                 </el-form-item>
                 <el-form-item :label="t('status') + ':'">
-                  {{ agentDetails.status }}
+                  {{ t(agentDetails.status) }}
                 </el-form-item>
                 <el-form-item :label="t('type') + ':'">
-                  {{ agentDetails.type }}
+                  {{ t(agentDetails.type) }}
                 </el-form-item>
                 <el-form-item :label="t('profitSharePT') + ':'"> {{ agentDetails.dividendpercentage }}% </el-form-item>
               </el-form>
@@ -317,13 +320,13 @@
               {{ agentDetails.balance }}
             </el-form-item>
             <el-form-item :label="t('status') + ':'">
-              {{ agentDetails.status }}
+              {{ t(agentDetails.status) }}
             </el-form-item>
             <el-form-item :label="t('type') + ':'">
-              {{ agentDetails.type }}
+              {{ t(agentDetails.type) }}
             </el-form-item>
             <el-form-item :label="t('profitSharePT') + ':'">
-              {{ agentDetails.dividendpercentage }}%
+              {{ agentDetails.dividendpercentage.toFixed(2) }}%
               <el-button
                 v-if="agentDetails.agentdividendtype === 'OneLayer'"
                 type="primary"
@@ -346,6 +349,9 @@
                       :max="agentDividendRange.max"
                       size="large"
                     />
+                    <div>
+                      {{ t('profitShareCannotExceed', { percentage: agentDividendRange.max }) }}
+                    </div>
                   </el-form-item>
                 </el-form>
                 <template #footer>
@@ -663,12 +669,25 @@ export default defineComponent({
     onSearch() {
       this.getItems();
     },
+    resetEverything() {
+      this.activeName = 'first';
+      this.accountChange.searchForm.From = '';
+      this.accountChange.searchForm.To = '';
+      this.accountChange.searchForm.dateRange = [new Date(), new Date()];
+      this.accountChange.searchForm.page = 1;
+      this.accountChange.searchForm.rows = 10;
+      this.accountChange.tableData = [];
+      this.accountChange.totalRowCount = 0;
+      this.accountChange.dateType = 'today';
+    },
     onSearchAccountChange() {
       this.getAccountChange();
     },
     async onViewClick(id: string) {
+      this.resetEverything();
       const response = await getAgentDetailsApi();
       const result = await response.runAsync(id);
+
       this.agentDetails = result.data;
       this.viewAgentDialogVisible = true;
     },
@@ -684,6 +703,15 @@ export default defineComponent({
       this.updateAgentDialogVisible = true;
     },
     async onUpdateAgentContactClick() {
+      //check if email is valid
+      if (this.agentDetails.email !== '') {
+        const emailRegex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+        if (!emailRegex.test(this.agentDetails.email)) {
+          ElMessage.error(this.$t('invalidEmailFormat'));
+          return;
+        }
+      }
+
       const params = new UpdateAgentContactParams();
       params.email = this.agentDetails.email;
       params.phone = this.agentDetails.phone;
@@ -708,6 +736,21 @@ export default defineComponent({
       }
       if (this.addAgentParams.password === '') {
         ElMessage.error(this.$t('passwordCannotEmpty'));
+        return;
+      }
+
+      //check for email regex
+      if (this.addAgentParams.email !== '') {
+        const emailRegex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$');
+        if (!emailRegex.test(this.addAgentParams.email)) {
+          ElMessage.error(this.$t('invalidEmailFormat'));
+          return;
+        }
+      }
+
+      const passwordRegex = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$');
+      if (!passwordRegex.test(this.addAgentParams.password)) {
+        ElMessage.error(this.$t('mustMatchPasswordFormat'));
         return;
       }
       if (this.addAgentParams.confirmPassword !== this.addAgentParams.password) {
@@ -741,13 +784,13 @@ export default defineComponent({
       const response = await updateDividendApi()(this.updateDividendParams);
       if (response.err === 0) {
         this.agentDetails.dividendpercentage = this.updateDividendParams.dividendPercentage;
-        for(var i=0;i<this.tableData.length;i++){
-          if(this.tableData[i].id === this.updateAgentId){
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].id === this.updateAgentId) {
             this.tableData[i].dividendpercentage = this.updateDividendParams.dividendPercentage;
             break;
           }
         }
-        
+
         this.updateProfitSharePTDialogVisible = false;
       }
     },

@@ -143,7 +143,7 @@
                             v-model="state.confirmpassword"
                             class="textInput"
                             type="password"
-                            :placeholder="t('confirmPassword')"
+                            :placeholder="t('reEnterPassword')"
                             clearable
                             show-password
                           />
@@ -174,11 +174,12 @@
                 </el-popover>
               </div>
             </div>
-            <div class="profile-info">
+            <!--
+   <div class="profile-info">
               <div class="title">{{ $t('withdrawpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="400" @before-enter="onEnterChangeWithdrawalPass">
+                <el-popover trigger="click" placement="right" :width="460" @before-enter="onEnterChangeWithdrawalPass">
                   <template #reference>
                     <el-button style="width: 170px">{{ t('withdrawpassword') }}</el-button>
                   </template>
@@ -287,6 +288,11 @@
                 </el-popover>
               </div>
             </div>
+
+
+
+
+         -->
           </div>
         </div>
       </div>
@@ -399,15 +405,15 @@ const updateEmail = reactive({
   validatecode: '',
 });
 const profitShare = reactive([
-  { name: 'live', value: 70 },
-  { name: 'sportsbook', value: 70 },
-  { name: 'egame', value: 70 },
-  { name: 'lottery', value: 70 },
-  { name: 'esports', value: 70 },
-  { name: 'qipai', value: 70 },
-  { name: 'visualsports', value: 70 },
-  { name: 'cockfight', value: 70 },
-  { name: 'horserace', value: 70 },
+  { name: 'live', value: $state.user?.dividendpercentage },
+  { name: 'sportsbook', value: $state.user?.dividendpercentage },
+  { name: 'egame', value: $state.user?.dividendpercentage },
+  { name: 'lottery', value: $state.user?.dividendpercentage },
+  { name: 'esports', value: $state.user?.dividendpercentage },
+  { name: 'qipai', value: $state.user?.dividendpercentage },
+  { name: 'visualsports', value: $state.user?.dividendpercentage },
+  { name: 'cockfight', value: $state.user?.dividendpercentage },
+  { name: 'horserace', value: $state.user?.dividendpercentage },
 ]);
 
 //convert datetime into readable format with date and time
@@ -491,10 +497,19 @@ const profileInfo = reactive({
 profileInfo.list.push({ name: 'agentusername', value: $state.user?.username, editable: false });
 profileInfo.list.push({ name: 'realname', value: $state.user?.realname, editable: false });
 profileInfo.list.push({ name: 'registeron', value: convertDate($state.user?.registeredon), editable: false });
-profileInfo.list.push({ name: 'balance', value: $state.user?.balance.toFixed(2), editable: false });
+profileInfo.list.push({ name: 'balance', value: $state.user?.balance, editable: false });
 profileInfo.list.push({ name: 'status', value: t($state.user?.status), editable: false });
 profileInfo.list.push({ name: 'type', value: t($state.user?.type), editable: false });
-profileInfo.list.push({ name: 'profitSharePT', value: $state.user?.dividendpercentage.toFixed(2), editable: false });
+profileInfo.list.push({
+  name: 'accumulatedProfitShare',
+  value: t($state.user?.accumulatedprofitsharing),
+  editable: false,
+});
+profileInfo.list.push({
+  name: 'profitSharePT',
+  value: $state.user?.dividendpercentage + '%',
+  editable: false,
+});
 profileInfo.list.push({ name: 'email', value: $state.user?.email, editable: true });
 profileInfo.list.push({ name: 'phone', value: $state.user?.phone, editable: false });
 
@@ -596,7 +611,7 @@ const onVerfiyEmailCode = async () => {
   gap: 20px;
   background: #fff;
   padding: 20px;
-  border-radius: 20px 30px;
+  border-radius: 20px 20px;
 }
 
 .right-content {
@@ -635,6 +650,7 @@ const onVerfiyEmailCode = async () => {
   grid-template-columns: 30% auto;
   gap: 10px;
   padding-bottom: 10px;
+  align-items: center;
 
   .label {
     text-align: right;
@@ -682,6 +698,7 @@ const onVerfiyEmailCode = async () => {
 .btn-custom {
   background-color: var(--el-color-primary) !important;
   color: #fff !important;
+  border-radius: 0px;
   &.is-disabled {
     background-color: var(--el-button-disabled-bg-color) !important;
     color: #fff !important;

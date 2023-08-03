@@ -42,12 +42,12 @@
       <el-dialog v-model="dialogVisible" width="40%" :title="$t('iForgotMyPassword')">
         <div v-if="forgotPassword.scene === 1">
           <el-form ref="formRef" :model="loginParams" label-width="150px">
-            <el-form-item :label="t('email')">
+            <el-form-item :label="t('email')" props="email" required>
               <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
               </el-input>
             </el-form-item>
 
-            <el-form-item :label="t('verificationCode')">
+            <el-form-item :label="t('verificationCode')" required>
               <el-input
                 v-model="resetPassword.validatecode"
                 class="textInput"
@@ -58,7 +58,12 @@
               >
                 <template #append>
                   <div v-if="forgotPassword.timer === 60">
-                    <el-button type="primary" :disabled="forgotPassword.email === ''" @click="performRequestCode">
+                    <el-button
+                      type="primary"
+                      class="btn-custom"
+                      :disabled="forgotPassword.email === ''"
+                      @click="performRequestCode"
+                    >
                       {{ t('requestCode') }}
                     </el-button>
                   </div>
@@ -128,6 +133,7 @@ import { useLocalesI18n } from '@/locales/i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/store';
 import { localeConfig } from '@/config';
+
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
 const route = useRoute();
@@ -135,7 +141,7 @@ const router = useRouter();
 let loginParams = reactive(new LoginParams());
 let { t } = useLocalesI18n();
 
-let forgotPassword = reactive({
+let forgotPassword = reactive<RuleForm>({
   phone: '',
   email: '',
   confirmpass: '',
@@ -144,7 +150,7 @@ let forgotPassword = reactive({
   scene: 1,
 });
 
-let resetPassword = reactive({
+let resetPassword = reactive<RuleForm>({
   newpwd: '',
   securitykey: '',
   validatecode: '',
@@ -305,8 +311,16 @@ const login = async () => {
     justify-content: center;
     flex-direction: column;
     .button-forgot {
-      font-size: 16px;
       margin-bottom: 20px;
+    }
+  }
+  .btn-custom {
+    background-color: var(--el-color-primary) !important;
+    color: #fff !important;
+    border-radius: 0px;
+    &.is-disabled {
+      background-color: var(--el-button-disabled-bg-color) !important;
+      color: #fff !important;
     }
   }
 }

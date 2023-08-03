@@ -9,27 +9,17 @@
       <el-form :inline="true">
         <el-form-item>
           <div class="mt-4">
-            <el-input v-model="searchForm.username" placeholder="Username"  size="large" class="input-with-select">
-            <template #prepend>
-              <el-select v-model="searchForm.memberType"  size="large" class="member-selection">
-                <el-option
-                  :label="t('agent')"
-                  value="agent"
-                />
-                <el-option
-                  :label="t('player')"
-                  value="player"
-                />
-              </el-select>
-            </template>
-          </el-input>
-
+            <el-input v-model="searchForm.username" placeholder="Username" size="large" class="input-with-select">
+              <template #prepend>
+                <el-select v-model="searchForm.memberType" size="large" class="member-selection">
+                  <el-option :label="t('agent')" value="agent" />
+                  <el-option :label="t('player')" value="player" />
+                </el-select>
+              </template>
+            </el-input>
           </div>
-         
         </el-form-item>
-
       </el-form>
-     
     </el-row>
     <el-row style="margin-bottom: 0px">
       <el-col :span="24">
@@ -56,12 +46,10 @@
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
 
-            <el-button type="primary" @click="onExport()" size="large" class="custom-icon" icon="me-icon-save" >
-           
-                </el-button>
-        
+            <el-button type="primary" @click="onExport()" size="large" class="custom-icon">
+              <img :src="getImgUrl('save')" id="saveIcon" />
+            </el-button>
           </el-form-item>
-
         </el-form>
       </el-col>
     </el-row>
@@ -74,7 +62,7 @@
           </div>
           <div v-show="showlegends === true">
             <div v-for="index in legends" :key="index">
-              <div>- {{ t("rl_winloss_row" + index) }}</div>
+              <div>- {{ t('rl_winloss_row' + index) }}</div>
             </div>
           </div>
         </div>
@@ -95,250 +83,269 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
-    <div v-if="view===0">
-      <el-row>
-      <el-col :span="24">
-        <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column :label="t('username')">
-            <template #default="scope">
-              <a class="next-level" @click="onClickNext(scope.row.username)" v-if="scope.row.memberType === 'agent'">
-                {{ scope.row.username }}
-              </a>
-              <a class="next-level" @click="onClickPlayerRound(scope.row.username, scope.row.id)" v-if="scope.row.memberType === 'player'">
-                {{ scope.row.username }}
-              </a>
-              <div v-if="scope.row.memberType === ''">
-                {{ scope.row.username }}
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column :label="t('memberType')" prop="memberType"></el-table-column>
-          <el-table-column :label="t('totalOrder')" prop="roundCount" align="right"></el-table-column>
-          <el-table-column :label="t('turnover')" prop="turnover" align="right"></el-table-column>
-          <el-table-column :label="t('player')" align="center">
-            <el-table-column :label="t('winloss')" prop="winLoss" :formatter="formatPrice" align="right" />
-            <el-table-column :label="t('special')" align="right">
-              <template #default="scope">
-                <el-popover placement="right" :width="300" trigger="click">
-                  <template #reference>
-                    <div
-                      class="details-view"
-                      @click="onViewDetails(0, scope.row.id)"
-                      v-if="scope.row.memberType === 'agent'"
-                    >
-                      <el-icon style="" color="#07b5bc">
-                        <mel-icon-plus />
-                      </el-icon>
-                    </div>
-                  </template>
-                  <table class="special-table" cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                      <th>{{ t('special') }}</th>
-                      <th class="right">{{ t('amount') }}</th>
-                    </tr>
-                    <tr>
-                      <td>{{ t('bonus') }}</td>
-                      <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonus) }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ t('bonusAdjust') }}</td>
-                      <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonusAdjust) }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ t('productFee') }}</td>
-                      <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.productFee) }}</td>
-                    </tr>
-                    <tr>
-                      <th>{{ t('total') }}</th>
-                      <th class="right">
-                        {{
-                          formatPrice2(
-                            agentPlayerSpecialDetailData.bonus +
-                              agentPlayerSpecialDetailData.bonusAdjust +
-                              agentPlayerSpecialDetailData.productFee,
-                          )
-                        }}
-                      </th>
-                    </tr>
-                  </table>
-                </el-popover>
-
-                {{ formatPrice2(scope.row.special) }}
-              </template>
-            </el-table-column>
-          </el-table-column>
-          <el-table-column :label="t('agent')" align="center">
-            <el-table-column :label="t('winloss')" prop="agentWinLoss" :formatter="formatPrice" align="right" />
-            <el-table-column :label="t('special')" prop="agentSpecial" :formatter="formatPrice" align="right" />
-
-            <el-table-column :label="t('total')" align="right">
-              <template #default="scope">
-                <el-popover placement="right" :width="800" trigger="click">
-                  <template #reference>
-                    <div
-                      class="details-view"
-                      @click="onViewDetails(1, scope.row.id)"
-                      v-if="scope.row.memberType === 'agent'"
-                    >
-                      <el-icon style="" color="#07b5bc">
-                        <mel-icon-plus />
-                      </el-icon>
-                    </div>
-                  </template>
-                  <el-table :data="agentTotalDetailsData">
-                    <el-table-column :label="t('settlePeriod')" width="200">
-                      <template #default="scope">
-                        {{ formatDate(scope.row.from) }}-{{ formatDate(scope.row.to) }}
-                      </template>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="t('p/t')"
-                      prop="percentage"
-                      align="right"
-                      :formatter="formatPricePercentage"
-                    />
-                    <el-table-column :label="t('player')" align="center">
-                      <el-table-column
-                        :label="t('winloss')"
-                        prop="playerWinLoss"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column
-                        :label="t('special')"
-                        prop="playerSpecial"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                    </el-table-column>
-
-                    <el-table-column :label="t('agent')" align="center">
-                      <el-table-column
-                        :label="t('winloss')"
-                        prop="agentWinLoss"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column
-                        :label="t('special')"
-                        prop="agentSpecial"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column :label="t('total')" prop="agentTotal" align="right" :formatter="formatPrice" />
-                    </el-table-column>
-                  </el-table>
-                </el-popover>
-
-                {{ formatPrice2(scope.row.agentTotal) }}
-              </template>
-            </el-table-column>
-          </el-table-column>
-          <el-table-column :label="t('company')" align="center">
-            <el-table-column :label="t('winloss')" prop="companyWinLoss" :formatter="formatPrice" align="right" />
-            <el-table-column :label="t('special')" prop="companySpecial" :formatter="formatPrice" align="right" />
-            <el-table-column :label="t('total')" align="right">
-              <template #default="scope">
-                <el-popover placement="right" :width="800" trigger="click">
-                  <template #reference>
-                    <div
-                      class="details-view"
-                      @click="onViewDetails(2, scope.row.id)"
-                      v-if="scope.row.memberType === 'agent'"
-                    >
-                      <el-icon style="" color="#07b5bc">
-                        <mel-icon-plus />
-                      </el-icon>
-                    </div>
-                  </template>
-                  <el-table :data="companyTotalDetailsData">
-                    <el-table-column :label="t('settlePeriod')" width="200">
-                      <template #default="scope">
-                        {{ formatDate(scope.row.from) }}-{{ formatDate(scope.row.to) }}
-                      </template>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="t('p/t')"
-                      prop="percentage"
-                      align="right"
-                      :formatter="formatPricePercentage"
-                    />
-                    <el-table-column :label="t('player')" align="center">
-                      <el-table-column
-                        :label="t('winloss')"
-                        prop="playerWinLoss"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column
-                        :label="t('special')"
-                        prop="playerSpecial"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                    </el-table-column>
-
-                    <el-table-column :label="t('company')" align="center">
-                      <el-table-column
-                        :label="t('winloss')"
-                        prop="companyWinLoss"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column
-                        :label="t('special')"
-                        prop="companySpecial"
-                        align="right"
-                        :formatter="formatPrice"
-                      />
-                      <el-table-column :label="t('total')" prop="companyTotal" align="right" :formatter="formatPrice" />
-                    </el-table-column>
-                  </el-table>
-                </el-popover>
-
-                {{ formatPrice2(scope.row.companyTotal) }}
-              </template>
-            </el-table-column>
-          </el-table-column>
-          <template #empty>
-            {{ t('noRecord') }}
-          </template>
-        </el-table>
-      </el-col>
-    </el-row>
-    <el-row>
-      <div class="demo-pagination-block">
-        <el-pagination
-          v-model:current-page="searchForm.page"
-          v-model:page-size="searchForm.rows"
-          :page-sizes="[20, 50, 200]"
-          layout="sizes, prev, pager, next"
-          :total="totalRowCount"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-          <template #sizes>
-            <span>{{ totalRowCount }} Rows</span>
-          </template>
-        </el-pagination>
-      </div>
-    </el-row>
-    </div>
-    
-    <div v-if="view===1">
+    <div v-if="view === 0">
       <el-row>
         <el-col :span="24">
-          <el-table :data="roundsData"  :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable border fit>
-            <el-table-column :label="t('orderId')"  width="140">
+          <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
+            <el-table-column :label="t('username')">
               <template #default="scope">
-                <div class="ellipsis">{{ scope.row.id }}</div>
+                <a class="next-level" @click="onClickNext(scope.row.username)" v-if="scope.row.memberType === 'agent'">
+                  {{ scope.row.username }}
+                </a>
+                <a
+                  class="next-level"
+                  @click="onClickPlayerRound(scope.row.username, scope.row.id)"
+                  v-if="scope.row.memberType === 'player'"
+                >
+                  {{ scope.row.username }}
+                </a>
+                <div v-if="scope.row.memberType === ''">
+                  {{ scope.row.username }}
+                </div>
               </template>
             </el-table-column>
-            <el-table-column :label="t('extOrderId')" prop="externalRoundId"  width="140">
+            <el-table-column :label="t('memberType')" prop="memberType"></el-table-column>
+            <el-table-column :label="t('totalOrder')" prop="roundCount" align="right"></el-table-column>
+            <el-table-column :label="t('turnover')" prop="turnover" align="right"></el-table-column>
+            <el-table-column :label="t('player')" align="center">
+              <el-table-column :label="t('winloss')" prop="winLoss" :formatter="formatPrice" align="right" />
+              <el-table-column :label="t('special')" align="right">
+                <template #default="scope">
+                  <el-popover placement="right" :width="400" trigger="click">
+                    <template #reference>
+                      <div
+                        class="details-view"
+                        @click="onViewDetails(0, scope.row.id)"
+                        v-if="scope.row.memberType === 'agent'"
+                      >
+                        <el-icon style="" color="#07b5bc">
+                          <mel-icon-plus />
+                        </el-icon>
+                      </div>
+                    </template>
+                    <table class="special-table" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <th>{{ t('special') }}</th>
+                        <th class="right">{{ t('amount') }}</th>
+                      </tr>
+                      <tr>
+                        <td>{{ t('bonus') }}</td>
+                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonus) }}</td>
+                      </tr>
+                      <tr>
+                        <td>{{ t('bonusAdjust') }}</td>
+                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonusAdjust) }}</td>
+                      </tr>
+                      <tr>
+                        <td>{{ t('productFee') }}</td>
+                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.productFee) }}</td>
+                      </tr>
+                      <tr>
+                        <th>{{ t('total') }}</th>
+                        <th class="right">
+                          {{
+                            formatPrice2(
+                              agentPlayerSpecialDetailData.bonus +
+                                agentPlayerSpecialDetailData.bonusAdjust +
+                                agentPlayerSpecialDetailData.productFee,
+                            )
+                          }}
+                        </th>
+                      </tr>
+                    </table>
+                  </el-popover>
+
+                  {{ formatPrice2(scope.row.special) }}
+                </template>
+              </el-table-column>
+            </el-table-column>
+            <el-table-column :label="t('agent')" align="center">
+              <el-table-column :label="t('winloss')" prop="agentWinLoss" :formatter="formatPrice" align="right" />
+              <el-table-column :label="t('special')" prop="agentSpecial" :formatter="formatPrice" align="right" />
+
+              <el-table-column :label="t('total')" align="right">
+                <template #default="scope">
+                  <el-popover placement="right" :width="800" trigger="click">
+                    <template #reference>
+                      <div
+                        class="details-view"
+                        @click="onViewDetails(1, scope.row.id)"
+                        v-if="scope.row.memberType === 'agent'"
+                      >
+                        <el-icon style="" color="#07b5bc">
+                          <mel-icon-plus />
+                        </el-icon>
+                      </div>
+                    </template>
+                    <el-table :data="agentTotalDetailsData">
+                      <el-table-column :label="t('settlePeriod')" width="200">
+                        <template #default="scope">
+                          {{ formatDate(scope.row.from) }}-{{ formatDate(scope.row.to) }}
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                        :label="t('p/t')"
+                        prop="percentage"
+                        align="right"
+                        :formatter="formatPricePercentage"
+                      />
+                      <el-table-column :label="t('player')" align="center">
+                        <el-table-column
+                          :label="t('winloss')"
+                          prop="playerWinLoss"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column
+                          :label="t('special')"
+                          prop="playerSpecial"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                      </el-table-column>
+
+                      <el-table-column :label="t('agent')" align="center">
+                        <el-table-column
+                          :label="t('winloss')"
+                          prop="agentWinLoss"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column
+                          :label="t('special')"
+                          prop="agentSpecial"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column :label="t('total')" prop="agentTotal" align="right" :formatter="formatPrice" />
+                      </el-table-column>
+                    </el-table>
+                  </el-popover>
+
+                  {{ formatPrice2(scope.row.agentTotal) }}
+                </template>
+              </el-table-column>
+            </el-table-column>
+            <el-table-column :label="t('company')" align="center">
+              <el-table-column :label="t('winloss')" prop="companyWinLoss" :formatter="formatPrice" align="right" />
+              <el-table-column :label="t('special')" prop="companySpecial" :formatter="formatPrice" align="right" />
+              <el-table-column :label="t('total')" align="right">
+                <template #default="scope">
+                  <el-popover placement="right" :width="800" trigger="click">
+                    <template #reference>
+                      <div
+                        class="details-view"
+                        @click="onViewDetails(2, scope.row.id)"
+                        v-if="scope.row.memberType === 'agent'"
+                      >
+                        <el-icon style="" color="#07b5bc">
+                          <mel-icon-plus />
+                        </el-icon>
+                      </div>
+                    </template>
+                    <el-table :data="companyTotalDetailsData">
+                      <el-table-column :label="t('settlePeriod')" width="200">
+                        <template #default="scope">
+                          {{ formatDate(scope.row.from) }}-{{ formatDate(scope.row.to) }}
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                        :label="t('p/t')"
+                        prop="percentage"
+                        align="right"
+                        :formatter="formatPricePercentage"
+                      />
+                      <el-table-column :label="t('player')" align="center">
+                        <el-table-column
+                          :label="t('winloss')"
+                          prop="playerWinLoss"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column
+                          :label="t('special')"
+                          prop="playerSpecial"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                      </el-table-column>
+
+                      <el-table-column :label="t('company')" align="center">
+                        <el-table-column
+                          :label="t('winloss')"
+                          prop="companyWinLoss"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column
+                          :label="t('special')"
+                          prop="companySpecial"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                        <el-table-column
+                          :label="t('total')"
+                          prop="companyTotal"
+                          align="right"
+                          :formatter="formatPrice"
+                        />
+                      </el-table-column>
+                    </el-table>
+                  </el-popover>
+
+                  {{ formatPrice2(scope.row.companyTotal) }}
+                </template>
+              </el-table-column>
+            </el-table-column>
+            <template #empty>
+              {{ t('noRecord') }}
+            </template>
+          </el-table>
+        </el-col>
+      </el-row>
+      <el-row>
+        <div class="demo-pagination-block">
+          <el-pagination
+            v-model:current-page="searchForm.page"
+            v-model:page-size="searchForm.rows"
+            :page-sizes="[20, 50, 200]"
+            layout="sizes, prev, pager, next"
+            :total="totalRowCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
+            <template #sizes>
+              <span>{{ totalRowCount }} Rows</span>
+            </template>
+          </el-pagination>
+        </div>
+      </el-row>
+    </div>
+
+    <div v-if="view === 1">
+      <el-row>
+        <el-col :span="24">
+          <el-table
+            :data="roundsData"
+            :span-method="arraySpanMethod"
+            :row-class-name="getRowClassName"
+            stripe
+            resizable
+            border
+            fit
+          >
+            <el-table-column :label="t('orderId')" width="140">
               <template #default="scope">
-                <div class="ellipsis">{{ scope.row.externalRoundId }}</div>
+                <div class="ellipsis" @click="clickToCopy(scope.row.id)">{{ scope.row.id }}</div>
+              </template>
+            </el-table-column>
+            <el-table-column :label="t('extOrderId')" prop="externalRoundId" width="140">
+              <template #default="scope">
+                <div class="ellipsis" @click="clickToCopy(scope.row.externalRoundId)">
+                  {{ scope.row.externalRoundId }}
+                </div>
               </template>
             </el-table-column>
             <el-table-column :label="t('createdOn')" width="160">
@@ -351,24 +358,48 @@
                 {{ formatDateWithTime(scope.row.closedOn) }}
               </template>
             </el-table-column>
-            <el-table-column :label="t('subProvider')" prop="subGameProviderName" ></el-table-column>
-            <el-table-column :label="t('gameName')" prop="gameName" ></el-table-column>
-            <el-table-column :label="t('status')" prop="status" align="center" width="80" >
+            <el-table-column :label="t('subProvider')" prop="subGameProviderName"></el-table-column>
+            <el-table-column :label="t('gameName')" prop="gameName"></el-table-column>
+            <el-table-column :label="t('status')" prop="status" align="center" width="80">
               <template #default="scope">
                 <div :class="'roundStatus-' + scope.row.status">{{ formatRoundsStatus(scope.row.status) }}</div>
               </template>
             </el-table-column>
-            <el-table-column :label="t('betAmount')" prop="betAmount" align="right" :formatter="formatPrice"></el-table-column>
-            <el-table-column :label="t('validBet')" prop="validBetAmount" align="right" :formatter="formatPrice"></el-table-column>
-            <el-table-column :label="t('turnover')" prop="turnover" align="right" :formatter="formatPrice"></el-table-column>
-            <el-table-column :label="t('settlement')" prop="settleAmount" align="right" :formatter="formatPrice"></el-table-column>
-            <el-table-column :label="t('winloss')" prop="winLoss" align="right" :formatter="formatPrice"></el-table-column>
+            <el-table-column
+              :label="t('betAmount')"
+              prop="betAmount"
+              align="right"
+              :formatter="formatPrice"
+            ></el-table-column>
+            <el-table-column
+              :label="t('validBet')"
+              prop="validBetAmount"
+              align="right"
+              :formatter="formatPrice"
+            ></el-table-column>
+            <el-table-column
+              :label="t('turnover')"
+              prop="turnover"
+              align="right"
+              :formatter="formatPrice"
+            ></el-table-column>
+            <el-table-column
+              :label="t('settlement')"
+              prop="settleAmount"
+              align="right"
+              :formatter="formatPrice"
+            ></el-table-column>
+            <el-table-column
+              :label="t('winloss')"
+              prop="winLoss"
+              align="right"
+              :formatter="formatPrice"
+            ></el-table-column>
             <template #empty>
               {{ t('noRecord') }}
             </template>
           </el-table>
         </el-col>
-        
       </el-row>
       <el-row>
         <div class="demo-pagination-block">
@@ -387,11 +418,8 @@
           </el-pagination>
         </div>
       </el-row>
-      
     </div>
   </el-card>
-  
-  
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue';
@@ -416,13 +444,11 @@ import {
   exportRoundsApi,
   breadcrumbApi,
   BreadcrumbParams,
-  BreadcrumbData
+  BreadcrumbData,
 } from '@/api/agentwinlossreport';
 import type { TableColumnCtx } from 'element-plus';
 import moment from 'moment';
 import { useUserStore } from '@/store';
-
-
 
 interface SpanMethodProps {
   row: WinlossReportItem;
@@ -433,7 +459,7 @@ interface SpanMethodProps {
 interface ISearchForm {
   memberType: string;
   username: string;
-  downLine:boolean;
+  downLine: boolean;
   dateType: string;
   From: string;
   To: string;
@@ -445,10 +471,10 @@ interface ISearchForm {
   all: boolean;
 }
 class BreadCrumb {
-  id = "";
-  username =  "";
-
+  id = '';
+  username = '';
 }
+
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -461,12 +487,11 @@ export default defineComponent({
   },
 
   data() {
-
     return {
       currenctUsername: reactive<BreadCrumb[]>([]),
       visible: false,
       showAgent: false,
-      dialogRoundVisible:false,
+      dialogRoundVisible: false,
       roundsData: reactive<RoundsData[]>([]),
       companyTotalDetailsData: reactive<CompanyTotalDetailData[]>([]),
       agentTotalDetailsData: reactive<AgentTotalDetailData[]>([]),
@@ -477,15 +502,15 @@ export default defineComponent({
       }),
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
-      roundsTotalRowCount:0,
+      roundsTotalRowCount: 0,
       showlegends: false,
-      view:0,
+      view: 0,
       legends: 10,
       roundsSearchForm: reactive<ISearchForm>({
         dateType: 'today',
-        memberType:'agent',
-        username:'',
-        downLine:true,
+        memberType: 'agent',
+        username: '',
+        downLine: true,
         From: '',
         To: '',
         dateRange: [new Date(), new Date()],
@@ -497,9 +522,9 @@ export default defineComponent({
       }),
       searchForm: reactive<ISearchForm>({
         dateType: 'today',
-        memberType:'agent',
-        username:'',
-        downLine:true,
+        memberType: 'agent',
+        username: '',
+        downLine: true,
         From: '',
         To: '',
         dateRange: [new Date(), new Date()],
@@ -521,32 +546,33 @@ export default defineComponent({
   },
 
   methods: {
-    async getItems(downLine : boolean) {
+    async getItems(downLine: boolean) {
       let searchForm = { ...this.searchForm };
       searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await agentWinlossReportApi();
-      const agentWinlossReportParams : AgentWinlossReportParams = {
-        username: this.currenctUsername.length > 1 ? this.currenctUsername[this.currenctUsername.length - 1].username : '',
-        memberType: "agent",
+      const agentWinlossReportParams: AgentWinlossReportParams = {
+        username:
+          this.currenctUsername.length > 1 ? this.currenctUsername[this.currenctUsername.length - 1].username : '',
+        memberType: 'agent',
         downLine: downLine,
-        from:  searchForm.From,
+        from: searchForm.From,
         to: searchForm.To,
         page: searchForm.page,
         rows: searchForm.rows,
         desc: false,
         sort: '',
-        all: false
+        all: false,
       };
-   
+
       const result = await response.runAsync(agentWinlossReportParams);
       const totalPlaceholder = { username: this.t('total') + ':', memberType: '' };
 
       const total = { ...totalPlaceholder, ...result.data.total };
-      if(result.data.items.length > 0){
-        this.tableData = [...result.data.items,total];
-      }else{
-        this.tableData =[];
+      if (result.data.items.length > 0) {
+        this.tableData = [...result.data.items, total];
+      } else {
+        this.tableData = [];
       }
 
       this.totalRowCount = result.data.totalCount;
@@ -556,20 +582,20 @@ export default defineComponent({
       searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await roundsApi();
-      const roundsParams : RoundsParams = {
+      const roundsParams: RoundsParams = {
         playerCode: this.currenctUsername[this.currenctUsername.length - 1].id,
-        closedFrom:  searchForm.From,
+        closedFrom: searchForm.From,
         closedTo: searchForm.To,
         page: this.roundsSearchForm.page,
         rows: this.roundsSearchForm.rows,
         desc: false,
         sort: '',
-        all: false
+        all: false,
       };
 
       const result = await response.runAsync(roundsParams);
 
-      const roundsTotal : RoundsData = {
+      const roundsTotal: RoundsData = {
         closedOn: '',
         createdOn: '',
         externalRoundId: '',
@@ -581,9 +607,9 @@ export default defineComponent({
         status: 0,
         subGameProviderName: '',
         turnover: 0,
-        ...result.data.total
+        ...result.data.total,
       };
-      const roundsPageTotal : RoundsData = {
+      const roundsPageTotal: RoundsData = {
         closedOn: '',
         createdOn: '',
         externalRoundId: '',
@@ -598,24 +624,32 @@ export default defineComponent({
         betAmount: 0,
         settleAmount: 0,
         validBetAmount: 0,
-        winLoss: 0
+        winLoss: 0,
       };
-      for(var i =0;i<result.data.items.length;i++){
+      for (var i = 0; i < result.data.items.length; i++) {
         roundsPageTotal.turnover += result.data.items[i].turnover;
         roundsPageTotal.betAmount += result.data.items[i].betAmount;
         roundsPageTotal.settleAmount += result.data.items[i].settleAmount;
         roundsPageTotal.validBetAmount += result.data.items[i].validBetAmount;
         roundsPageTotal.winLoss += result.data.items[i].winLoss;
       }
-      if(result.data.items.length > 0){
-        this.roundsData = [...result.data.items,roundsPageTotal, roundsTotal];
-      }else{
-        this.roundsData =[];
+      if (result.data.items.length > 0) {
+        this.roundsData = [...result.data.items, roundsPageTotal, roundsTotal];
+      } else {
+        this.roundsData = [];
       }
-      
+
       this.roundsTotalRowCount = result.data.totalCount;
-
-
+    },
+    getImgUrl(pic: string) {
+      return '../assets/images/' + pic + '.svg';
+    },
+    clickToCopy(item: string) {
+      navigator.clipboard.writeText(item);
+      ElNotification({
+        message: this.t('copySuccess'),
+        type: 'success',
+      });
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
       if (row.memberType == '') {
@@ -625,17 +659,23 @@ export default defineComponent({
         if (columnIndex == 1) {
           return [0, 0];
         }
-      }else if (row.id == this.t('total') || row.id == this.t('pageTotal')) {
+      } else if (row.id == this.t('total') || row.id == this.t('pageTotal')) {
         if (columnIndex == 0) {
           return [1, 7];
         }
-        if (columnIndex == 1 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4 || columnIndex == 5|| columnIndex == 6) {
+        if (
+          columnIndex == 1 ||
+          columnIndex == 2 ||
+          columnIndex == 3 ||
+          columnIndex == 4 ||
+          columnIndex == 5 ||
+          columnIndex == 6
+        ) {
           return [0, 0];
         }
       }
     },
     getRowClassName({ row, rowIndex }: { row: any; rowIndex: number }) {
-
       if (row.memberType == '' || row.id == this.t('total') || row.id == this.t('pageTotal')) {
         return 'custom-background-color';
       }
@@ -646,28 +686,26 @@ export default defineComponent({
         if (column.property !== 'agentDividendPercentage') {
           percentage = '';
         }
-        
+
         return this.formatTo2Decimal(row[column.property]) + percentage;
       } else {
         return '';
       }
     },
-    formatTo2Decimal(val : number){
-      var spt = val.toString().split(".");
-      var stringVal = spt[0] + ".";
-      if(spt.length >1){
-        if(spt[1].length > 2){
-          stringVal += spt[1].substring(0,2);
-        }else{
+    formatTo2Decimal(val: number) {
+      var spt = val.toString().split('.');
+      var stringVal = spt[0] + '.';
+      if (spt.length > 1) {
+        if (spt[1].length > 2) {
+          stringVal += spt[1].substring(0, 2);
+        } else {
           stringVal += spt[1];
-          if(spt[1].length === 1){
-            stringVal+= "0";
+          if (spt[1].length === 1) {
+            stringVal += '0';
           }
-          
         }
-        
-      }else{
-        stringVal += "00";
+      } else {
+        stringVal += '00';
       }
       return stringVal;
     },
@@ -677,9 +715,9 @@ export default defineComponent({
     formatDateWithTime(datetime: string) {
       return moment(datetime).format('YYYY/MM/DD HH:mm:ss');
     },
-    formatRoundsStatus(status: string): string{
+    formatRoundsStatus(status: string): string {
       const { t } = useI18n();
-      return t('roundStatus'+status);
+      return t('roundStatus' + status);
     },
     formatPrice2(val: number) {
       return this.formatTo2Decimal(val);
@@ -737,48 +775,41 @@ export default defineComponent({
     async onSearch() {
       this.view = 0;
       this.currenctUsername = [];
-   
-      if(this.searchForm.username.trim() !== ""){
+
+      if (this.searchForm.username.trim() !== '') {
         this.searchForm.downLine = true;
-        const breadcrumbParams : BreadcrumbParams = {
+        const breadcrumbParams: BreadcrumbParams = {
           username: this.searchForm.username,
           memberType: this.searchForm.memberType,
-          roundId: ''
+          roundId: '',
         };
         const response = await breadcrumbApi();
         const result = await response.runAsync(breadcrumbParams);
-        if(result.data.length > 0){
-  
-          for(var i=0;i<result.data.length;i++){
+        if (result.data.length > 0) {
+          for (var i = 0; i < result.data.length; i++) {
             let breadCrumb = new BreadCrumb();
-            breadCrumb.id = "";
+            breadCrumb.id = '';
             breadCrumb.username = result.data[i].username;
             this.currenctUsername.push(breadCrumb);
           }
-
-        }else{
-          this.searchForm.username = "";
+        } else {
+          this.searchForm.username = '';
           this.searchForm.downLine = true;
           const userStore = useUserStore();
           let breadCrumb = new BreadCrumb();
           breadCrumb.username = userStore.user.username;
-          this.currenctUsername.push(breadCrumb);  
+          this.currenctUsername.push(breadCrumb);
         }
-        
-      }else{
+      } else {
         this.searchForm.downLine = true;
         const userStore = useUserStore();
         let breadCrumb = new BreadCrumb();
         breadCrumb.username = userStore.user.username;
         this.currenctUsername.push(breadCrumb);
-
       }
-     
-      
-      
+
       this.searchForm.page = 1;
       this.getItems(this.searchForm.downLine);
-
     },
 
     disabledDate(time: Date) {
@@ -802,67 +833,61 @@ export default defineComponent({
       breadCrumb.username = username;
       breadCrumb.id = id;
       this.currenctUsername.push(breadCrumb);
-  
+
       this.getRoundsItems();
       this.view = 1;
     },
     onClickBread(index: number) {
-      if(index == this.currenctUsername.length - 1)
-        return;
+      if (index == this.currenctUsername.length - 1) return;
       this.searchForm.page = 1;
       this.currenctUsername = this.currenctUsername.slice(0, index + 1);
       this.getItems(true);
       this.view = 0;
     },
-    async onExport(){
+    async onExport() {
       let searchForm = { ...this.searchForm };
       searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       let response = null;
-      if(this.view==0){
-
-        const agentWinlossReportParams : AgentWinlossReportParams = {
-        username: this.currenctUsername.length > 1 ? this.currenctUsername[this.currenctUsername.length - 1].username : '',
-        downLine: true,
-        from: searchForm.From,
-        to: searchForm.To,
-        page: searchForm.page,
-        rows: searchForm.rows,
-        desc: false,
-        sort: '',
-        all: false,
-        memberType: searchForm.memberType
+      if (this.view == 0) {
+        const agentWinlossReportParams: AgentWinlossReportParams = {
+          username:
+            this.currenctUsername.length > 1 ? this.currenctUsername[this.currenctUsername.length - 1].username : '',
+          downLine: true,
+          from: searchForm.From,
+          to: searchForm.To,
+          page: searchForm.page,
+          rows: searchForm.rows,
+          desc: false,
+          sort: '',
+          all: false,
+          memberType: searchForm.memberType,
         };
         response = await exportAgentWinLossApi();
         response = await response.runAsync(agentWinlossReportParams);
-      }else{
-
-        const roundsParams : RoundsParams = {
+      } else {
+        const roundsParams: RoundsParams = {
           playerCode: this.currenctUsername[this.currenctUsername.length - 1].id,
-          closedFrom:  searchForm.From,
+          closedFrom: searchForm.From,
           closedTo: searchForm.To,
           page: this.roundsSearchForm.page,
           rows: this.roundsSearchForm.rows,
           desc: false,
           sort: '',
-          all: false
+          all: false,
         };
 
         response = await exportRoundsApi();
         response = await response.runAsync(roundsParams);
       }
-      
 
-
-      const url = window.URL.createObjectURL(new Blob([response], {type: "application/vnd.ms-excel"}));
+      const url = window.URL.createObjectURL(new Blob([response], { type: 'application/vnd.ms-excel' }));
 
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', 'export.xlsx'); // Set the desired file name
       document.body.appendChild(link);
       link.click();
-     
-      
     },
     onDateTypeChange() {
       if (this.searchForm.dateType == 'today') {
@@ -912,15 +937,14 @@ export default defineComponent({
       this.roundsSearchForm.page = val;
       this.getRoundsItems();
     },
-    
   },
 });
 </script>
-<style >
+<style>
 .custom-background-color {
   background-color: #f5f7fa !important; /* Your desired background color */
 }
-.custom-background-color td{
+.custom-background-color td {
   background-color: #f5f7fa !important; /* Your desired background color */
 }
 </style>
@@ -945,6 +969,7 @@ export default defineComponent({
     }
   }
 }
+
 .legends {
   display: flex;
   gap: 20px;
@@ -1027,20 +1052,26 @@ export default defineComponent({
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.roundStatus-3{
-  color:green;
+.roundStatus-3 {
+  color: green;
 }
-.roundStatus-4{
-  color:red;
+.roundStatus-4 {
+  color: red;
 }
 .custom-icon {
-   font-size: 1.5rem;
-   padding:15px;
+  font-size: 1.5rem;
+  padding: 15px;
 }
-.member-selection{
-  width:100px;
+.member-selection {
+  width: 100px;
 }
-.input-with-select{
-  width:402px;
+.input-with-select {
+  width: 402px;
+}
+
+#saveIcon {
+  height: 15px;
+  width: 15px;
+  filter: invert(100%);
 }
 </style>

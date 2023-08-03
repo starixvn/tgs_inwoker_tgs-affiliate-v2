@@ -2,9 +2,9 @@
   <div class="total-panel">
     <el-row :gutter="30" style="justify-content: space-between">
       <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-        <div class="card" @click="navigateTo(item.path, item.params)">
+        <div class="card" @click="navigateTo(item.path, item.params, item.newTab)">
           <div class="card-icon">
-            <img :src="getImgUrl(item.title)" style="width: 50%" />
+            <Icons :item="item.title" :size="50" class="specialTreatedIcon" />
           </div>
           <div>
             {{ t(item.title).toUpperCase() }}
@@ -17,15 +17,25 @@
 <script setup lang="ts">
 import { useLocalesI18n } from '@/locales/i18n';
 import { router } from '@/router';
+import { useGlobalStore, useUserStore } from '@/store';
+
+var name = useUserStore().user.realname || useUserStore().user.username;
+var email = useUserStore().user.email;
+var language = useGlobalStore().i18n.locale.value;
+
+var supporturl = useGlobalStore()
+  .liveChat.setting.url.replace('{name}', name)
+  .replace('{email}', email)
+  .replace('{lang}', language);
 
 let { t } = useLocalesI18n({}, [(locale) => import(`../lang/${locale}.json`), 'dashboard']);
 
-function getImgUrl(pic: string) {
-  return 'assets/images/' + pic + '.svg';
-}
-
-function navigateTo(path: string, params: any = {}) {
-  router.push({ path: path, query: { ...params } });
+function navigateTo(path: string, params: any = {}, newTab = false) {
+  if (newTab) {
+    window.open(path, '_blank', 'width=800,height=600');
+  } else {
+    router.push({ path: path, query: { ...params } });
+  }
 }
 
 const list = reactive([
@@ -71,12 +81,13 @@ const list = reactive([
   {
     title: 'winlossreport',
     icon: 'mel-icon-user-filled',
-    path: '/report/contribute',
+    path: '/report/winloss',
   },
   {
     title: 'helpcenter',
     icon: 'mel-icon-user-filled',
-    path: '/helpcenter/index',
+    path: supporturl,
+    newTab: true,
   },
 ]);
 </script>
@@ -105,15 +116,30 @@ const list = reactive([
   //     }
   //   }
   // }
+
+  &:hover {
+    background-color: var(--el-color-primary);
+    div {
+      color: var(--el-color-white);
+    }
+
+    .card-icon div {
+      background: var(--el-color-white);
+    }
+
+    //
+
+    //make content filter in white
+  }
 }
 
 .card-icon {
   height: 100px;
   width: 100px;
+  pointer-events: none;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: invert(46%) sepia(53%) saturate(1220%) hue-rotate(143deg) brightness(102%) contrast(94%);
 }
 </style>

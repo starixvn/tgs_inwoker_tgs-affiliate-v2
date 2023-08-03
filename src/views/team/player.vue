@@ -52,6 +52,9 @@
               </template>
               <template #default>
                 <div class="demo-rich-conent" style="display: flex; gap: 5px; flex-direction: column">
+                  <el-checkbox v-model="isAllColumnsChecked" @change="toggleAllColumns">{{
+                    $t('checkAll')
+                  }}</el-checkbox>
                   <el-checkbox
                     v-for="(item, index) in tableColumn"
                     :key="index"
@@ -67,7 +70,13 @@
         <el-table :data="tableData" border>
           <el-table-column :label="t('player')" prop="username" min-width="150" />
           <el-table-column :label="t('playercode')" prop="playercode" v-if="tableColumn.playercode.isShow" />
-          <el-table-column :label="t('viplevel')" prop="viplevel" width="90" v-if="tableColumn.viplevel.isShow" />
+          <el-table-column
+            :label="t('viplevel')"
+            prop="viplevel"
+            align="center"
+            width="90"
+            v-if="tableColumn.viplevel.isShow"
+          />
           <el-table-column :label="t('areacode')" prop="areacode" v-if="tableColumn.areacode.isShow" />
           <el-table-column :label="t('phone')" prop="phone" v-if="tableColumn.phone.isShow" />
           <el-table-column
@@ -84,7 +93,7 @@
             width="180"
             v-if="tableColumn.lastloginon.isShow"
           />
-          <el-table-column :label="t('registerhost')" prop="registerhost" v-if="tableColumn.registerhost.isShow" />
+
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
               <el-popover trigger="click" placement="left" :width="300">
@@ -122,7 +131,7 @@
             :label="t('totaldepositamount')"
             :formatter="formatPrice"
             prop="totaldepositamount"
-            align="center"
+            align="right"
             width="150"
             v-if="tableColumn.totaldepositamount.isShow"
           ></el-table-column>
@@ -130,13 +139,14 @@
             :label="t('totalwithdrawamount')"
             :formatter="formatPrice"
             prop="totalwithdrawamount"
-            align="center"
+            align="right"
             width="150"
             v-if="tableColumn.totalwithdrawamount.isShow"
           ></el-table-column>
           <el-table-column
             :label="t('status')"
             prop="status"
+            align="center"
             :formatter="formatStatus"
             v-if="tableColumn.status.isShow"
           />
@@ -163,7 +173,7 @@
     <el-dialog v-model="addPlayerDialogVisible" :title="t('addPlayer')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
         <el-form-item :label="t('username')">
-          <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('enterUsername')" clearable />
+          <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('usernameFormat')" clearable />
         </el-form-item>
         <el-form-item :label="t('password')">
           <el-input
@@ -184,7 +194,14 @@
           />
         </el-form-item>
         <el-form-item :label="t('phone')">
-          <el-input v-model="addPlayerParams.phone" size="large" :placeholder="t('enterPhoneNumber')">
+          <el-input
+            v-model="addPlayerParams.phone"
+            size="large"
+            :placeholder="t('phoneFormat')"
+            :type="number"
+            :minlength="6"
+            :maxlength="32"
+          >
             <template #prepend>
               <el-select v-model="addPlayerParams.areaCode" placeholder="Select" style="width: 100px" size="large">
                 <el-option label="+86" value="86" />
@@ -215,7 +232,10 @@
               addPlayerParams.password === '' ||
               addPlayerParams.confirmPassword !== addPlayerParams.password ||
               addPlayerParams.phone === '' ||
-              addPlayerParams.tnc === false
+              addPlayerParams.phone.length < 6 ||
+              addPlayerParams.phone.length > 32 ||
+              addPlayerParams.tnc === false ||
+              addPlayerParams.email === ''
             "
             @click="onAddPlayer()"
           >
@@ -280,10 +300,7 @@ interface PlayerDataColumn {
     isShow: boolean;
     mustShow: boolean;
   };
-  registerhost: {
-    isShow: boolean;
-    mustShow: boolean;
-  };
+
   balance: {
     isShow: boolean;
     mustShow: boolean;
@@ -316,6 +333,7 @@ export default defineComponent({
 
   data() {
     return {
+      isAllColumnsChecked: false,
       showAgent: false,
       tableData: reactive<PlayerData[]>([]),
       statuses: reactive<PlayerStatusData>({}),
@@ -351,10 +369,7 @@ export default defineComponent({
           isShow: true,
           mustShow: false,
         },
-        registerhost: {
-          isShow: false,
-          mustShow: false,
-        },
+
         balance: {
           isShow: true,
           mustShow: true,
@@ -399,7 +414,25 @@ export default defineComponent({
     this.getStatuses();
   },
   mounted() {},
+  watch: {
+    tableColumn: {
+      deep: true,
+      handler(newValue) {
+        const allColumnsChecked = Object.values(newValue).every((item) => item.isShow);
+
+        this.isAllColumnsChecked = allColumnsChecked;
+      },
+    },
+  },
   methods: {
+    toggleAllColumns() {
+      // Loop through all tableColumn items and set their isShow property based on the state of isAllColumnsChecked
+      for (const key in this.tableColumn) {
+        if (Object.hasOwnProperty.call(this.tableColumn, key)) {
+          this.tableColumn[key].isShow = this.isAllColumnsChecked;
+        }
+      }
+    },
     async getItems() {
       const response = await getPlayerList();
       const result = await response.runAsync(this.searchForm);
@@ -446,6 +479,24 @@ export default defineComponent({
       this.getItems();
     },
     async onAddPlayer() {
+      //check phone number length if less than 6 show error and only contain number
+      if (this.addPlayerParams.phone.length < 6 || isNaN(Number(this.addPlayerParams.phone))) {
+        ElMessage.error(this.t('phoneFormat'));
+        return;
+      }
+
+      //check username and must contain only 6-16alphanumberic
+      if (!/^[a-zA-Z0-9]{6,16}$/.test(this.addPlayerParams.username)) {
+        ElMessage.error(this.t('invalidUsername'));
+        return;
+      }
+
+      //check email must be email format
+      if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(this.addPlayerParams.email)) {
+        ElMessage.error(this.t('invalidEmailFormat'));
+        return;
+      }
+
       let param = new CheckConditionParams();
       param.username = this.addPlayerParams.username;
       param.data.areacode = this.addPlayerParams.areaCode;

@@ -10,6 +10,10 @@
             <div class="data">{{ user.username }}</div>
           </div>
           <div class="account-container">
+            <div class="title">{{ $t('accumulatedProfitShare') }}</div>
+            <div class="data">{{ user.accumulatedprofitsharing }}</div>
+          </div>
+          <div class="account-container">
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
               <div>{{ user.balance.toFixed(2) }}</div>
@@ -287,7 +291,7 @@ onMounted(async () => {
   gap: 20px;
   background: #fff;
   padding: 20px;
-  border-radius: 20px 30px;
+  border-radius: 20px 20px;
   border: solid 1px #e5e5e5;
 }
 

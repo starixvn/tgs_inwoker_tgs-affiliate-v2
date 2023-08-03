@@ -3,7 +3,8 @@ import { event, mitter } from '@/event';
 import { Ref } from 'vue';
 import { LoadingOptions } from 'element-plus';
 import { forOwn } from 'lodash-es';
-import { getLocalization, getFeatures } from '@/api/misc';
+import { getLocalization, getFeatures, getLiveChat } from '@/api/misc';
+
 const WIDTH = 992; // refer to Bootstrap's responsive design
 const isMobile = ref(window.document.body.offsetWidth < WIDTH);
 mitter.on(event.RESIZE, () => {
@@ -22,7 +23,9 @@ interface GlobalState {
   layoutLoaded: boolean;
   localization: Localization;
   features: Features;
+  liveChat: any;
 }
+
 export default defineStore({
   id: 'global',
   state: (): GlobalState => {
@@ -47,6 +50,7 @@ export default defineStore({
       layoutLoaded: false,
       localization: {} as Localization,
       features: {},
+      liveChat: {},
     };
   },
   actions: {
@@ -67,6 +71,10 @@ export default defineStore({
     },
     setFeatures: function (features: any) {
       this.features = features;
+    },
+    getLiveChat: async function () {
+      const res = await getLiveChat()();
+      this.liveChat = res.data;
     },
   },
 });

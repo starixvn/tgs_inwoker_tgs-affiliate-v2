@@ -1,4 +1,5 @@
 import { request, RequestOptions } from '@/utils/request';
+import axios, { AxiosRequestConfig } from 'axios';
 // 登录
 export class AddAgentParams {
   userName = '';
@@ -98,6 +99,11 @@ export class UpdateAgentContactParams {
   phone = '';
   subAgentId = '';
 }
+
+export interface CheckAgentUsernameResult extends BaseResult {
+  isexist: boolean;
+}
+
 export function addAgentApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
   return request<AddAgentResult, [AddAgentParams], T>(
     (params) => ({
@@ -264,4 +270,20 @@ export function getSubAgentDividendsApi<T extends boolean = false>(returnAxios: 
     { noLoading },
     returnAxios,
   );
+}
+
+export async function checkAgentExistApi<T extends boolean = false>(username: string, returnAxios: T = false as T) {
+  const axiosConfig: AxiosRequestConfig = {
+    method: 'get',
+    url: process.env.API_URL + `api/agent/checkusername?username=${username}`,
+  };
+
+  try {
+    const response = await axios(axiosConfig);
+
+    return returnAxios ? response : response.data;
+  } catch (error) {
+    console.error('API error:', error);
+    throw error;
+  }
 }

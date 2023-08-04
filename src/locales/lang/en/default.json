@@ -307,5 +307,6 @@
   "checkAll": "Check All",
   "ifFailPressRefresh": "If fail, please refresh the page",
   "mustMatchPasswordFormat": "Password must be 8 characters and contain at least one alphabet",
-  "pt": "P/T"
+  "pt": "P/T",
+  "usernameAlreadyExist": "Username already exist"
 }

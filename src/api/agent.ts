@@ -273,6 +273,7 @@ export function getSubAgentDividendsApi<T extends boolean = false>(returnAxios: 
 }
 
 export async function checkAgentExistApi<T extends boolean = false>(username: string, returnAxios: T = false as T) {
+  //using this method because for whatever reason, request won't trigger here.
   const axiosConfig: AxiosRequestConfig = {
     method: 'get',
     url: process.env.API_URL + `api/agent/checkusername?username=${username}`,

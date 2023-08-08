@@ -471,6 +471,7 @@ import {
   updateAgentPasswordApi,
   updateAgentContactApi,
   UpdateAgentPasswordParams,
+  checkAgentExistApi,
 } from '@/api/agent';
 
 export default defineComponent({
@@ -774,6 +775,11 @@ export default defineComponent({
         ElMessage.error(this.$t('passwordNotSame'));
         return;
       }
+
+      if (this.addAgentParams.dividendPercentage > this.userStore.user.dividendpercentage) {
+        ElMessage.error(this.$t('dividentAlert', [this.userStore.user.dividendpercentage]) + '%');
+        return;
+      }
       // if(this.addAgentParams.realname === ''){
       //   ElMessage.error(this.$t('plsEnterRealName'));
       //   return;
@@ -782,10 +788,16 @@ export default defineComponent({
       //   ElMessage.error(this.$t('plsEnterRemark'));
       //   return;
       // }
-      const res = await addAgentApi()(this.addAgentParams);
-      this.getItems();
-      this.resetAddAgent();
-      this.addAgentDialogVisible = false;
+
+      const res2 = await checkAgentExistApi(this.addAgentParams.userName);
+      if (!res2.isexist) {
+        const res = await addAgentApi()(this.addAgentParams);
+        this.getItems();
+        this.resetAddAgent();
+        this.addAgentDialogVisible = false;
+      } else {
+        ElMessage.error(this.$t('usernameAlreadyExist'));
+      }
     },
     onResetPasswordClick() {
       this.resetPasswordDialogVisible = true;

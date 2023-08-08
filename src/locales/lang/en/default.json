@@ -309,5 +309,6 @@
   "mustMatchPasswordFormat": "Password must be 8 characters and contain at least one alphabet",
   "pt": "P/T",
   "profitShareAmount": "Profit Share ",
-  "youveSetWithdrawalPassword": "You have already set the withdrawal password. If you need to modify it, please contact the customer service team."
+  "youveSetWithdrawalPassword": "You have already set the withdrawal password. If you need to modify it, please contact the customer service team.",
+  "usernameAlreadyExist": "Username already exist"
 }

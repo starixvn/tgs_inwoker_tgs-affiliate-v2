@@ -11,7 +11,7 @@
                 <div class="title">{{ $t(item.name) }}:</div>
 
                 <div class="data">
-                  {{ item.value }}
+                  {{ item.translate ? t(item.value) : item.value }}
                   <el-popover
                     trigger="click"
                     placement="right"
@@ -174,125 +174,132 @@
                 </el-popover>
               </div>
             </div>
-            <!--
-   <div class="profile-info">
+
+            <div class="profile-info">
               <div class="title">{{ $t('withdrawpassword') }}:</div>
 
               <div class="data">
-                <el-popover trigger="click" placement="right" :width="460" @before-enter="onEnterChangeWithdrawalPass">
-                  <template #reference>
-                    <el-button style="width: 170px">{{ t('withdrawpassword') }}</el-button>
-                  </template>
-                  <div v-if="state.scene === 1">
-                    <el-row>
-                      <el-col :span="24" style="margin-bottom: 10px">
-                        <div class="popover-title">{{ t('withdrawpassword') }}</div>
-                      </el-col>
-                      <el-col :span="24" style="margin-bottom: 10px">
-                        <div class="input-row-no-label">
-                          <el-input
-                            v-model="state.email"
-                            class="textInput"
-                            disabled
-                            :placeholder="t('email')"
-                            clearable
-                          />
-                        </div>
-                        <div class="input-row-no-label">
-                          <el-input
-                            v-model="updateWithdrawalPassword.validatecode"
-                            class="textInput"
-                            :placeholder="t('verificationCode')"
-                            clearable
+                <div v-if="!useUserStore().user.issetpaypassword">
+                  <el-popover
+                    trigger="click"
+                    placement="right"
+                    :width="460"
+                    @before-enter="onEnterChangeWithdrawalPass"
+                  >
+                    <template #reference>
+                      <el-button style="width: 170px">{{ t('withdrawpassword') }}</el-button>
+                    </template>
+                    <div v-if="state.scene === 1">
+                      <el-row>
+                        <el-col :span="24" style="margin-bottom: 10px">
+                          <div class="popover-title">{{ t('withdrawpassword') }}</div>
+                        </el-col>
+                        <el-col :span="24" style="margin-bottom: 10px">
+                          <div class="input-row-no-label">
+                            <el-input
+                              v-model="state.email"
+                              class="textInput"
+                              disabled
+                              :placeholder="t('email')"
+                              clearable
+                            />
+                          </div>
+                          <div class="input-row-no-label">
+                            <el-input
+                              v-model="updateWithdrawalPassword.validatecode"
+                              class="textInput"
+                              :placeholder="t('verificationCode')"
+                              clearable
+                            >
+                              <template #append>
+                                <div v-if="state.timer === 60">
+                                  <el-button
+                                    class="btn-custom"
+                                    type="primary"
+                                    :disabled="state.isemptyEmail === true"
+                                    @click="getVerificationCodeForWithdrawalPassword"
+                                  >
+                                    {{ t('requestCode') }}
+                                  </el-button>
+                                </div>
+                                <div v-else>
+                                  <el-button class="btn-custom">
+                                    {{ t('resend') }}
+                                    {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
+                                  </el-button>
+                                </div>
+                              </template></el-input
+                            >
+                          </div>
+                        </el-col>
+                        <el-col :span="24">
+                          <el-row justify="end"
+                            ><el-button
+                              type="primary"
+                              :disabled="
+                                updateWithdrawalPassword.validatecode === '' ||
+                                state.email === '' ||
+                                state.email === null
+                              "
+                              @click="state.scene = 2"
+                            >
+                              {{ t('nextStep') }}
+                            </el-button></el-row
                           >
-                            <template #append>
-                              <div v-if="state.timer === 60">
-                                <el-button
-                                  class="btn-custom"
-                                  type="primary"
-                                  :disabled="state.isemptyEmail === true"
-                                  @click="getVerificationCodeForWithdrawalPassword"
-                                >
-                                  {{ t('requestCode') }}
-                                </el-button>
-                              </div>
-                              <div v-else>
-                                <el-button class="btn-custom">
-                                  {{ t('resend') }}
-                                  {{ state.timer > 0 ? '(' + state.timer + ')' : '' }}
-                                </el-button>
-                              </div>
-                            </template></el-input
-                          >
-                        </div>
-                      </el-col>
-                      <el-col :span="24">
-                        <el-row justify="end"
-                          ><el-button
-                            type="primary"
-                            :disabled="
-                              updateWithdrawalPassword.validatecode === '' || state.email === '' || state.email === null
-                            "
-                            @click="state.scene = 2"
-                          >
-                            {{ t('nextStep') }}
-                          </el-button></el-row
-                        >
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <div v-else>
-                    <el-row style="margin-bottom: 0px">
-                      <el-col :span="24">
-                        <div class="popover-title">{{ t('withdrawpassword') }}</div>
-                      </el-col>
-                      <el-col :span="24">
-                        <div class="input-row">
-                          <div class="label">{{ t('newPassword') }}</div>
-                          <el-input
-                            v-model="updateWithdrawalPassword.newpwd"
-                            class="textInput"
-                            type="password"
-                            :placeholder="t('newPassword')"
-                            clearable
-                            show-password
-                          />
-                        </div>
+                        </el-col>
+                      </el-row>
+                    </div>
+                    <div v-else>
+                      <el-row style="margin-bottom: 0px">
+                        <el-col :span="24">
+                          <div class="popover-title">{{ t('withdrawpassword') }}</div>
+                        </el-col>
+                        <el-col :span="24">
+                          <div class="input-row">
+                            <div class="label">{{ t('newPassword') }}</div>
+                            <el-input
+                              v-model="updateWithdrawalPassword.newpwd"
+                              class="textInput"
+                              type="password"
+                              :placeholder="t('newPassword')"
+                              clearable
+                              show-password
+                            />
+                          </div>
 
-                        <div class="input-row">
-                          <div class="label">{{ t('confirmPassword') }}</div>
-                          <el-input
-                            v-model="state.confirmwithdrawpassword"
-                            class="textInput"
-                            type="password"
-                            :placeholder="t('confirmPassword')"
-                            clearable
-                            show-password
-                          />
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row style="margin-bottom: 0px">
-                      <el-col :span="24">
-                        <el-row justify="end"
-                          ><el-button @click="state.scene = 1">
-                            {{ t('back') }}
-                          </el-button>
-                          <el-button type="primary" @click="updateTheWithdrawalPassword">
-                            {{ t('submit') }}
-                          </el-button></el-row
-                        >
-                      </el-col>
-                    </el-row>
-                  </div>
-                </el-popover>
+                          <div class="input-row">
+                            <div class="label">{{ t('confirmPassword') }}</div>
+                            <el-input
+                              v-model="state.confirmwithdrawpassword"
+                              class="textInput"
+                              type="password"
+                              :placeholder="t('confirmPassword')"
+                              clearable
+                              show-password
+                            />
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row style="margin-bottom: 0px">
+                        <el-col :span="24">
+                          <el-row justify="end"
+                            ><el-button @click="state.scene = 1">
+                              {{ t('back') }}
+                            </el-button>
+                            <el-button type="primary" @click="updateTheWithdrawalPassword">
+                              {{ t('submit') }}
+                            </el-button></el-row
+                          >
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </el-popover>
+                </div>
+                <div v-else>
+                  <el-button style="width: 170px" @click="askUserContactSupport">{{ t('withdrawpassword') }}</el-button>
+                </div>
               </div>
             </div>
-
-
-
-
-         -->
           </div>
         </div>
       </div>
@@ -422,6 +429,10 @@ const convertDate = (date: string) => {
   return newDate.toLocaleString();
 };
 
+const askUserContactSupport = () => {
+  ElMessage.info(t('youveSetWithdrawalPassword'));
+};
+
 const translate = (value: any) => {
   var altered = value.toString().replace(/,/g, '');
   return t(altered);
@@ -488,30 +499,38 @@ interface ListItem {
   name: string;
   value: string;
   editable: boolean;
+  translate: boolean;
 }
 
 const profileInfo = reactive({
   list: [] as ListItem[],
 });
 
-profileInfo.list.push({ name: 'agentusername', value: $state.user?.username, editable: false });
-profileInfo.list.push({ name: 'realname', value: $state.user?.realname, editable: false });
-profileInfo.list.push({ name: 'registeron', value: convertDate($state.user?.registeredon), editable: false });
-profileInfo.list.push({ name: 'balance', value: $state.user?.balance, editable: false });
-profileInfo.list.push({ name: 'status', value: t($state.user?.status), editable: false });
-profileInfo.list.push({ name: 'type', value: t($state.user?.type), editable: false });
+profileInfo.list.push({ name: 'agentusername', value: $state.user?.username, editable: false, translate: false });
+profileInfo.list.push({ name: 'realname', value: $state.user?.realname, editable: false, translate: false });
+profileInfo.list.push({
+  name: 'registeron',
+  value: convertDate($state.user?.registeredon),
+  editable: false,
+  translate: false,
+});
+profileInfo.list.push({ name: 'balance', value: $state.user?.balance.toString(), editable: false, translate: false });
+profileInfo.list.push({ name: 'status', value: $state.user?.status, editable: false, translate: true });
+profileInfo.list.push({ name: 'type', value: $state.user?.type, editable: false, translate: true });
 profileInfo.list.push({
   name: 'accumulatedProfitShare',
-  value: t($state.user?.accumulatedprofitsharing),
+  value: $state.user?.accumulatedprofitsharing.toString(),
   editable: false,
+  translate: false,
 });
 profileInfo.list.push({
   name: 'profitSharePT',
   value: $state.user?.dividendpercentage + '%',
   editable: false,
+  translate: false,
 });
-profileInfo.list.push({ name: 'email', value: $state.user?.email, editable: true });
-profileInfo.list.push({ name: 'phone', value: $state.user?.phone, editable: false });
+profileInfo.list.push({ name: 'email', value: $state.user?.email, editable: true, translate: false });
+profileInfo.list.push({ name: 'phone', value: $state.user?.phone, editable: false, translate: false });
 
 const updateNewPassword = async () => {
   if (updatePassword.newpwd !== state.confirmpassword) {

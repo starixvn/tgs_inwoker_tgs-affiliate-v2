@@ -106,7 +106,7 @@
             </el-table-column>
             <el-table-column :label="t('memberType')" prop="memberType"></el-table-column>
             <el-table-column :label="t('totalOrder')" prop="roundCount" align="right"></el-table-column>
-            <el-table-column :label="t('turnover')" prop="turnover" align="right"></el-table-column>
+            <el-table-column :label="t('validBet')" prop="turnover" align="right"></el-table-column>
             <el-table-column :label="t('player')" align="center">
               <el-table-column :label="t('winloss')" prop="winLoss" :formatter="formatPrice" align="right" />
               <el-table-column :label="t('special')" align="right">
@@ -133,7 +133,7 @@
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonus) }}</td>
                       </tr>
                       <tr>
-                        <td>{{ t('bonusAdjust') }}</td>
+                        <td>{{ t('bonusAdjustAmount') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonusAdjust) }}</td>
                       </tr>
                       <tr>

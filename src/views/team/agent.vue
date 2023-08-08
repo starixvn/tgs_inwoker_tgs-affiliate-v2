@@ -115,7 +115,13 @@
           <el-input v-model="addAgentParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
         </el-form-item>
         <el-form-item :label="t('profitSharePT')" required>
-          <el-input v-model="addAgentParams.dividendPercentage" size="large" :placeholder="$t('enterProfitSharePT')">
+          <el-input
+            v-model="addAgentParams.dividendPercentage"
+            size="large"
+            :placeholder="$t('enterProfitSharePT')"
+            :min="agentDividendRange.min"
+            :max="agentDividendRange.max"
+          >
             <template #append>%</template>
           </el-input>
           <el-alert type="error" :closable="false">
@@ -129,7 +135,11 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="onRegister()">
+          <el-button
+            type="primary"
+            :disabled="addAgentParams.email === '' || !addAgentParams.dividendPercentage"
+            @click="onRegister()"
+          >
             {{ t('registerNow') }}
           </el-button>
         </span>
@@ -348,6 +358,7 @@
                       :min="agentDividendRange.min"
                       :max="agentDividendRange.max"
                       size="large"
+                      @change="profitShareListener"
                     />
                     <div>
                       {{ t('profitShareCannotExceed', { percentage: agentDividendRange.max }) }}
@@ -570,6 +581,12 @@ export default defineComponent({
   },
 
   methods: {
+    profitShareListener() {
+      // This method will be called whenever the input value changes
+      console.log('123');
+      // You can perform any actions you want based on the changed value
+    },
+
     async getItems() {
       const response = await getAgentList();
       const result = await response.runAsync(this.searchForm);
@@ -774,6 +791,7 @@ export default defineComponent({
       this.resetPasswordDialogVisible = true;
       this.updateAgentPasswordParams = new UpdateAgentPasswordParams();
     },
+
     onUpdateProfitSharePTClick() {
       this.updateProfitSharePTDialogVisible = true;
       this.updateDividendParams = new UpdateDividendParams();

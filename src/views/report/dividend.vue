@@ -223,7 +223,7 @@
             />
             <el-table-column
               prop="agentDividendAmount"
-              :label="t('menuProfitShare')"
+              :label="t('profitShareAmount')"
               align="center"
               :formatter="formatPrice"
             />
@@ -521,7 +521,7 @@ export default defineComponent({
       const sums: string[] = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t('total');
+          sums[index] = this.$t('pageTotal');
           return;
         }
         const values = data.map((item) => Number(item[column.property]));
@@ -655,7 +655,7 @@ export default defineComponent({
       if (row.username === 'directAgent') {
         return this.$t('directAgent');
       } else if (row.username === 'Total') {
-        return this.$t('total');
+        return this.$t('pageTotal');
       } else {
         return row[column.property];
       }

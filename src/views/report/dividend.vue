@@ -495,8 +495,12 @@ export default defineComponent({
         searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
         searchForm.AgentId = this.selectedUserId || row.id;
         searchForm.agentDividendPercentage = this.selecterUserDividend || row.agentDividendPercentage;
+
         const response = await agentDividendDetails();
         const result = await response.runAsync(searchForm);
+
+        // Sort the items array in descending order based on settlementDate
+        result.data.items.sort((a, b) => new Date(b.settlementDate) - new Date(a.settlementDate));
 
         this.tableData = [...result.data.items];
         this.totalAgentDetailRowCount = result.data.totalcount;

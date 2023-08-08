@@ -115,15 +115,16 @@
           <el-input v-model="addAgentParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
         </el-form-item>
         <el-form-item :label="t('profitSharePT')" required>
-          <el-input
+          <el-input-number
             v-model="addAgentParams.dividendPercentage"
             size="large"
             :placeholder="$t('enterProfitSharePT')"
-            :min="agentDividendRange.min"
-            :max="agentDividendRange.max"
+            precision="2"
+            style="width: 100%"
+            @change="anotherProfitShareListener"
           >
             <template #append>%</template>
-          </el-input>
+          </el-input-number>
           <el-alert type="error" :closable="false">
             {{ $t('dividentAlert', [userStore.user.dividendpercentage]) }}%
           </el-alert>
@@ -356,11 +357,12 @@
                     <el-input-number
                       v-model="updateDividendParams.dividendPercentage"
                       :min="agentDividendRange.min"
-                      :max="agentDividendRange.max"
                       size="large"
+                      style="width: 80%"
+                      :precision="2"
                       @change="profitShareListener"
                     />
-                    <div>
+                    <div style="text-align: center; width: 80%">
                       {{ t('profitShareCannotExceed', { percentage: agentDividendRange.max }) }}
                     </div>
                   </el-form-item>
@@ -582,10 +584,20 @@ export default defineComponent({
   },
 
   methods: {
-    profitShareListener() {
-      // This method will be called whenever the input value changes
-      console.log('123');
-      // You can perform any actions you want based on the changed value
+    profitShareListener(value: number) {
+      if (value > this.agentDividendRange.max) {
+        ElMessage.error(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }));
+        this.updateDividendParams.dividendPercentage = this.agentDividendRange.max;
+      }
+    },
+
+    anotherProfitShareListener(value: number) {
+      const userDividendPercentage = this.userStore.user.dividendpercentage;
+
+      if (value > userDividendPercentage) {
+        ElMessage.error(this.t('profitShareCannotExceed', { percentage: userDividendPercentage }));
+        this.addAgentParams.dividendPercentage = userDividendPercentage;
+      }
     },
 
     async getItems() {

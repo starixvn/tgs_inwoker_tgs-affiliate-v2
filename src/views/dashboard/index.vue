@@ -9,10 +9,7 @@
             <div class="title">{{ $t('account') }}</div>
             <div class="data">{{ user.username }}</div>
           </div>
-          <div class="account-container">
-            <div class="title">{{ $t('accumulatedProfitShare') }}</div>
-            <div class="data">{{ user.accumulatedprofitsharing }}</div>
-          </div>
+
           <div class="account-container">
             <div class="title">{{ $t('walletBalance') }}</div>
             <div class="data">
@@ -23,6 +20,10 @@
                 </el-button>
               </router-link>
             </div>
+          </div>
+          <div class="account-container">
+            <div class="title">{{ $t('accumulatedProfitShare') }}</div>
+            <div class="data">{{ user.accumulatedprofitsharing }}</div>
           </div>
           <div class="account-container">
             <div class="title">{{ $t('referralCode') }}</div>

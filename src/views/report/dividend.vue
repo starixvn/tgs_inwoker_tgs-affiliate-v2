@@ -223,7 +223,7 @@
             />
             <el-table-column
               prop="agentDividendAmount"
-              :label="t('menuProfitShare')"
+              :label="t('profitShareAmount')"
               align="center"
               :formatter="formatPrice"
             />
@@ -495,8 +495,12 @@ export default defineComponent({
         searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
         searchForm.AgentId = this.selectedUserId || row.id;
         searchForm.agentDividendPercentage = this.selecterUserDividend || row.agentDividendPercentage;
+
         const response = await agentDividendDetails();
         const result = await response.runAsync(searchForm);
+
+        // Sort the items array in descending order based on settlementDate
+        result.data.items.sort((a, b) => new Date(b.settlementDate) - new Date(a.settlementDate));
 
         this.tableData = [...result.data.items];
         this.totalAgentDetailRowCount = result.data.totalcount;
@@ -521,7 +525,7 @@ export default defineComponent({
       const sums: string[] = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = this.$t('total');
+          sums[index] = this.$t('pageTotal');
           return;
         }
         const values = data.map((item) => Number(item[column.property]));
@@ -655,7 +659,7 @@ export default defineComponent({
       if (row.username === 'directAgent') {
         return this.$t('directAgent');
       } else if (row.username === 'Total') {
-        return this.$t('total');
+        return this.$t('pageTotal');
       } else {
         return row[column.property];
       }

@@ -126,3 +126,8 @@ a {
 .specialTreatedIcon {
   background: var(--el-color-primary);
 }
+
+.subtotal-row {
+  pointer-events: none !important;
+  font-weight: bold !important;
+}

@@ -91,6 +91,13 @@
           <el-form-item v-if="selectedbankInfo.banktype !== 'Bank'" :label="t('walletAddress')" class="label-bold">
             <span>{{ selectedbankInfo.detail.address }}</span>
           </el-form-item>
+
+          <el-form-item v-if="selectedbankInfo.banktype !== 'Bank'" :label="t('channel')" class="label-bold">
+            <span>{{
+              addCardInfoList.filter((a) => a.channelid === selectedbankInfo.paymentchannelid).length > 0 &&
+              addCardInfoList.filter((a) => a.channelid === selectedbankInfo.paymentchannelid)[0].channelcode
+            }}</span>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>

@@ -40,7 +40,7 @@
       </div>
 
       <el-dialog v-model="dialogVisible" width="40%" :title="$t('iForgotMyPassword')">
-        <div v-if="forgotPassword.scene === 1">
+        <div>
           <el-form ref="formRef" :model="loginParams" label-width="150px">
             <el-form-item :label="t('email')" props="email" required>
               <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
@@ -76,10 +76,6 @@
                 </template></el-input
               >
             </el-form-item>
-          </el-form>
-        </div>
-        <div v-else>
-          <el-form ref="formRef" :model="loginParams" label-width="100px">
             <el-form-item :label="t('password')">
               <el-input
                 v-model="resetPassword.newpwd"
@@ -106,17 +102,7 @@
 
         <template #footer>
           <span class="dialog-footer">
-            <div v-if="forgotPassword.scene === 1">
-              <el-button
-                type="primary"
-                :disabled="forgotPassword.email === '' || resetPassword.validatecode === ''"
-                @click="forgotPassword.scene = 2"
-              >
-                {{ t('nextStep') }}
-              </el-button>
-            </div>
-            <div v-else>
-              <el-button type="text" @click="forgotPassword.scene = 1"> {{ t('back') }} </el-button>
+            <div>
               <el-button type="primary" @click="performResetPassword"> {{ t('resetPassword') }} </el-button>
             </div>
           </span>

@@ -307,5 +307,8 @@
   "checkAll": "全选",
   "ifFailPressRefresh": "如果您的浏览器无法自动重新加载，请按下刷新按钮",
   "mustMatchPasswordFormat": "密码必须8位以上、至少1字母",
-  "pt": "分紅比例"
+  "pt": "分紅比例",
+  "profitShareAmount": "分红金额",
+  "youveSetWithdrawalPassword": "您已设置过提款密码，若需修改，请联系客服团队。",
+  "usernameAlreadyExist": "用户名称已存在"
 }

@@ -96,7 +96,7 @@
 
           <el-table-column :label="t('balance')" align="center" width="150">
             <template #default="scope">
-              <el-popover trigger="click" placement="left" :width="300">
+              <el-popover trigger="click" placement="left" :width="350">
                 <template #reference>
                   <el-button link type="primary" size="small" @click="onClickBalance(scope.row)">
                     [{{ t('viewBalance') }}]
@@ -110,7 +110,7 @@
                   </el-row>
                   <el-row style="margin-bottom: 0px">
                     <el-col :span="24">
-                      <el-form :label-width="120" label-position="left">
+                      <el-form :label-width="170" label-position="left">
                         <el-form-item :label="t('username') + ':'" class="balance-item">
                           {{ playerBalance.username }}
                         </el-form-item>

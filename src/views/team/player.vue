@@ -67,7 +67,7 @@
             </el-popover>
           </el-col>
         </el-row>
-        <el-table :data="tableData" border>
+        <el-table :data="tableData" border class="test">
           <el-table-column :label="t('player')" prop="username" min-width="150" />
           <el-table-column :label="t('playercode')" prop="playercode" v-if="tableColumn.playercode.isShow" />
           <el-table-column
@@ -632,5 +632,9 @@ export default defineComponent({
 }
 .el-checkbox.el-checkbox--large .el-checkbox__inner {
   display: none;
+}
+
+.el-table__header thead tr th {
+  text-align: center !important;
 }
 </style>

@@ -430,7 +430,7 @@ const convertDate = (date: string) => {
 };
 
 const askUserContactSupport = () => {
-  ElMessage.info(t('youveSetWithdrawalPassword'));
+  ElMessage.error(t('youveSetWithdrawalPassword'));
 };
 
 const translate = (value: any) => {

@@ -100,7 +100,7 @@
                   {{ scope.row.username }}
                 </a>
                 <div v-if="scope.row.memberType === ''">
-                  {{ scope.row.username }}
+                  {{ translate(scope.row.username) + ':' }}
                 </div>
               </template>
             </el-table-column>
@@ -338,7 +338,7 @@
           >
             <el-table-column :label="t('orderId')" width="140">
               <template #default="scope">
-                <div class="ellipsis" @click="clickToCopy(scope.row.id)">{{ scope.row.id }}</div>
+                <div class="ellipsis" @click="clickToCopy(scope.row.id)">{{ translate(scope.row.id) + ':' }}</div>
               </template>
             </el-table-column>
             <el-table-column :label="t('extOrderId')" prop="externalRoundId" width="140">
@@ -566,7 +566,7 @@ export default defineComponent({
       };
 
       const result = await response.runAsync(agentWinlossReportParams);
-      const totalPlaceholder = { username: this.t('total') + ':', memberType: '' };
+      const totalPlaceholder = { username: 'total', memberType: '' };
 
       const total = { ...totalPlaceholder, ...result.data.total };
       if (result.data.items.length > 0) {
@@ -601,7 +601,7 @@ export default defineComponent({
         externalRoundId: '',
         gameName: '',
         gameProviderName: '',
-        id: this.t('total'),
+        id: 'total',
         playerCode: '',
         playerName: '',
         status: 0,
@@ -615,7 +615,7 @@ export default defineComponent({
         externalRoundId: '',
         gameName: '',
         gameProviderName: '',
-        id: this.t('pageTotal'),
+        id: 'pageTotal',
         playerCode: '',
         playerName: '',
         status: 0,
@@ -644,6 +644,9 @@ export default defineComponent({
     getImgUrl(pic: string) {
       return '../assets/images/' + pic + '.svg';
     },
+    translate(item: string) {
+      return this.t(item);
+    },
     clickToCopy(item: string) {
       navigator.clipboard.writeText(item);
       ElNotification({
@@ -659,7 +662,7 @@ export default defineComponent({
         if (columnIndex == 1) {
           return [0, 0];
         }
-      } else if (row.id == this.t('total') || row.id == this.t('pageTotal')) {
+      } else if (row.id == 'total' || row.id == 'pageTotal') {
         if (columnIndex == 0) {
           return [1, 7];
         }
@@ -676,7 +679,7 @@ export default defineComponent({
       }
     },
     getRowClassName({ row, rowIndex }: { row: any; rowIndex: number }) {
-      if (row.memberType == '' || row.id == this.t('total') || row.id == this.t('pageTotal')) {
+      if (row.memberType == '' || row.id == 'total' || row.id == 'pageTotal') {
         return 'custom-background-color';
       }
     },

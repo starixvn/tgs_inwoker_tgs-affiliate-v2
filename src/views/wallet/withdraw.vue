@@ -72,7 +72,7 @@
         </el-form>
       </el-col>
       <el-col :xl="6" :lg="6" :md="8" :sm="24" :xs="24">
-        <el-form class="bank-details" label-position="right" label-width="35%" style="width: 100%">
+        <el-form class="bank-details" label-position="right" label-width="50%" style="width: 100%">
           <el-form-item v-if="selectedbankInfo.banktype !== '--'" :label="t('type')" class="label-bold">
             <span>{{ t(selectedbankInfo.banktype) }}</span>
           </el-form-item>

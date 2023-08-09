@@ -138,7 +138,11 @@
         <span class="dialog-footer">
           <el-button
             type="primary"
-            :disabled="addAgentParams.email === '' || !addAgentParams.dividendPercentage"
+            :disabled="
+              addAgentParams.email === '' ||
+              !addAgentParams.dividendPercentage ||
+              addAgentParams.dividendPercentage.toString().split('.')[1]?.length > 2
+            "
             @click="onRegister()"
           >
             {{ t('registerNow') }}
@@ -356,10 +360,10 @@
                   <el-form-item :label="t('profitSharePT')">
                     <el-input-number
                       v-model="updateDividendParams.dividendPercentage"
-                      :min="agentDividendRange.min"
                       size="large"
+                      :placeholder="$t('enterProfitSharePT')"
+                      precision="2"
                       style="width: 80%"
-                      :precision="2"
                       @change="profitShareListener"
                     />
                     <div style="text-align: center; width: 80%">
@@ -369,7 +373,14 @@
                 </el-form>
                 <template #footer>
                   <div class="dialog-footer">
-                    <el-button type="primary" @click="onSubmitUpdateProfitSharePTClick">
+                    <el-button
+                      type="primary"
+                      :disabled="
+                        updateDividendParams.dividendPercentage > agentDividendRange.max ||
+                        updateDividendParams.dividendPercentage.toString().split('.')[1]?.length > 2
+                      "
+                      @click="onSubmitUpdateProfitSharePTClick"
+                    >
                       {{ t('submit') }}
                     </el-button>
                   </div>

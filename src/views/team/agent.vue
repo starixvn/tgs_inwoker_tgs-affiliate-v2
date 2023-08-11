@@ -141,7 +141,8 @@
             :disabled="
               addAgentParams.email === '' ||
               !addAgentParams.dividendPercentage ||
-              addAgentParams.dividendPercentage.toString().split('.')[1]?.length > 2
+              (addAgentParams.dividendPercentage &&
+                addAgentParams.dividendPercentage.toString().split('.')[1]?.length > 2)
             "
             @click="onRegister()"
           >
@@ -377,7 +378,8 @@
                       type="primary"
                       :disabled="
                         updateDividendParams.dividendPercentage > agentDividendRange.max ||
-                        updateDividendParams.dividendPercentage.toString().split('.')[1]?.length > 2
+                        (updateDividendParams.dividendPercentage &&
+                          updateDividendParams.dividendPercentage.toString().split('.')[1]?.length > 2)
                       "
                       @click="onSubmitUpdateProfitSharePTClick"
                     >
@@ -596,14 +598,26 @@ export default defineComponent({
 
   methods: {
     profitShareListener(value: number) {
-      if (value > this.agentDividendRange.max) {
-        ElMessage.error(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }));
-        this.updateDividendParams.dividendPercentage = this.agentDividendRange.max;
+      if (value) {
+        if (value.toString().split('.')[1]?.length > 2) {
+          this.updateDividendParams.dividendPercentage = parseFloat(value.toFixed(2));
+        }
+
+        if (value > this.agentDividendRange.max) {
+          ElMessage.error(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }));
+          this.updateDividendParams.dividendPercentage = this.agentDividendRange.max;
+        }
+      } else {
+        this.updateDividendParams.dividendPercentage = 0;
       }
     },
 
     anotherProfitShareListener(value: number) {
       const userDividendPercentage = this.userStore.user.dividendpercentage;
+
+      if (value.toString().split('.')[1]?.length > 2) {
+        this.addAgentParams.dividendPercentage = parseFloat(value.toFixed(2));
+      }
 
       if (value > userDividendPercentage) {
         ElMessage.error(this.t('profitShareCannotExceed', { percentage: userDividendPercentage }));

@@ -172,10 +172,10 @@
     </el-row>
     <el-dialog v-model="addPlayerDialogVisible" :title="t('addPlayer')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
-        <el-form-item :label="t('username')">
+        <el-form-item :label="t('username')" required>
           <el-input v-model="addPlayerParams.username" size="large" :placeholder="$t('usernameFormat')" clearable />
         </el-form-item>
-        <el-form-item :label="t('password')">
+        <el-form-item :label="t('password')" required>
           <el-input
             v-model="addPlayerParams.password"
             size="large"
@@ -184,7 +184,7 @@
             type="password"
           />
         </el-form-item>
-        <el-form-item :label="t('confirmPassword')">
+        <el-form-item :label="t('confirmPassword')" required>
           <el-input
             v-model="addPlayerParams.confirmPassword"
             size="large"
@@ -193,7 +193,7 @@
             type="password"
           />
         </el-form-item>
-        <el-form-item :label="t('phone')">
+        <el-form-item :label="t('phone')" required>
           <el-input
             v-model="addPlayerParams.phone"
             size="large"
@@ -210,7 +210,7 @@
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item :label="t('email')">
+        <el-form-item :label="t('email')" required>
           <el-input v-model="addPlayerParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
         </el-form-item>
         <div class="tnc">

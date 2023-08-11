@@ -114,7 +114,7 @@
                       </el-col>
                       <el-col :span="24">
                         <div class="input-row">
-                          <div class="label">{{ t('currentPassword') }}</div>
+                          <div class="label"><span />{{ t('currentPassword') }}</div>
                           <el-input
                             v-model="updatePassword.oldpwd"
                             class="textInput"
@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="input-row">
-                          <div class="label">{{ t('newPassword') }}</div>
+                          <div class="label"><span />{{ t('newPassword') }}</div>
                           <el-input
                             v-model="updatePassword.newpwd"
                             class="textInput"
@@ -138,7 +138,7 @@
                         </div>
 
                         <div class="input-row">
-                          <div class="label">{{ t('confirmPassword') }}</div>
+                          <div class="label"><span />{{ t('confirmPassword') }}</div>
                           <el-input
                             v-model="state.confirmpassword"
                             class="textInput"
@@ -356,6 +356,7 @@ import { Link } from '@element-plus/icons-vue';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Edit } from '@element-plus/icons-vue';
+import moment from 'moment';
 
 // Props
 const props = defineProps({
@@ -425,8 +426,7 @@ const profitShare = reactive([
 
 //convert datetime into readable format with date and time
 const convertDate = (date: string) => {
-  const newDate = new Date(date);
-  return newDate.toLocaleString();
+  return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 const askUserContactSupport = () => {
@@ -673,6 +673,12 @@ const onVerfiyEmailCode = async () => {
 
   .label {
     text-align: right;
+
+    span::before {
+      content: '*';
+      color: var(--el-color-danger);
+      margin-right: 4px;
+    }
   }
 }
 

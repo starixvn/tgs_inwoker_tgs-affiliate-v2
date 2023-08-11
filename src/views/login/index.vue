@@ -41,7 +41,7 @@
 
       <el-dialog v-model="dialogVisible" width="40%" :title="$t('iForgotMyPassword')">
         <div>
-          <el-form ref="formRef" :model="loginParams" label-width="150px">
+          <el-form ref="formRef" :model="loginParams" label-width="200px">
             <el-form-item :label="t('email')" props="email" required>
               <el-input v-model="forgotPassword.email" class="textInput" autofocus :placeholder="t('email')" clearable>
               </el-input>
@@ -76,23 +76,23 @@
                 </template></el-input
               >
             </el-form-item>
-            <el-form-item :label="t('password')">
+            <el-form-item :label="t('newPassword')" required>
               <el-input
                 v-model="resetPassword.newpwd"
                 class="textInput"
                 type="password"
-                :placeholder="t('password')"
+                :placeholder="t('newPassword')"
                 clearable
                 show-password
               />
             </el-form-item>
 
-            <el-form-item :label="t('confirmPassword')">
+            <el-form-item :label="t('reEnterPassword')" required>
               <el-input
                 v-model="forgotPassword.confirmpass"
                 class="textInput"
                 type="password"
-                :placeholder="t('confirmPassword')"
+                :placeholder="t('reEnterPassword')"
                 clearable
                 show-password
               />

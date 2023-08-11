@@ -58,7 +58,16 @@
       <el-col :span="22">
         <div class="legends">
           <div>
-            <el-button type="primary" icon="me-icon-info" @click="showlegends = !showlegends" />
+            <el-button
+              size="small"
+              class="custom-icon"
+              circle
+              type="primary"
+              @click="showlegends = !showlegends"
+              id="warningButton"
+            >
+              <img id="warningIcon" :src="getImgUrl('warning')" />
+            </el-button>
           </div>
           <div v-show="showlegends === true">
             <div v-for="index in legends" :key="index">
@@ -1073,6 +1082,17 @@ export default defineComponent({
 }
 
 #saveIcon {
+  height: 15px;
+  width: 15px;
+  filter: invert(100%);
+}
+
+#warningButton {
+  background: #fec048;
+  border: none;
+}
+
+#warningIcon {
   height: 15px;
   width: 15px;
   filter: invert(100%);

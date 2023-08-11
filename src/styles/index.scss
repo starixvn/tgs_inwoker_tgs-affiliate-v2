@@ -130,4 +130,12 @@ a {
 .subtotal-row {
   pointer-events: none !important;
   font-weight: bold !important;
+  background-color: #eeeeee !important;
+}
+
+.el-message-box {
+  // styles for screens with a minimum width of 500px
+  @media screen and (min-width: 500px) {
+    min-width: 500px;
+  }
 }

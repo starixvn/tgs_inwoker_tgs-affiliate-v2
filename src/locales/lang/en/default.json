@@ -310,5 +310,6 @@
   "pt": "P/T",
   "profitShareAmount": "Profit Share ",
   "youveSetWithdrawalPassword": "You have already set the withdrawal password. If you need to modify it, please contact the customer service team.",
-  "usernameAlreadyExist": "Username already exist"
+  "usernameAlreadyExist": "Username already exist",
+  "cannotExceed31Days": "Cannot exceed 31 days"
 }

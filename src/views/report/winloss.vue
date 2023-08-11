@@ -44,9 +44,16 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
+            <el-button
+              type="primary"
+              class="btnsearch"
+              size="large"
+              :disabled="moment(searchForm.dateRange[1]).diff(moment(searchForm.dateRange[0]), 'days') > 31"
+              @click="onSearch()"
+              >{{ t('search') }}</el-button
+            >
 
-            <el-button type="primary" @click="onExport()" size="large" class="custom-icon">
+            <el-button type="primary" size="large" class="custom-icon" @click="onExport()">
               <img :src="getImgUrl('save')" id="saveIcon" />
             </el-button>
           </el-form-item>
@@ -555,6 +562,7 @@ export default defineComponent({
   },
 
   methods: {
+    moment,
     async getItems(downLine: boolean) {
       let searchForm = { ...this.searchForm };
       searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
@@ -828,6 +836,14 @@ export default defineComponent({
       return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
     daterangeChange() {
+      //check if duration between dateFrom and dateTo is exceed 31 days
+      if (moment(this.searchForm.dateRange[1]).diff(moment(this.searchForm.dateRange[0]), 'days') > 31) {
+        ElNotification({
+          message: this.t('cannotExceed31Days'),
+          type: 'error',
+        });
+      }
+
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },

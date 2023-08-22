@@ -374,17 +374,6 @@ export default defineComponent({
       this.addCardDialogVisible = false;
     },
     async onSubmit() {
-      ElMessageBox.alert(this.$t('withdrawalSuccessMsg'), this.$t('withdrawalSuccessTitle'), {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: this.$t('withdrawalSuccessButton'),
-        type: 'success',
-        center: true,
-      })
-        .then(() => {
-          this.userStore.init();
-        })
-        .catch(() => {});
-
       const res = await withdrawalApi()(this.withdrawalParams);
       if (res.err === 0) {
         ElMessageBox.alert(this.$t('withdrawalSuccessMsg'), this.$t('withdrawalSuccessTitle'), {

@@ -481,7 +481,7 @@ export default defineComponent({
     async onAddPlayer() {
       //check phone number length if less than 6 show error and only contain number
       if (this.addPlayerParams.phone.length < 6 || isNaN(Number(this.addPlayerParams.phone))) {
-        ElMessage.error(this.t('phoneFormat'));
+        ElMessage.error(this.t('invalidPhoneFormat'));
         return;
       }
 

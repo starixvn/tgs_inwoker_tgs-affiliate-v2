@@ -409,7 +409,7 @@
                 append-to-body
               >
                 <el-form label-position="right" label-width="150px">
-                  <el-form-item :label="t('password')">
+                  <el-form-item :label="t('password')" required>
                     <el-input
                       v-model="updateAgentPasswordParams.password"
                       size="large"
@@ -418,7 +418,7 @@
                       type="password"
                     />
                   </el-form-item>
-                  <el-form-item :label="t('confirmPassword')">
+                  <el-form-item :label="t('confirmPassword')" required>
                     <el-input
                       v-model="updateAgentPasswordParams.confirmPassword"
                       size="large"
@@ -604,7 +604,10 @@ export default defineComponent({
         }
 
         if (value > this.agentDividendRange.max) {
-          ElMessage.error(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }));
+          ElMessageBox.alert(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }), {
+            confirmButtonText: this.t('close'),
+          });
+
           this.updateDividendParams.dividendPercentage = this.agentDividendRange.max;
         }
       } else {
@@ -620,7 +623,10 @@ export default defineComponent({
       }
 
       if (value > userDividendPercentage) {
-        ElMessage.error(this.t('profitShareCannotExceed', { percentage: userDividendPercentage }));
+        ElMessageBox.alert(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }), {
+          confirmButtonText: this.t('close'),
+        });
+
         this.addAgentParams.dividendPercentage = userDividendPercentage;
       }
     },

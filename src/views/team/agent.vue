@@ -610,6 +610,12 @@ export default defineComponent({
 
           this.updateDividendParams.dividendPercentage = this.agentDividendRange.max;
         }
+        if (value < 0) {
+          this.updateDividendParams.dividendPercentage = 0;
+          ElMessageBox.alert(this.t('valueCannotLesserThanZero', { percentage: this.agentDividendRange.max }), {
+            confirmButtonText: this.t('close'),
+          });
+        }
       } else {
         this.updateDividendParams.dividendPercentage = 0;
       }
@@ -628,6 +634,12 @@ export default defineComponent({
         });
 
         this.addAgentParams.dividendPercentage = userDividendPercentage;
+      }
+      if (value < 0) {
+        this.updateDividendParams.dividendPercentage = 0;
+        ElMessageBox.alert(this.t('valueCannotLesserThanZero', { percentage: this.agentDividendRange.max }), {
+          confirmButtonText: this.t('close'),
+        });
       }
     },
 

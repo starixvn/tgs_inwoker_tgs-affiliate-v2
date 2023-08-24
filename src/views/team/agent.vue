@@ -87,10 +87,10 @@
     </el-row>
     <el-dialog v-model="addAgentDialogVisible" :title="t('addagent')" :fullscreen="globalStore.isMobile">
       <el-form label-position="right" label-width="25%" style="width: 100%">
-        <el-form-item :label="t('username')">
+        <el-form-item :label="t('username')" required>
           <el-input v-model="addAgentParams.userName" size="large" :placeholder="$t('enterUsername')" clearable />
         </el-form-item>
-        <el-form-item :label="t('password')">
+        <el-form-item :label="t('password')" required>
           <el-input
             v-model="addAgentParams.password"
             size="large"
@@ -99,7 +99,7 @@
             type="password"
           />
         </el-form-item>
-        <el-form-item :label="t('confirmPassword')">
+        <el-form-item :label="t('confirmPassword')" required>
           <el-input
             v-model="addAgentParams.confirmPassword"
             size="large"
@@ -629,7 +629,7 @@ export default defineComponent({
       }
 
       if (value > userDividendPercentage) {
-        ElMessageBox.alert(this.t('profitShareCannotExceed', { percentage: this.agentDividendRange.max }), {
+        ElMessageBox.alert(this.t('profitShareCannotExceed', { percentage: userDividendPercentage }), {
           confirmButtonText: this.t('close'),
         });
 
@@ -637,7 +637,7 @@ export default defineComponent({
       }
       if (value < 0) {
         this.updateDividendParams.dividendPercentage = 0;
-        ElMessageBox.alert(this.t('valueCannotLesserThanZero', { percentage: this.agentDividendRange.max }), {
+        ElMessageBox.alert(this.t('valueCannotLesserThanZero', { percentage: userDividendPercentage }), {
           confirmButtonText: this.t('close'),
         });
       }

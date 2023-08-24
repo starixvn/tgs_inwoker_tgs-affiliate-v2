@@ -199,7 +199,7 @@
             size="large"
             :placeholder="t('phoneFormat')"
             :type="number"
-            :minlength="6"
+            :minlength="8"
             :maxlength="32"
           >
             <template #prepend>

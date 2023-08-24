@@ -299,10 +299,10 @@
 
   "invalidEmailFormat": "Invalid Email Format",
   "invalidUsername": "Invalid Username",
-  "profitShareCannotExceed": "Profit share P/T must be equal or less than {percentage}%",
+  "profitShareCannotExceed": "Must be equal or less than {percentage}%",
   "copySuccess": "Copied",
   "usernameFormat": "Enter 6~16 characters(0~9, a~z)",
-  "phoneFormat": "Enter 6~32 digits",
+  "phoneFormat": "Enter 8~32 digits",
   "invalidPhoneFormat": "Invalid Phone Format",
   "accumulatedProfitShare": "Accumulated Profit Share",
   "checkAll": "Check All",

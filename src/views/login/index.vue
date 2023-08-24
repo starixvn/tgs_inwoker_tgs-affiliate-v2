@@ -87,12 +87,12 @@
               />
             </el-form-item>
 
-            <el-form-item :label="t('reEnterPassword')" required>
+            <el-form-item :label="t('confirmPassword')" required>
               <el-input
                 v-model="forgotPassword.confirmpass"
                 class="textInput"
                 type="password"
-                :placeholder="t('reEnterPassword')"
+                :placeholder="t('confirmPassword')"
                 clearable
                 show-password
               />

@@ -302,7 +302,7 @@
   "profitShareCannotExceed": "分紅占成需小于或等于{percentage}%",
   "copySuccess": "复制成功",
   "usernameFormat": "請輸入6~16位英文字母或數字",
-  "phoneFormat": "請輸入6~32位數字",
+  "phoneFormat": "請輸入8~32位數字",
   "invalidPhoneFormat": "請輸入有效的電話號碼",
   "accumulatedProfitShare": "累计结算分红",
   "checkAll": "全选",

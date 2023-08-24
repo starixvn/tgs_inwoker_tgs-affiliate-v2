@@ -92,7 +92,7 @@
                 v-model="forgotPassword.confirmpass"
                 class="textInput"
                 type="password"
-                :placeholder="t('confirmPassword')"
+                :placeholder="t('reEnterPassword')"
                 clearable
                 show-password
               />

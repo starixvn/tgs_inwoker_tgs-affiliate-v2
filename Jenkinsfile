@@ -8,6 +8,7 @@ pipeline {
                 script {
                     def data = readYaml file: "brands.yaml"
                     def brand = data.cars[0].brand
+                    sh "echo 'brand: ${brand}'"
                 }
             }
         }	

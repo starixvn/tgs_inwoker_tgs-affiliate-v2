@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     sh "npm install"
-                    sh "npm run build --BRAND=PGG --API_URL=/ --SITE=https://stg-t1.rpgp.cc/ --DEFAULT_LANGUAGE=zh-CN"
+                    sh "npm run build --BRAND=PG2 --API_URL=/ --SITE=https://stg-t1.rpgp.cc/ --DEFAULT_LANGUAGE=zh-CN"
                 }
             }
         }	

@@ -1,0 +1,10 @@
+cars:
+- brand: bmw
+  fuel: petrol
+  transmission: manual
+- brand: mercedes
+  fuel: diesel
+  transmission: auto
+- brand: audi
+  fuel: electric
+  transmission: semi-auto

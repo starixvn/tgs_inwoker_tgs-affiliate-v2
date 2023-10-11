@@ -18,6 +18,15 @@ pipeline {
                 }
             }
         }	
+        
+        stage('npm install') {
+            steps {
+                script {
+                     sh "npm run build --BRAND=PGG --API_URL=/ --SITE=https://stg-t1.rpgp.cc/ --DEFAULT_LANGUAGE=zh-CN"
+                }
+            }
+        }	
+        
     }
     post {
         success {

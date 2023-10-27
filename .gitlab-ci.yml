@@ -75,5 +75,5 @@ deploy-prod:
     - helm list -A
     - echo "Deployment successful"
   only: 
-    - master
-  when: manual
+    - develop
+  #when: manual

@@ -2,6 +2,14 @@
 def message = "";
 pipeline {
     agent any
+    environment {
+        TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
+        Registry = "pgtgs/"
+        dockerhub = credentials('dockerhub')
+        Image = "tgs-web-poc"
+        Api_Service_Branch="develop"
+    }
+
     stages {		    	
         stage('Init Env') {
             steps {

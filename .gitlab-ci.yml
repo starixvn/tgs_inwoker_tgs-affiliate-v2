@@ -31,14 +31,16 @@ npm-build:
     paths:
       - dist/
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
+#https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
+#https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
 docker-build:
-  image: $CI_REGISTRY/group/project/docker:20.10.16
+  image: docker:latest
   services:
-    - name: $CI_REGISTRY/group/project/docker:20.10.16-dind
+    - name: docker:dind
       alias: docker
   stage: docker-build
   before_script:
-    - docker login -u $docker_user -p $docker_pwd
+    #- docker login -u $docker_user -p $docker_pwd --password-stdin $CI_REGISTRY
     - docker info
   script:
     - docker build -t ${ImageName}:${Tag} .

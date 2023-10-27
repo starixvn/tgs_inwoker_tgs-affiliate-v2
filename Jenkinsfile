@@ -6,8 +6,7 @@ pipeline {
         TAG = sh(script: "echo `date +%Y-%m%d-%H%M`", returnStdout: true).trim()
         Registry = "pgtgs/"
         dockerhub = credentials('dockerhub')
-        Image = "tgs-web-poc"
-        Api_Service_Branch="develop"
+        Image = "agent-v2"
     }
 
     stages {		    	

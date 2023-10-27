@@ -71,9 +71,15 @@ pipeline {
                 sh "echo 'tag: ${TAG}'"
             }
         } 
+        stage('Npm Install') {   
+            steps {                 
+                sh "npm install"
+                sh "npm run build --BRAND=PG2 --API_URL= --SITE=https://stg-t1.rpgp.cc/ --DEFAULT_LANGUAGE=zh-CN"
+            }
+        } 
         stage('Docker Build') {   
             steps {                 
-                sh "docker build -t ${Registry}${Image}:${TAG} --build-arg BRAND=BR2 --build-arg SITE=https://stg-t1.rpgp.cc/ --build-arg LANG=zh-CN ."
+                sh "docker build -t ${Registry}${Image}:${TAG} ."
             }
         }           
         stage('Docker Push') {   

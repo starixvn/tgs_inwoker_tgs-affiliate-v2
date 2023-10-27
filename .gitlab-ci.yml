@@ -19,7 +19,7 @@ cache:
     - node_modules/
 
 npm-build:
-  image: node:20.9
+  image: node:latest
   stage: npm-build
   script:
     - npm install

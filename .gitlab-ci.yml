@@ -38,7 +38,7 @@ docker-build:
   before_script:
     - docker login -u $docker_user -p $docker_pwd
     - docker info
-    - export Tag="$CI_PIPELINE_IID"
+    - export Tag="$(echo `date +%Y-%m%d-%H%M`)"
   script:
     - docker build -t ${ImageName}:${Tag} .
     - docker push ${ImageName}:${Tag}

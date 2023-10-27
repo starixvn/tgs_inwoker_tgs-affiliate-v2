@@ -73,7 +73,7 @@ pipeline {
         } 
         stage('Docker Build') {   
             steps {                 
-                sh "docker build -t ${Registry}${Image}:${TAG} --build-arg BRAND=BR2 SITE https://stg-t1.rpgp.cc/ LANG=zh-CN ."
+                sh "docker build -t ${Registry}${Image}:${TAG} --build-arg BRAND=BR2 SITE=https://stg-t1.rpgp.cc/ LANG=zh-CN ."
             }
         }           
         stage('Docker Push') {   

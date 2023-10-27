@@ -23,7 +23,10 @@ npm-build:
   stage: npm-build
   script:
     - npm install
-    - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$DEFAULT_LANGUAGE
+    - echo "BRAND=$BRAND"
+    - echo "SITE=$SITE"
+    - echo "DEFAULT_LANGUAGE=$LANG"
+    - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
   artifacts:
     paths:
       - dist/

@@ -30,9 +30,16 @@ npm-build:
   artifacts:
     paths:
       - dist/
-
+#https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 docker-build:
+  image: $CI_REGISTRY/group/project/docker:20.10.16
+  services:
+    - name: $CI_REGISTRY/group/project/docker:20.10.16-dind
+      alias: docker
   stage: docker-build
+  before_script:
+    - docker login -u $docker_user -p $docker_pwd
+    - docker info
   script:
     - docker build -t ${ImageName}:${Tag} .
     - docker push ${ImageName}:${Tag}

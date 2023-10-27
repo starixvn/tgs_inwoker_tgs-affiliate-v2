@@ -51,12 +51,12 @@ deploy-staging:
   needs:
     - npm-build
     - docker-build
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  image: bitnami/kubectl:latest
   before_script:
     - export KUBECONFIG=$kubeconfig_staging
   script:
-    - echo "Running deploy"
-    - helm template $BRAND
+    - kubectl config get-contexts
+    - kubectl get pods
   only: 
     - develop
     
@@ -65,7 +65,7 @@ deploy-prod:
   needs:
     - npm-build
     - docker-build
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  image: bitnami/kubectl:latest
   script:
     - echo "Running deploy"
     - aws s3 cp ./dist s3://$S3_BUCKET/ --recursive

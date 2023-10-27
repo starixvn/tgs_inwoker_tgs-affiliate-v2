@@ -3,10 +3,6 @@ image: node:latest
 variables:
   ImageName: pgtgs/agent-v2
 
-default:
-  before_script:
-    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-
 stages:
   - npm-build
   - docker-build
@@ -42,6 +38,7 @@ docker-build:
   before_script:
     #- docker login -u $docker_user -p $docker_pwd --password-stdin $CI_REGISTRY
     - docker info
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
   script:
     - docker build -t ${ImageName}:${Tag} .
     - docker push ${ImageName}:${Tag}

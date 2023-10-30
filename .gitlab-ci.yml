@@ -58,7 +58,8 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - kubectl config get-contexts
-    - kubectl get pods
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${Registry}${Image}:${TAG} --record -n staging
+    - echo "Deployment successful"
   environment:
     name: staging
   only: 
@@ -69,11 +70,13 @@ deploy-prod:
   needs:
     - npm-build
     - docker-build
-  image: registry.gitlab.com/gitlab-org/cluster-integration/helm-install-image/helm-2to3:2.17.0-3.13.1-kube-1.27.7-alpine-3.18
+  image: 
+    name: bitnami/kubectl:1.26
+    entrypoint: [""]
   script:
     - helm version
-    - helm list -A
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${Registry}${Image}:${TAG} --record -n prod
     - echo "Deployment successful"
   only: 
-    - develop
-  #when: manual
+    - master
+  when: manual

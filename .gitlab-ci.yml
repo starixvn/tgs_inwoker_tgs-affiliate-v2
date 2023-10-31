@@ -7,6 +7,7 @@ variables:
   API_URL: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
   DEPLPOY: agent-gpihkd
+  
 stages:
   - npm-build
   - docker-build
@@ -62,7 +63,7 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - kubectl config get-contexts
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${Registry}${Image}:${TAG} --record -n staging
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${Tag} --record -n staging
     - echo "Deployment successful"
   environment:
     name: staging

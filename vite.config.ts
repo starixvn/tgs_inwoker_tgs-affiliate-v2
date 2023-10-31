@@ -63,6 +63,7 @@ export default async (configEnv: ConfigEnv): Promise<UserConfigExport> => {
     },
     /* eslint-disable */
     build: {
+      outDir: process.env.VITE_OUTPUT_DIR || 'dist',
       rollupOptions: {
         output: {
           manualChunks: {

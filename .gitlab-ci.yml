@@ -10,6 +10,7 @@ variables:
 default:
   before_script:
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+    - echo "Tag=$Tag"
 
 stages:
   - npm-build
@@ -30,6 +31,7 @@ npm-build:
     - echo "BRAND=$BRAND"
     - echo "SITE=$SITE"
     - echo "DEFAULT_LANGUAGE=$LANG"
+    - echo "Tag=$Tag"
     - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
   artifacts:
     paths:

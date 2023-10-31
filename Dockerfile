@@ -4,6 +4,8 @@ COPY . .
 
 RUN npm install
 
+ARG BRAND
+
 FROM caddy:2.1.1-alpine
 COPY --from=build /src/caddy/Caddyfile /etc/caddy/Caddyfile
-COPY --from=build /src/dist /usr/share/caddy
+COPY --from=build /src/${BRAND} /usr/share/caddy

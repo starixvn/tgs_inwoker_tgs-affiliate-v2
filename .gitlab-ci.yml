@@ -34,7 +34,7 @@ npm-build:
     - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG VITE_OUTPUT_DIR=$BRAND
   artifacts:
     paths:
-      - dist/
+      - $BRAND/
       - tag_file
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
@@ -53,7 +53,7 @@ docker-build:
     - docker login -u $docker_user -p $docker_pwd
   script:
     - echo "Tag=$Tag"
-    - docker build -t ${ImageName}:$Tag .
+    - docker build --build-arg BRAND=$BRAND -t ${ImageName}:$Tag .
     - docker push ${ImageName}:$Tag
   artifacts:
     paths:

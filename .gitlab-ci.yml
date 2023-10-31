@@ -1,5 +1,3 @@
-image: node:latest
-
 variables:
   ImageName: pgtgs/agent-v2
   BRAND: GPIHKD

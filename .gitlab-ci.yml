@@ -62,14 +62,19 @@ docker-build:
 deploy-staging:
   stage: deploy-staging
   needs:
-    - npm-build
-    - docker-build
+    - job: npm-build
+      artifacts: true
+    - job: docker-build
   image: 
     name: bitnami/kubectl:1.26
     entrypoint: [""]
   before_script:
     - export KUBECONFIG=$kubeconfig_staging
   script:
+    - export Tag=$(cat tag_file)
+    - echo "DEPLPOY=$DEPLPOY"
+    - echo "ImageName=$ImageName"
+    - echo "Tag=$Tag"
     - kubectl config get-contexts
     - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:$Tag --record -n staging
     - echo "Deployment successful"

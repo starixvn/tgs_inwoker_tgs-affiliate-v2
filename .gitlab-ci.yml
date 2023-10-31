@@ -3,7 +3,7 @@ image: node:latest
 variables:
   ImageName: pgtgs/agent-v2
   BRAND: GPIHKD
-  API_URL: https://stg-gpi-hkd.rpgp.cc/
+  SITE: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
   DEPLPOY: agent-gpihkd
 
@@ -46,8 +46,8 @@ docker-build:
       alias: docker
   stage: docker-build
   before_script:
+    - echo "Tag=$Tag"
     - docker login -u $docker_user -p $docker_pwd
-    - docker info
   script:
     - echo "Tag=$Tag"
     - docker build -t ${ImageName}:$Tag .

@@ -63,24 +63,8 @@ export default async (configEnv: ConfigEnv): Promise<UserConfigExport> => {
     },
     /* eslint-disable */
     build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            // 打包优化
-            core: [
-              'vue',
-              'vue-router',
-              'pinia',
-              'vue-request',
-              'vue-i18n/dist/vue-i18n.esm-bundler.js',
-              'jquery',
-              'axios',
-            ],
-            elIcon: ['@element-plus/icons-vue'],
-            //     mock: [pathResolve('./mock')],
-          },
-        },
-      },
+      chunkSizeWarningLimit: 3000,
+      outDir: process.env.VITE_OUTPUT_DIR || 'dist'
     },
     optimizeDeps: {
       //因为项目中很多用到了自动引入和动态加载，所以vite首次扫描依赖项会扫描不全，这里强制扫描全局。

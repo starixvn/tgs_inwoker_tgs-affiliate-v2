@@ -31,7 +31,7 @@ npm-build:
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
-    - npm run build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG
+    - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
   artifacts:
     paths:
       - dist/

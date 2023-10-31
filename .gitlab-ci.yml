@@ -49,7 +49,7 @@ docker-build:
   - job: npm-build
     artifacts: true
   before_script:
-    - echo "Tag=$(cat tag_file)"
+    - export Tag=$(cat tag_file)
     - docker login -u $docker_user -p $docker_pwd
   script:
     - echo "Tag=$Tag"

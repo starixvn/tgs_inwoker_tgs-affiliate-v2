@@ -6,8 +6,11 @@ variables:
   API_URL: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
   DEPLPOY: agent-gpihkd
-  Tag: "$(echo `date +%Y-%m%d%H`)"
-  
+
+default:
+  before_script:
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+
 stages:
   - npm-build
   - docker-build

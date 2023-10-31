@@ -6,6 +6,7 @@ variables:
   API_URL: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
   DEPLPOY: agent-gpihkd
+  Tag: "$(echo `date +%Y-%m%d%H`)"
   
 stages:
   - npm-build
@@ -42,7 +43,6 @@ docker-build:
   before_script:
     - docker login -u $docker_user -p $docker_pwd
     - docker info
-    - export Tag="$(echo `date +%Y-%m%d-%H%M`)"
   script:
     - docker build -t ${ImageName}:${Tag} .
     - docker push ${ImageName}:${Tag}
@@ -79,7 +79,7 @@ deploy-prod:
     entrypoint: [""]
   script:
     - helm version
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${TAG} --record -n prod
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${Tag} --record -n prod
     - echo "Deployment successful"
   only: 
     - master

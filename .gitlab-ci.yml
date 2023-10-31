@@ -31,7 +31,7 @@ npm-build:
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
-    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG VITE_OUTPUT_DIR=$BRAND
+    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG VITE_OUTPUT_DIR=$BRAND vite build
   artifacts:
     paths:
       - ./$BRAND

@@ -47,9 +47,9 @@ docker-build:
     - docker login -u $docker_user -p $docker_pwd
     - docker info
   script:
-    - echo "Tag=${Tag}"
-    - docker build -t ${ImageName}:${Tag} .
-    - docker push ${ImageName}:${Tag}
+    - echo "Tag=$Tag"
+    - docker build -t ${ImageName}:$Tag .
+    - docker push ${ImageName}:$Tag
   artifacts:
     paths:
       - dist/
@@ -66,7 +66,7 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - kubectl config get-contexts
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${Tag} --record -n staging
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:$Tag --record -n staging
     - echo "Deployment successful"
   environment:
     name: staging

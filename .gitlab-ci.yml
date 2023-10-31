@@ -30,10 +30,12 @@ npm-build:
     - echo "SITE=$SITE"
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
+    - echo "$Tag" > tag_file
     - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
   artifacts:
     paths:
       - dist/
+      - tag_file
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
@@ -43,8 +45,11 @@ docker-build:
     - name: docker:dind
       alias: docker
   stage: docker-build
+  needs:
+  - job: npm-build
+    artifacts: true
   before_script:
-    - echo "Tag=$Tag"
+    - echo "Tag=$(cat tag_file)"
     - docker login -u $docker_user -p $docker_pwd
   script:
     - echo "Tag=$Tag"

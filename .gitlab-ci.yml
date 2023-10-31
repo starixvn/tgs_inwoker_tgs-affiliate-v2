@@ -2,7 +2,6 @@ image: node:latest
 
 variables:
   ImageName: pgtgs/agent-v2
-  Registry: pgtgs
   BRAND: GPIHKD
   API_URL: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
@@ -80,7 +79,7 @@ deploy-prod:
     entrypoint: [""]
   script:
     - helm version
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${Registry}${Image}:${TAG} --record -n prod
+    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${TAG} --record -n prod
     - echo "Deployment successful"
   only: 
     - master

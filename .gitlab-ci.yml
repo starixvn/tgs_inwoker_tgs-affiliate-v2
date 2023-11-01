@@ -50,7 +50,7 @@ docker-build:
     artifacts: true
   before_script:
     - export Tag=$(cat tag_file)
-    - docker login -u $docker_user -p $docker_pwd
+    - sudo docker login -u $docker_user -p $docker_pwd
   script:
     - echo "Tag=$Tag"
     - echo "BRAND=$BRAND"

@@ -4,14 +4,14 @@ COPY . .
 
 RUN npm install
 
-ARG BRAND
+ARG BUILD_DIR
 
-RUN echo "BRAND=$BRAND"
+RUN echo "BUILD_DIR=$BUILD_DIR"
 
-FROM $BRAND as base
+FROM $BUILD_DIR as base
 
 ## https://github.com/docker/for-mac/issues/2155
 
 FROM caddy:2.1.1-alpine
 COPY --from=build /src/caddy/Caddyfile /etc/caddy/Caddyfile
-COPY --from=build /src/base /usr/share/caddy/
+COPY --from=build $BUILD_DIR /usr/share/caddy/

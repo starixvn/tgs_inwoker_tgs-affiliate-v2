@@ -7,6 +7,8 @@ COPY . .
 ## https://github.com/docker/for-mac/issues/2155
 ## https://github.com/moby/moby/issues/38379
 
+RUN npm install
+
 FROM caddy:2.1.1-alpine
 COPY --from=build /src/caddy/Caddyfile /etc/caddy/Caddyfile
 

@@ -1,6 +1,6 @@
 variables:
   ImageName: pgtgs/agent-v2
-  BRAND: GPIHKD
+  BRAND: gpihkd
   SITE: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
   DEPLPOY: agent-gpihkd

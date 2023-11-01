@@ -8,7 +8,7 @@ ARG BRAND
 
 RUN echo "BRAND=$BRAND"
 
-FROM ${BRAND} as base
+FROM $BRAND as base
 
 ## https://github.com/docker/for-mac/issues/2155
 

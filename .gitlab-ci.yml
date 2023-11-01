@@ -31,14 +31,15 @@ npm-build:
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
-    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG VITE_OUTPUT_DIR=$BRAND vite build
+    - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
   artifacts:
     paths:
-      - ./$BRAND
+      - ./dist
       - tag_file
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
+
 docker-build:
   image: docker:latest
   services:
@@ -54,11 +55,11 @@ docker-build:
   script:
     - echo "Tag=$Tag"
     - echo "BRAND=$BRAND"
-    - docker build --build-arg BUILD_DIR=$BRAND -t ${ImageName}:$Tag .
+    - docker build -t ${ImageName}:$Tag .
     - docker push ${ImageName}:$Tag
   artifacts:
     paths:
-      - ./$BRAND
+      - ./dist
       
 deploy-staging:
   stage: deploy-staging

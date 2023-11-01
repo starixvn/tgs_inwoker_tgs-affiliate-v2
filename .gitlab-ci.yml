@@ -54,8 +54,8 @@ docker-build:
   script:
     - echo "Tag=$Tag"
     - echo "BRAND=$BRAND"
-    - docker build --build-arg BUILD_DIR=$BRAND -t ${ImageName}:$Tag .
-    - docker push ${ImageName}:$Tag
+    - sudo docker build --build-arg BUILD_DIR=$BRAND -t ${ImageName}:$Tag .
+    - sudo docker push ${ImageName}:$Tag
   artifacts:
     paths:
       - ./$BRAND

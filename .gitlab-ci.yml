@@ -50,12 +50,12 @@ docker-build:
     artifacts: true
   before_script:
     - export Tag=$(cat tag_file)
-    - sudo docker login -u $docker_user -p $docker_pwd
+    - docker login -u $docker_user -p $docker_pwd
   script:
     - echo "Tag=$Tag"
     - echo "BRAND=$BRAND"
-    - sudo docker build --build-arg BUILD_DIR=$BRAND -t ${ImageName}:$Tag .
-    - sudo docker push ${ImageName}:$Tag
+    - docker build --build-arg BUILD_DIR=$BRAND -t ${ImageName}:$Tag .
+    - docker push ${ImageName}:$Tag
   artifacts:
     paths:
       - ./$BRAND

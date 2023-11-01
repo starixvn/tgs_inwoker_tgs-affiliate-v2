@@ -11,4 +11,4 @@ FROM caddy:2.1.1-alpine
 COPY --from=build /src/caddy/Caddyfile /etc/caddy/Caddyfile
 
 ## FROM $BUILD_DIR as base
-COPY --from=build /src /usr/share/caddy
+COPY --from=build /src/gpihkd /usr/share/caddy

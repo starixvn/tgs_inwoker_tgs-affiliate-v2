@@ -3,7 +3,7 @@ variables:
   BRAND: gpihkd
   SITE: https://stg-gpi-hkd.rpgp.cc/
   LANG: zh-CN
-  DEPLPOY: agent-gpihkd
+  DEPLOY: agent-gpihkd
 
 default:
   before_script:
@@ -31,7 +31,7 @@ npm-build:
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
-    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG vite build
+    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG VITE_OUTPUT_DIR=$BRAND vite build
   artifacts:
     paths:
       - ./dist
@@ -74,11 +74,11 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - export Tag=$(cat tag_file)
-    - echo "DEPLPOY=$DEPLPOY"
+    - echo "DEPLPOY=$DEPLOY"
     - echo "ImageName=$ImageName"
     - echo "Tag=$Tag"
     - kubectl config get-contexts
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:$Tag --record -n staging
+    - kubectl set image deployment/$DEPLOY $DEPLOY=${ImageName}:$Tag --record -n staging
     - echo "Deployment successful"
   environment:
     name: staging
@@ -98,10 +98,10 @@ deploy-prod:
     - export KUBECONFIG=$kubeconfig_prod
   script:
     - export Tag=$(cat tag_file)
-    - echo "DEPLPOY=$DEPLPOY"
+    - echo "DEPLOY=$DEPLOY"
     - echo "ImageName=$ImageName"
     - echo "Tag=$Tag"
-    - kubectl set image deployment/$DEPLPOY $DEPLPOY=${ImageName}:${Tag} --record -n prod
+    - kubectl set image deployment/$DEPLOY $DEPLOY=${ImageName}:${Tag} --record -n prod
     - echo "Deployment successful"
   only: 
     - master

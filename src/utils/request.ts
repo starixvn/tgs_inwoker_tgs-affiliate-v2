@@ -114,9 +114,9 @@ export function request<R, P extends unknown[] = [], T = boolean>(
         return res;
       }
 
-      if (!options?.isFile && (!res || res.err === undefined)) {
-        throw Error(t('返回值解析失败'));
-      }
+      // if (!options?.isFile && (!res || res.err === undefined)) {
+      //   throw Error(t('返回值解析失败'));
+      // }
 
       // 401：认证失败
       if (res.err === 900 && res.errmsg == 'Agent login token is expired') {

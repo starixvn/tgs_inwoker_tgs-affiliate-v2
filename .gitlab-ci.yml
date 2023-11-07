@@ -95,7 +95,7 @@ deploy-prod:
     name: bitnami/kubectl:1.26
     entrypoint: [""]
   before_script:
-    - export KUBECONFIG=$kubeconfig_staging
+    - export KUBECONFIG=$kubeconfig_prod
   script:
     - export Tag=$(cat tag_file)
     - echo "DEPLPOY=$DEPLPOY"

@@ -74,7 +74,7 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - export Tag=$(cat tag_file)
-    - echo "DEPLPOY=$DEPLOY"
+    - echo "DEPLOY=$DEPLOY"
     - echo "ImageName=$ImageName"
     - echo "Tag=$Tag"
     - kubectl config get-contexts

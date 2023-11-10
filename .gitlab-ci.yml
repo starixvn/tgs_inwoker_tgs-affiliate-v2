@@ -72,6 +72,8 @@ deploy-staging:
     entrypoint: [""]
   before_script:
     - export KUBECONFIG=$kubeconfig_staging
+    - echo "kubeconfig_dev=$kubeconfig_dev"
+    - echo "kubeconfig_staging=$kubeconfig_staging"
   script:
     - export Tag=$(cat tag_file)
     - echo "DEPLOY=$DEPLOY"

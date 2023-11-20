@@ -74,7 +74,7 @@ pipeline {
         stage('Npm Install') {   
             steps {                 
                 sh "npm install"
-                sh "npm run build --BRAND=PG2 --API_URL= --SITE=/ --DEFAULT_LANGUAGE=en-US"
+                sh "npm run build --BRAND=PG2 --API_URL=/ --SITE=https://t1.srvptt.com/ --DEFAULT_LANGUAGE=en-US"
             }
         } 
         stage('Docker Build') {   

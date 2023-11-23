@@ -1,9 +1,9 @@
 variables:
   ImageName: pgtgs/agent-v2
-  BRAND: gpihkd
-  SITE: https://stg-gpi-hkd.rpgp.cc/
+  BRAND: GPI-V2
+  SITE: https://t1.srvptt.com/
   LANG: zh-CN
-  DEPLOY: agent-gpihkd
+  DEPLOY: agent-gpi-v2
 
 default:
   before_script:
@@ -31,7 +31,7 @@ npm-build:
     - echo "DEFAULT_LANGUAGE=$LANG"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
-    - npm run build --BRAND=$BRAND --API_URL=/ --SITE=$SITE --DEFAULT_LANGUAGE=$LANG
+    - npm run gitlab-build -- BRAND=$BRAND API_URL=/ SITE=$SITE DEFAULT_LANGUAGE=$LANG vite build -m prod
   artifacts:
     paths:
       - ./dist

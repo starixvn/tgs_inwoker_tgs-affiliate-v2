@@ -29,18 +29,10 @@
             <div class="title">{{ $t('referralCode') }}</div>
             <div class="data">
               <div>{{ user.invitationCode }}</div>
-              <el-button
-                size="large"
-                type="primary"
-                class="custom-btn"
-                :icon="CopyDocument"
-                @click="
-                  () => {
-                    performCopyText(user.invitationCode);
-                  }
-                "
-                >{{ $t('copy') }}</el-button
-              >
+              <el-button size="large" type="primary" class="custom-btn" :icon="CopyDocument" @click="() => {
+                performCopyText(user.invitationCode);
+              }
+                ">{{ $t('copy') }}</el-button>
             </div>
           </div>
           <div class="account-container">
@@ -49,14 +41,8 @@
               {{ affiliatelink }}
             </div>
             <div class="button-container">
-              <el-button
-                type="primary"
-                class="custom-btn"
-                size="large"
-                :icon="CopyDocument"
-                @click="performCopyText(affiliatelink)"
-                >{{ $t('copy') }}</el-button
-              >
+              <el-button type="primary" class="custom-btn" size="large" :icon="CopyDocument"
+                @click="performCopyText(affiliatelink)">{{ $t('copy') }}</el-button>
               <router-link :to="{ name: 'agent', path: '/team/agent', query: { perform: 'add' } }">
                 <el-button type="primary" size="large" icon="me-icon-addagent" class="custom-btn">
                   {{ $t('addagent') }}
@@ -79,24 +65,10 @@
                 <vue-qrcode id="testonly" :value="affiliatelink" :options="{ width: 250 }"></vue-qrcode>
               </div>
               <div class="qrcode-button">
-                <el-button
-                  class="custom-btn"
-                  type="primary"
-                  size="large"
-                  :icon="Download"
-                  style="width: 100%"
-                  @click="performDownloadQRCode"
-                  >{{ $t('download') }}</el-button
-                >
-                <el-button
-                  class="custom-btn"
-                  type="primary"
-                  size="large"
-                  :icon="CopyDocument"
-                  style="width: 100%"
-                  @click="performCopyQRCode"
-                  >{{ $t('copy') }}</el-button
-                >
+                <el-button class="custom-btn" type="primary" size="large" :icon="Download" style="width: 100%"
+                  @click="performDownloadQRCode">{{ $t('download') }}</el-button>
+                <el-button class="custom-btn" type="primary" size="large" :icon="CopyDocument" style="width: 100%"
+                  @click="performCopyQRCode">{{ $t('copy') }}</el-button>
               </div>
             </div>
           </div>
@@ -126,7 +98,9 @@
             </div>
           </div>
         </div>
-        <div>
+        <!--
+
+ <div>
           <div class="title-wrapper">
             <div class="another-big-title">{{ $t('statsOverview') }}</div>
             <div>
@@ -143,6 +117,11 @@
             </div>
           </div>
         </div>
+
+
+
+
+       -->
       </div>
     </div>
   </div>
@@ -257,7 +236,7 @@ onMounted(async () => {
   align-items: center;
 
   //second child
-  > *:nth-child(2) {
+  >*:nth-child(2) {
     text-align: right;
     font-size: 10px;
   }
@@ -327,6 +306,7 @@ onMounted(async () => {
     font-size: 30px;
     font-weight: bold;
   }
+
   &.blue-gradient {
     background: linear-gradient(90deg, #134190 0%, #2e72e5 100%);
   }
@@ -334,6 +314,7 @@ onMounted(async () => {
   &.purple-gradient {
     background: linear-gradient(90deg, #261a47 0%, #8372b6 100%);
   }
+
   &.yellow-gradient {
     background: linear-gradient(90deg, #e89941 0%, #fdde91 100%);
   }
@@ -361,24 +342,31 @@ onMounted(async () => {
     .blue {
       color: #008dce;
     }
+
     .purple {
       color: #6200c4;
     }
+
     .green {
       color: #00b0ff;
     }
+
     .orange {
       color: #d8b400;
     }
+
     .black {
       color: #000;
     }
+
     .darkblue {
       color: #00b0ff;
     }
+
     .darkgreen {
       color: #00b0ff;
     }
+
     .maroon {
       color: #d30000;
     }
@@ -392,6 +380,7 @@ onMounted(async () => {
 
 .account-container {
   padding-bottom: 10px;
+
   .title {
     padding-bottom: 5px;
   }
@@ -408,6 +397,7 @@ onMounted(async () => {
       font-weight: initial;
     }
   }
+
   .affiliate-link-container {
     padding: 10px;
     border-radius: 10px;
@@ -442,7 +432,7 @@ onMounted(async () => {
 
     max-width: fit-content;
 
-    .el-button + .el-button {
+    .el-button+.el-button {
       margin: 0;
     }
   }
@@ -454,7 +444,8 @@ onMounted(async () => {
     width: 1.3em;
     height: 1.3em;
   }
-  .el-icon > svg {
+
+  .el-icon>svg {
     width: 1.3em;
     height: 1.3em;
   }

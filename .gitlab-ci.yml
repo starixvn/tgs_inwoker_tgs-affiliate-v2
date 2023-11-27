@@ -107,4 +107,3 @@ deploy-prod:
     - echo "Deployment successful"
   only: 
     - master
-  when: manual

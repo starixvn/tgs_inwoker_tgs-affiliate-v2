@@ -20,13 +20,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker
-              v-model="searchForm.dateRange"
-              type="daterange"
-              size="large"
-              @change="daterangeChange"
-              :disabled-date="disabledDate"
-            />
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" size="large" @change="daterangeChange"
+              :disabled-date="disabledDate" />
           </el-form-item>
 
           <el-form-item>
@@ -41,14 +36,8 @@
         <el-col :span="22">
           <div class="legends">
             <div>
-              <el-button
-                size="small"
-                class="custom-icon"
-                circle
-                type="primary"
-                @click="showlegends = !showlegends"
-                id="warningButton"
-              >
+              <el-button size="small" class="custom-icon" circle type="primary" @click="showlegends = !showlegends"
+                id="warningButton">
                 <img id="warningIcon" :src="getImgUrl('warning')" />
               </el-button>
             </div>
@@ -60,13 +49,8 @@
           </div>
         </el-col>
         <el-col :span="2">
-          <el-popover
-            style="float: right"
-            placement="left-start"
-            :width="200"
-            trigger="click"
-            content="this is content, this is content, this is content"
-          >
+          <el-popover style="float: right" placement="left-start" :width="200" trigger="click"
+            content="this is content, this is content, this is content">
             <template #reference>
               <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-filter">
               </el-button>
@@ -76,13 +60,8 @@
                 <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
                   {{ t('checkAll') }}
                 </el-checkbox>
-                <el-checkbox
-                  v-for="(item, index) in tableColumn"
-                  :key="index"
-                  :label="$t(index)"
-                  :disabled="item.mustShow"
-                  v-model="item.isShow"
-                />
+                <el-checkbox v-for="(item, index) in tableColumn" :key="index" :label="$t(index)"
+                  :disabled="item.mustShow" v-model="item.isShow" />
               </div>
             </template>
           </el-popover>
@@ -90,28 +69,12 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-table
-            :data="tableData"
-            :span-method="arraySpanMethod"
-            :row-class-name="getRowClassName"
-            stripe
-            @row-click="getDividendDetails"
-          >
-            <el-table-column
-              v-if="tableColumn.agent.isShow"
-              :label="t('agent')"
-              prop="username"
-              :formatter="customRowFormatter"
-              min-width="150"
-            />
-            <el-table-column
-              v-if="tableColumn.pt.isShow"
-              prop="agentDividendPercentage"
-              :label="t('p/t')"
-              align="right"
-              :formatter="formatPrice"
-              width="170"
-            />
+          <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe
+            @row-click="getDividendDetails">
+            <el-table-column v-if="tableColumn.agent.isShow" :label="t('agent')" prop="username"
+              :formatter="customRowFormatter" min-width="150" />
+            <el-table-column v-if="tableColumn.pt.isShow" prop="agentDividendPercentage" :label="t('p/t')" align="right"
+              :formatter="formatPrice" width="170" />
             <el-table-column v-if="tableColumn.bonus.isShow" :label="t('bonus')" align="center">
               <el-table-column prop="bonusAmount" :label="t('total')" align="right" :formatter="formatPrice" />
               <el-table-column prop="agentCoveredBonus" :label="t('agent')" align="right" :formatter="formatPrice" />
@@ -119,77 +82,28 @@
 
             <el-table-column v-if="tableColumn.bonusAdjust.isShow" :label="t('bonusAdjust')" align="center">
               <el-table-column prop="bonusAdjustAmount" :label="t('total')" align="right" :formatter="formatPrice" />
-              <el-table-column
-                prop="agentCoveredBonusAdjust"
-                :label="t('agent')"
-                align="right"
-                :formatter="formatPrice"
-              >
+              <el-table-column prop="agentCoveredBonusAdjust" :label="t('agent')" align="right" :formatter="formatPrice">
               </el-table-column>
             </el-table-column>
-            <el-table-column
-              v-if="tableColumn.betAmount.isShow"
-              prop="betAmount"
-              :label="t('betAmount')"
-              align="right"
-              :formatter="formatPrice"
-              width="120"
-            />
-            <el-table-column
-              v-if="tableColumn.validBetAmount.isShow"
-              prop="validBetAmount"
-              :label="t('validBetAmount')"
-              align="right"
-              :formatter="formatPrice"
-              width="120"
-            />
-            <el-table-column
-              v-if="tableColumn.winloss.isShow"
-              prop="winLossAmount"
-              :label="t('winloss')"
-              align="right"
-              :formatter="formatPrice"
-              width="120"
-            />
-            <el-table-column
-              v-if="tableColumn.netProfit.isShow"
-              prop="netProfit"
-              :label="t('netProfit')"
-              align="right"
-              :formatter="formatPrice"
-              width="120"
-            />
+            <el-table-column v-if="tableColumn.betAmount.isShow" prop="betAmount" :label="t('betAmount')" align="right"
+              :formatter="formatPrice" width="120" />
+            <el-table-column v-if="tableColumn.validBetAmount.isShow" prop="validBetAmount" :label="t('validBetAmount')"
+              align="right" :formatter="formatPrice" width="120" />
+            <el-table-column v-if="tableColumn.winloss.isShow" prop="winLossAmount" :label="t('winloss')" align="right"
+              :formatter="formatPrice" width="120" />
+            <el-table-column v-if="tableColumn.netProfit.isShow" prop="netProfit" :label="t('netProfit')" align="right"
+              :formatter="formatPrice" width="120" />
             <el-table-column :label="t('contribution')" align="center" v-if="tableColumn.contribution.isShow">
-              <el-table-column
-                prop="fromPlayerAgentDividendAmount"
-                :label="t('player')"
-                align="right"
-                :formatter="formatPrice"
-              />
-              <el-table-column
-                prop="fromTeamAgentDividendAmount"
-                :label="t('team')"
-                align="right"
-                :formatter="formatPrice"
-              >
+              <el-table-column prop="fromPlayerAgentDividendAmount" :label="t('player')" align="right"
+                :formatter="formatPrice" />
+              <el-table-column prop="fromTeamAgentDividendAmount" :label="t('team')" align="right"
+                :formatter="formatPrice">
               </el-table-column>
             </el-table-column>
-            <el-table-column
-              v-if="tableColumn.agentAdjustAmount.isShow"
-              prop="agentAdjustAmount"
-              :label="t('agentAdjustAmount')"
-              align="right"
-              :formatter="formatPrice"
-              width="150"
-            />
-            <el-table-column
-              v-if="tableColumn.agentDividendAmount.isShow"
-              prop="agentDividendAmount"
-              :label="t('agentDividendAmount')"
-              align="right"
-              :formatter="formatPrice"
-              width="150"
-            />
+            <el-table-column v-if="tableColumn.agentAdjustAmount.isShow" prop="agentAdjustAmount"
+              :label="t('agentAdjustAmount')" align="right" :formatter="formatPrice" width="150" />
+            <el-table-column v-if="tableColumn.agentDividendAmount.isShow" prop="agentDividendAmount"
+              :label="t('agentDividendAmount')" align="right" :formatter="formatPrice" width="150" />
             <template #empty>
               {{ t('noRecord') }}
             </template>
@@ -198,44 +112,25 @@
       </el-row>
       <el-row>
         <div class="demo-pagination-block">
-          <el-pagination
-            v-model:current-page="searchForm.page"
-            v-model:page-size="searchForm.rows"
-            :page-sizes="[10, 50, 200]"
-            layout="sizes, prev, pager, next"
-            :total="totalRowCount"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination v-model:current-page="searchForm.page" v-model:page-size="searchForm.rows"
+            :page-sizes="[10, 50, 200]" layout="sizes, prev, pager, next" :total="totalRowCount"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </el-row>
     </div>
     <div v-show="scene === 'detail'">
       <el-row style="justify-content: end">
-        <div class="back-btn no-select" @click="goBackResetEverything">« {{ t('goBack') }}</div></el-row
-      >
+        <div class="back-btn no-select" @click="goBackResetEverything">« {{ t('goBack') }}</div>
+      </el-row>
       <el-row>
         <el-col :span="24">
           <el-table :data="tableData" stripe :summary-method="getSummaries" show-summary>
             <el-table-column :label="t('agent')" prop="username" align="center" />
-            <el-table-column
-              prop="settlementDate"
-              :label="t('settlementDate')"
-              align="center"
-              :formatter="formatDate"
-            />
-            <el-table-column
-              props="settlementDateFrom, settlementDateTo"
-              :label="t('settlementDateFromTo')"
-              align="center"
-              :formatter="formatIntervalDate"
-            />
-            <el-table-column
-              prop="agentDividendAmount"
-              :label="t('profitShareAmount')"
-              align="center"
-              :formatter="formatPrice"
-            />
+            <el-table-column prop="settlementDate" :label="t('settlementDate')" align="center" :formatter="formatDate" />
+            <el-table-column props="settlementDateFrom, settlementDateTo" :label="t('settlementDateFromTo')"
+              align="center" :formatter="formatIntervalDate" />
+            <el-table-column prop="agentDividendAmount" :label="t('profitShareAmount')" align="center"
+              :formatter="formatPrice" />
 
             <template #empty>
               {{ t('noRecord') }}
@@ -245,15 +140,10 @@
       </el-row>
       <el-row>
         <div class="demo-pagination-block">
-          <el-pagination
-            v-model:current-page="dividendDetailSearchForm.page"
-            v-model:page-size="dividendDetailSearchForm.rows"
-            :page-sizes="[10, 50, 200]"
-            layout="sizes, prev, pager, next"
-            :total="totalAgentDetailRowCount"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination v-model:current-page="dividendDetailSearchForm.page"
+            v-model:page-size="dividendDetailSearchForm.rows" :page-sizes="[10, 50, 200]"
+            layout="sizes, prev, pager, next" :total="totalAgentDetailRowCount" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
         </div>
       </el-row>
     </div>
@@ -618,15 +508,15 @@ export default defineComponent({
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
       } else if (this.dateType == 'thisWeek') {
-        this.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.From = moment().startOf('week').format('YYYY-MM-DD');
+        this.searchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.To = moment().endOf('week').format('YYYY-MM-DD');
       } else if (this.dateType == 'lastWeek') {
-        this.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-        this.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
+        this.searchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.To = moment().subtract(1, 'weeks').endOf('isoWeek').add(1, 'days').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.To = moment().subtract(1, 'weeks').add(1, 'days').endOf('isoWeek').format('YYYY-MM-DD');
       } else if (this.dateType == 'thisMonth') {
         this.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.From = moment().startOf('month').format('YYYY-MM-DD');
@@ -704,6 +594,7 @@ export default defineComponent({
 .el-row {
   margin-bottom: 20px;
 }
+
 .legends {
   display: flex;
   gap: 20px;
@@ -724,18 +615,23 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 }
+
 .datefrom {
   margin-left: 10px;
 }
+
 .btnsearch {
   margin-left: 10px;
 }
+
 .empty-row {
   background-color: #000000;
 }
+
 .el-table__row .subtotal-row {
   font-weight: bold !important;
 }
+
 .table {
   .search {
     margin-bottom: -18px;
@@ -763,13 +659,15 @@ table thead tr th {
     text-align: center;
   }
 }
+
 .el-table__footer {
   tr {
     background-color: #eeeeee;
-    > td {
-    }
+
+    >td {}
   }
 }
+
 .el-table__footer-wrapper tbody td.el-table__cell {
   background-color: #eeeeee;
   font-weight: bold;

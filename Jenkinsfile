@@ -43,8 +43,8 @@ pipeline {
                             env.k8s_config = 'stag-k8s-config';
                             break;
                         default:
-                            env.kube_ns = "dev";
-                            env.k8s_config = 'k8s-kube-config' 
+                            env.kube_ns = "staging";
+                            env.k8s_config = 'stag-k8s-config' 
                             break;
                     }
                     TAG = env.kube_ns + '-' + TAG

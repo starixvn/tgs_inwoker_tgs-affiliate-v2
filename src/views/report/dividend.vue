@@ -480,7 +480,7 @@ export default defineComponent({
           }
 
           //return check if column.property can be .toFixed(2) or not
-          return ((row[column.property] as number)?.toFixed(2) + percentage) || 0;
+          return ((row[column.property] as number)?.toFixed(2) + percentage) || 0.00;
         } else {
           return '';
         }

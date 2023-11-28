@@ -362,7 +362,7 @@ export default defineComponent({
   },
 
   methods: {
-    handleCheckAllChange(value) {
+    handleCheckAllChange(value: any) {
       for (const columnKey in this.tableColumn) {
         if (!this.tableColumn[columnKey].mustShow) {
           this.tableColumn[columnKey].isShow = value;
@@ -438,7 +438,7 @@ export default defineComponent({
                 return prev;
               }
             }, 0)
-            .toFixed(2)}`;
+            ?.toFixed(2)}`;
         } else {
           sums[index] = '';
         }
@@ -477,7 +477,7 @@ export default defineComponent({
         }
 
         //return check if column.property can be .toFixed(2) or not
-        return (row[column.property] as number).toFixed(2) + percentage;
+        return (row[column.property] as number)?.toFixed(2) + percentage;
       } else {
         return '';
       }

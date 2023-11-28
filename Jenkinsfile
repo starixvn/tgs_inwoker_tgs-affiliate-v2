@@ -70,6 +70,7 @@ pipeline {
         
         stage('Npm Build') {   
             steps {  
+                script {
                     def data = readYaml file: "brands_${env.kube_ns}.yaml"
    
                     for (i = 0;i <  data.brands.size(); i++) {
@@ -87,6 +88,7 @@ pipeline {
                         
                         sh "echo '=============='"
                     }
+                }    
             }
         }   
     }

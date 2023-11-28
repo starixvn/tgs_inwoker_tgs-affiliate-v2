@@ -511,15 +511,15 @@ export default defineComponent({
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
       } else if (this.dateType == 'thisWeek') {
-        this.searchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.From = moment().startOf('week').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.To = moment().endOf('week').format('YYYY-MM-DD');
       } else if (this.dateType == 'lastWeek') {
-        this.searchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
-        this.searchForm.To = moment().subtract(1, 'weeks').endOf('isoWeek').add(1, 'days').format('YYYY-MM-DD');
-        this.dividendDetailSearchForm.To = moment().subtract(1, 'weeks').add(1, 'days').endOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
+        this.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
+        this.dividendDetailSearchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
       } else if (this.dateType == 'thisMonth') {
         this.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
         this.dividendDetailSearchForm.From = moment().startOf('month').format('YYYY-MM-DD');

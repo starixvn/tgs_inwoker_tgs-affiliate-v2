@@ -438,7 +438,7 @@ export default defineComponent({
                 return prev;
               }
             }, 0)
-            ?.toFixed(2)}`;
+            ?.toFixed(2) || 0}`;
         } else {
           sums[index] = '';
         }
@@ -477,7 +477,7 @@ export default defineComponent({
         }
 
         //return check if column.property can be .toFixed(2) or not
-        return (row[column.property] as number)?.toFixed(2) + percentage;
+        return ((row[column.property] as number)?.toFixed(2) + percentage) || 0;
       } else {
         return '';
       }

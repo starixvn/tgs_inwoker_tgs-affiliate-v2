@@ -59,17 +59,16 @@ pipeline {
                     def data = readYaml file: "brands_${env.kube_ns}.yaml"
    
                     for (i = 0;i <  data.brands.size(); i++) {
-                        sh "echo 'deploy: ${data.brands[i].deploy}'"   
                         
-                        sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
-                        
+                        deploy="${data.brands[i].deploy}"
                         image_tag="${Registry}${data.brands[i].deploy}:$Tag"
                         
+                        sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
                         echo "image_tag=$image_tag"
                         
                         sh "docker build -t $image_tag ."
                         sh "docker push $image_tag"
-                        sh "kubectl set image deployment/${data.brands[i].deploy}  ${data.brands[i].deploy}=$image_tag --record -n $env.kube_ns"
+                        sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $env.kube_ns"
                         
                         sh "echo '=============='"
                     }

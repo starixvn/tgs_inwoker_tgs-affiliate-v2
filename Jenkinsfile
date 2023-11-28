@@ -56,22 +56,24 @@ pipeline {
         stage('Npm Build') {   
             steps {  
                 script {
-                    def data = readYaml file: "brands_${env.kube_ns}.yaml"
-   
-                    for (i = 0;i <  data.brands.size(); i++) {
-                        
-                        deploy="${data.brands[i].deploy}"
-                        image_tag="pgtgs/${data.brands[i].deploy}:$Tag"
-                        
-                        sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
-                        echo "image_tag=$image_tag"
-                        
-                        sh "docker build -t $image_tag ."
-                        sh "docker push $image_tag"
-                        sh "kubectl get deploy $deploy -n $env.kube_ns"
-                        sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $env.kube_ns"
-                        
-                        sh "echo '=============='"
+                   
+                     withKubeConfig([credentialsId: env.k8s_config]) {
+                        def data = readYaml file: "brands_${env.kube_ns}.yaml"
+                        for (i = 0;i <  data.brands.size(); i++) {
+                          
+                            deploy="${data.brands[i].deploy}"
+                            image_tag="pgtgs/${data.brands[i].deploy}:$Tag"
+                            
+                            sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
+                            echo "image_tag=$image_tag"
+                            
+                            sh "docker build -t $image_tag ."
+                            sh "docker push $image_tag"
+                            sh "kubectl get deploy -n $env.kube_ns"
+                            sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $env.kube_ns"
+                            
+                            sh "echo '=============='"
+                        }
                     }
                 }    
             }

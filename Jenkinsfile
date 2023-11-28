@@ -61,7 +61,7 @@ pipeline {
                     for (i = 0;i <  data.brands.size(); i++) {
                         
                         deploy="${data.brands[i].deploy}"
-                        image_tag="${Registry}${data.brands[i].deploy}:$Tag"
+                        image_tag="pgtgs/${data.brands[i].deploy}:$Tag"
                         
                         sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
                         echo "image_tag=$image_tag"

@@ -57,15 +57,6 @@ pipeline {
                     message += "\n Commit: ${env.commit_url}"
                 }
 
-                configFileProvider([configFile(fileId: 'tgs.' + env.kube_ns, variable: 'tgsconfig')]) {
-                    script {
-                        def envItems = readProperties file: "$tgsconfig";
-                        envItems.each { key, value -> 
-                            env."tgs_${key}" = value;
-                        }
-                        componentArray = "${env.tgs_agent_v2_components}".split(",")
-                    }
-                }
 
                 sh "echo 'env: $env.kube_ns'"
                 sh "echo 'tag: ${TAG}'"
@@ -74,46 +65,28 @@ pipeline {
         stage('Npm Install') {   
             steps {                 
                 sh "npm install"
-                sh "npm run build --BRAND=PG2 --API_URL=/ --SITE=https://t1.srvptt.com/ --DEFAULT_LANGUAGE=en-US"
             }
         } 
-        stage('Docker Build') {   
-            steps {                 
-                sh "docker build -t ${Registry}${Image}:${TAG} ."
-            }
-        }           
-        stage('Docker Push') {   
-            steps {   
-                sh "docker push ${Registry}${Image}:${TAG}"
-            }
-        }
-        stage('Deploy') {
-            when {
-                expression {
-                    return env.kube_ns == 'prod';
-                }
-            }
-
-            steps {
-                script {
-                    input message: 'Ready to go?', ok: 'yes';
-                }
-                
-                sh "echo start deploy"
-            }
-        }
-        stage('Deployment') {   
-            steps {   
-                script {            
-                    withKubeConfig([credentialsId: env.k8s_config]) {
-                        message += "\nComponent:"
-
-                        for (i = 0;i < componentArray.length; i++) {
-                            message += "\n    ${componentArray[i]}"
-                            sh "kubectl set image deployment/${componentArray[i]} ${componentArray[i]}=${Registry}${Image}:${TAG} --record -n $env.kube_ns"
-                        }
+        
+        stage('Npm Build') {   
+            steps {  
+                    def data = readYaml file: "brands_${env.kube_ns}.yaml"
+   
+                    for (i = 0;i <  data.brands.size(); i++) {
+                        sh "echo 'deploy: ${data.brands[i].deploy}'"   
+                        
+                        sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
+                        
+                        image_tag=${Registry}${data.brands[i].deploy}:$Tag
+                        
+                        echo "image_tag=$image_tag"
+                        
+                        sh "docker build -t $image_tag ."
+                        sh "docker push $image_tag"
+                        sh "kubectl set image deployment/${data.brands[i].deploy}  ${data.brands[i].deploy}=$image_tag --record -n $env.kube_ns"
+                        
+                        sh "echo '=============='"
                     }
-                }
             }
         }   
     }

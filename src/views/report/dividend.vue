@@ -471,7 +471,7 @@ export default defineComponent({
 
     formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
       if (row[column.property] === null) {
-        return 0.00;
+        return '0.00';
       } else
         if (!isNaN(row[column.property])) {
           let percentage = '%' as string;
@@ -482,7 +482,7 @@ export default defineComponent({
           //return check if column.property can be .toFixed(2) or not
           return ((row[column.property] as number)?.toFixed(2) + percentage) || 0.00;
         } else {
-          return '';
+          return '0.00';
         }
     },
     disabledDate(time: Date) {

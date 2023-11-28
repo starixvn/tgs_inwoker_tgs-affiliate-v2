@@ -10,21 +10,6 @@ pipeline {
     }
 
     stages {		    	
-        stage('Init Env') {
-            steps {
-                script {
-                    def data = readYaml file: "brands.yaml"
-                    def brand = data.cars[0].brand
-                    
-                    for (i = 0;i <  data.cars.size(); i++) {
-                        sh "echo 'brand: ${ data.cars[i].brand}'"   
-                        sh "echo 'brand: ${ data.cars[i].fuel}'"   
-                        sh "echo 'brand: ${ data.cars[i].transmission}'"   
-                        sh "echo '=============='"
-                    }
-                }
-            }
-        }	
         stage('Prepare Env') {
             steps {
                 cleanWs()

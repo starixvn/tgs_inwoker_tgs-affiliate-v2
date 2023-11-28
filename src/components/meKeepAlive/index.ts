@@ -210,7 +210,7 @@ const KeepAliveImpl: ComponentOptions = {
     const cacheSubtree = () => {
       // fix #1621, the pendingCacheKey could be 0
       if (pendingCacheKey != null) {
-        cache.set(pendingCacheKey, getInnerChild(instance.subTree));
+        cache.set(pendingCacheKey, getInnerChild(instance?.subTree));
       }
     };
     onMounted(cacheSubtree);
@@ -325,7 +325,7 @@ if (__COMPAT__) {
 // also to avoid inline import() in generated d.ts files
 export default KeepAliveImpl as any as {
   __isKeepAlive: true;
-  new (): {
+  new(): {
     $props: VNodeProps & MeKeepAliveProps;
   };
 };

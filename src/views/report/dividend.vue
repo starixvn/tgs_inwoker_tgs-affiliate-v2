@@ -470,13 +470,10 @@ export default defineComponent({
     },
 
     formatPrice(row: any, column: TableColumnCtx<ISubitems>) {
-      if (!isNaN(row[column.property])) {
-        let percentage = '%' as string;
-        if (column.property !== 'agentDividendPercentage') {
-          percentage = '';
-        }
-
-        //return check if column.property can be .toFixed(2) or not
+      if (row[column.property] === null) {
+        return 0;
+      } else if (!isNaN(row[column.property])) {
+        let percentage = column.property !== 'agentDividendPercentage' ? '%' : '';
         return ((row[column.property] as number)?.toFixed(2) + percentage) || 0;
       } else {
         return '';

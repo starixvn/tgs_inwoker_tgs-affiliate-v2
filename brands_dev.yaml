@@ -1,9 +1,0 @@
-brands:
-- deploy: agent-689
-  brand: GPI-V2
-  site: https://stg-tgs689.rpgp.cc/
-  lang: zh-CN
-- deploy: agent-gpihkd
-  brand: GPI-V2
-  site: https://stg-gpi-hkd.rpgp.cc/
-  lang: zh-CN

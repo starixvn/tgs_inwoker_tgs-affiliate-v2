@@ -77,7 +77,7 @@ pipeline {
                         
                         sh "npm run build --BRAND=${data.brands[i].brand} --API_URL=/ --SITE=${data.brands[i].site} --DEFAULT_LANGUAGE=${data.brands[i].lang}"
                         
-                        image_tag=${Registry}${data.brands[i].deploy}:$Tag
+                        image_tag="${Registry}${data.brands[i].deploy}:$Tag"
                         
                         echo "image_tag=$image_tag"
                         

@@ -69,7 +69,6 @@ pipeline {
                             
                             sh "docker build -t $image_tag ."
                             sh "docker push $image_tag"
-                            sh "kubectl get deploy -n $env.kube_ns"
                             sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $env.kube_ns"
                             
                             sh "echo '=============='"

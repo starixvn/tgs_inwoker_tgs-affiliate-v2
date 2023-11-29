@@ -7,3 +7,7 @@ brands:
   brand: GPI-V2
   site: https://stg-gpi-hkd.rpgp.cc/
   lang: zh-CN
+- deploy: agent-gpi3
+  brand: GPI-V2
+  site: https://stg-gpi3.rpgp.cc/
+  lang: en-US

@@ -1,9 +1,9 @@
 variables:
   ImageName: pgtgs/agent-v2
   BRAND: GPI-V2
-  SITE: https://t1.srvptt.com/
+  SITE: https://stg-gpi3.rpgp.cc/
   LANG: zh-CN
-  DEPLOY: agent-gpi-v2
+  DEPLOY: agent-gpi3
 
 default:
   before_script:

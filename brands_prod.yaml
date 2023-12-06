@@ -7,3 +7,7 @@ brands:
   brand: GPI-V2
   site: https://pitopito7.com/
   lang: zh-CN
+- deploy: agent-momovn
+  brand: MOMOVN
+  site: https://momo-bet.com/
+  lang: vi-VN

@@ -1,9 +1,9 @@
 variables:
-  ImageName: pgtgs/agent-v2
+  ImageName: pgtgs/agent-momovn
   BRAND: GPI-V2
-  SITE: https://stg-gpi3.rpgp.cc/
-  LANG: zh-CN
-  DEPLOY: agent-gpi3
+  SITE: https://momo-bet.com/
+  LANG: en-US
+  DEPLOY: agent-momovn
 
 default:
   before_script:

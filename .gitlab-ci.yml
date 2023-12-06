@@ -1,10 +1,10 @@
 variables:
   ImageName: pgtgs/agent-v2
+  deploy: agent-pito7-v2
   brand: GPI-V2
-  site: https://stg-gpi3.rpgp.cc/
+  site: https://pitopito7.com/
   lang: zh-CN
-  deploy: agent-gpi3
-
+  
 default:
   before_script:
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"

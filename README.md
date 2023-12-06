@@ -1,3 +1,7 @@
+## sample 
+
+![for example](/deployment/sample.png)*sample*
+
 # Me-admin template
 ## 简介
 Me-admin template是一个免费开源的中后台模板,基于vue3、vite4、 pinia、 elment-plus构建，开箱即用，本项目的开源协议为最宽松的MIT协议，使用无任何限制，本项目采用最新技术栈，可以作为项目的启动模版，以帮助你快速搭建企业级中后台，也是一个很好的学习项目。

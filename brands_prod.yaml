@@ -11,3 +11,7 @@ brands:
   brand: MOMOVN
   site: https://momo-bet.com/
   lang: vi-VN
+- deploy: agent-moph
+  brand: MOPH
+  site: https://momobetph.com/
+  lang: en-US

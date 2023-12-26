@@ -25,15 +25,8 @@
       <el-col :md="6" :sm="24">
         <el-form :inline="true">
           <el-form-item style="margin-right: 0px; float: right">
-            <el-button
-              type="primary"
-              class="btnsearch"
-              size="large"
-              style="float: right"
-              icon="mel-icon-plus"
-              @click="addAgentDialogVisible = true"
-              >{{ $t('addagent') }}</el-button
-            >
+            <el-button type="primary" class="btnsearch" size="large" style="float: right" icon="mel-icon-plus"
+              @click="addAgentDialogVisible = true">{{ $t('addagent') }}</el-button>
             <!-- <el-button type="primary" icon="mel-icon-filter" size="large"/> -->
           </el-form-item>
         </el-form>
@@ -44,22 +37,11 @@
         <el-table :data="tableData" border resizable fit>
           <el-table-column :label="t('agent')" prop="username" min-width="150" align="center" />
           <el-table-column :label="t('type')" prop="type" :formatter="translateAgentType" align="center" />
-          <el-table-column
-            :label="t('profitSharePT')"
-            prop="dividendpercentage"
-            :formatter="formatPercentage"
-            width="150"
-            align="center"
-          />
+          <el-table-column :label="t('profitSharePT')" prop="dividendpercentage" :formatter="formatPercentage" width="150"
+            align="center" />
           <el-table-column :label="t('teamnumber')" prop="teamnumber" width="130" align="center" />
           <el-table-column align="center" :label="t('balance')" prop="balance" :formatter="formatPrice" />
-          <el-table-column
-            :label="t('status')"
-            prop="status"
-            :formatter="formatStatus"
-            min-width="120"
-            align="center"
-          />
+          <el-table-column :label="t('status')" prop="status" :formatter="formatStatus" min-width="120" align="center" />
           <el-table-column :label="t('setting')" align="center" width="150">
             <template #default="scope">
               <el-button type="primary" icon="mel-icon-search" size="small" @click="onViewClick(scope.row.id)" />
@@ -74,15 +56,9 @@
     </el-row>
     <el-row>
       <div class="demo-pagination-block">
-        <el-pagination
-          v-model:current-page="searchForm.page"
-          v-model:page-size="searchForm.rows"
-          :page-sizes="[10, 50, 200]"
-          layout="sizes, prev, pager, next"
-          :total="totalRowCount"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="searchForm.page" v-model:page-size="searchForm.rows"
+          :page-sizes="[10, 50, 200]" layout="sizes, prev, pager, next" :total="totalRowCount"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </el-row>
     <el-dialog v-model="addAgentDialogVisible" :title="t('addagent')" :fullscreen="globalStore.isMobile">
@@ -91,22 +67,12 @@
           <el-input v-model="addAgentParams.userName" size="large" :placeholder="$t('enterUsername')" clearable />
         </el-form-item>
         <el-form-item :label="t('password')" required>
-          <el-input
-            v-model="addAgentParams.password"
-            size="large"
-            :placeholder="$t('enterPassword')"
-            clearable
-            type="password"
-          />
+          <el-input v-model="addAgentParams.password" size="large" :placeholder="$t('enterPassword')" clearable
+            type="password" />
         </el-form-item>
         <el-form-item :label="t('confirmPassword')" required>
-          <el-input
-            v-model="addAgentParams.confirmPassword"
-            size="large"
-            :placeholder="$t('reEnterPassword')"
-            clearable
-            type="password"
-          />
+          <el-input v-model="addAgentParams.confirmPassword" size="large" :placeholder="$t('reEnterPassword')" clearable
+            type="password" />
         </el-form-item>
         <el-form-item :label="t('realName')">
           <el-input v-model="addAgentParams.realname" size="large" :placeholder="$t('enterRealName')" clearable />
@@ -115,14 +81,9 @@
           <el-input v-model="addAgentParams.email" size="large" :placeholder="$t('enterEmail')" clearable />
         </el-form-item>
         <el-form-item :label="t('profitSharePT')" required>
-          <el-input-number
-            v-model="addAgentParams.dividendPercentage"
-            size="large"
-            :placeholder="$t('enterProfitSharePT')"
-            precision="2"
-            style="width: 100%"
-            @change="anotherProfitShareListener"
-          >
+          <el-input-number v-model="addAgentParams.dividendPercentage" size="large"
+            :placeholder="$t('enterProfitSharePT')" precision="2" style="width: 100%"
+            @change="anotherProfitShareListener">
             <template #append>%</template>
           </el-input-number>
           <el-alert type="error" :closable="false">
@@ -136,16 +97,11 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            type="primary"
-            :disabled="
-              addAgentParams.email === '' ||
-              !addAgentParams.dividendPercentage ||
-              (addAgentParams.dividendPercentage &&
-                addAgentParams.dividendPercentage.toString().split('.')[1]?.length > 2)
-            "
-            @click="onRegister()"
-          >
+          <el-button type="primary" :disabled="addAgentParams.email === '' ||
+            !addAgentParams.dividendPercentage ||
+            (addAgentParams.dividendPercentage &&
+              addAgentParams.dividendPercentage.toString().split('.')[1]?.length > 2)
+            " @click="onRegister()">
             {{ t('registerNow') }}
           </el-button>
         </span>
@@ -196,18 +152,10 @@
             <el-col :span="24">
               <el-form :inline="true">
                 <el-form-item>
-                  <el-select
-                    v-model="accountChange.searchForm.transactiontype"
-                    size="large"
-                    style="width: 100%"
-                    :placeholder="$t('transactionType')"
-                  >
-                    <el-option
-                      v-for="(value, propertyName) in accountChange.transactionTypeList"
-                      :key="propertyName"
-                      :label="$t(value)"
-                      :value="propertyName"
-                    />
+                  <el-select v-model="accountChange.searchForm.transactiontype" size="large" style="width: 100%"
+                    :placeholder="$t('transactionType')">
+                    <el-option v-for="(value, propertyName) in accountChange.transactionTypeList" :key="propertyName"
+                      :label="$t(value)" :value="propertyName" />
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -227,13 +175,8 @@
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                  <el-date-picker
-                    v-model="accountChange.searchForm.dateRange"
-                    type="daterange"
-                    size="large"
-                    @change="daterangeChange"
-                    :disabled-date="disabledDate"
-                  />
+                  <el-date-picker v-model="accountChange.searchForm.dateRange" type="daterange" size="large"
+                    @change="daterangeChange" :disabled-date="disabledDate" />
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" class="btnsearch" size="large" @click="onSearchAccountChange()">{{
@@ -246,19 +189,11 @@
           <el-row>
             <el-col :span="24">
               <el-table :data="accountChange.tableData" stripe>
-                <el-table-column
-                  :label="t('time')"
-                  prop="recordedOn"
-                  align="center"
-                  :formatter="formatAgentChangeDateTime"
-                >
+                <el-table-column :label="t('time')" prop="recordedOn" align="center"
+                  :formatter="formatAgentChangeDateTime">
                 </el-table-column>
-                <el-table-column
-                  prop="transactionType"
-                  :label="t('transactionType')"
-                  align="center"
-                  :formatter="formatTransactionType"
-                />
+                <el-table-column prop="transactionType" :label="t('transactionType')" align="center"
+                  :formatter="formatTransactionType" />
 
                 <el-table-column prop="amount" :label="t('amount')" align="right" :formatter="formatPrice" />
                 <el-table-column prop="balance" :label="t('balance')" align="right" :formatter="formatPrice" />
@@ -271,27 +206,17 @@
           </el-row>
           <el-row>
             <div class="demo-pagination-block">
-              <el-pagination
-                v-model:current-page="accountChange.searchForm.page"
-                v-model:page-size="accountChange.searchForm.rows"
-                :page-sizes="[10, 50, 200]"
-                layout="sizes, prev, pager, next"
-                :total="accountChange.totalRowCount"
-                @size-change="handleAccountChangeSizeChange"
-                @current-change="handleAccountChangeCurrentChange"
-              />
+              <el-pagination v-model:current-page="accountChange.searchForm.page"
+                v-model:page-size="accountChange.searchForm.rows" :page-sizes="[10, 50, 200]"
+                layout="sizes, prev, pager, next" :total="accountChange.totalRowCount"
+                @size-change="handleAccountChangeSizeChange" @current-change="handleAccountChangeCurrentChange" />
             </div>
           </el-row>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
 
-    <el-dialog
-      v-model="updateAgentDialogVisible"
-      :title="t('agentInfo')"
-      width="80%"
-      :fullscreen="globalStore.isMobile"
-    >
+    <el-dialog v-model="updateAgentDialogVisible" :title="t('agentInfo')" width="80%" :fullscreen="globalStore.isMobile">
       <el-row>
         <el-col :lg="12" :md="12" :xs="24">
           <el-form label-position="right" label-width="150px">
@@ -303,21 +228,11 @@
               <el-button type="primary" style="margin-left: 10px" @click="onUpdateRealNameClick">{{
                 t('updateRealName')
               }}</el-button>
-              <el-dialog
-                v-model="updateRealNameDialogVisible"
-                width="30%"
-                :fullscreen="globalStore.isMobile"
-                :title="t('updateRealName')"
-                append-to-body
-              >
+              <el-dialog v-model="updateRealNameDialogVisible" width="30%" :fullscreen="globalStore.isMobile"
+                :title="t('updateRealName')" append-to-body>
                 <el-form label-position="right" label-width="150px">
                   <el-form-item :label="t('realName')">
-                    <el-input
-                      v-model="updateAgentParams.realName"
-                      size="large"
-                      :placeholder="$t('realName')"
-                      clearable
-                    />
+                    <el-input v-model="updateAgentParams.realName" size="large" :placeholder="$t('realName')" clearable />
                   </el-form-item>
                 </el-form>
                 <template #footer>
@@ -343,30 +258,15 @@
             </el-form-item>
             <el-form-item :label="t('profitSharePT') + ':'">
               {{ agentDetails.dividendpercentage.toFixed(2) }}%
-              <el-button
-                v-if="agentDetails.agentdividendtype === 'OneLayer'"
-                type="primary"
-                style="margin-left: 10px"
-                @click="onUpdateProfitSharePTClick"
-                >{{ t('updateProfitSharePT') }}</el-button
-              >
-              <el-dialog
-                v-model="updateProfitSharePTDialogVisible"
-                width="30%"
-                :fullscreen="globalStore.isMobile"
-                :title="t('updateProfitSharePT')"
-                append-to-body
-              >
+              <el-button v-if="agentDetails.agentdividendtype === 'OneLayer'" type="primary" style="margin-left: 10px"
+                @click="onUpdateProfitSharePTClick">{{ t('updateProfitSharePT') }}</el-button>
+              <el-dialog v-model="updateProfitSharePTDialogVisible" width="30%" :fullscreen="globalStore.isMobile"
+                :title="t('updateProfitSharePT')" append-to-body>
                 <el-form label-position="left" label-width="150px">
                   <el-form-item :label="t('profitSharePT')">
-                    <el-input-number
-                      v-model="updateDividendParams.dividendPercentage"
-                      size="large"
-                      :placeholder="$t('enterProfitSharePT')"
-                      precision="2"
-                      style="width: 80%"
-                      @change="profitShareListener"
-                    />
+                    <el-input-number v-model="updateDividendParams.dividendPercentage" size="large"
+                      :placeholder="$t('enterProfitSharePT')" precision="2" style="width: 80%"
+                      @change="profitShareListener" />
                     <div style="text-align: center; width: 80%">
                       {{ t('profitShareCannotExceed', { percentage: agentDividendRange.max }) }}
                     </div>
@@ -374,15 +274,10 @@
                 </el-form>
                 <template #footer>
                   <div class="dialog-footer">
-                    <el-button
-                      type="primary"
-                      :disabled="
-                        updateDividendParams.dividendPercentage > agentDividendRange.max ||
-                        (updateDividendParams.dividendPercentage &&
-                          updateDividendParams.dividendPercentage.toString().split('.')[1]?.length > 2)
-                      "
-                      @click="onSubmitUpdateProfitSharePTClick"
-                    >
+                    <el-button type="primary" :disabled="updateDividendParams.dividendPercentage > agentDividendRange.max ||
+                      (updateDividendParams.dividendPercentage &&
+                        updateDividendParams.dividendPercentage.toString().split('.')[1]?.length > 2)
+                      " @click="onSubmitUpdateProfitSharePTClick">
                       {{ t('submit') }}
                     </el-button>
                   </div>
@@ -401,31 +296,16 @@
             </el-form-item>
             <el-form-item :label="t('password') + ':'">
               <el-button type="primary" @click="onResetPasswordClick">{{ t('resetPassword') }}</el-button>
-              <el-dialog
-                v-model="resetPasswordDialogVisible"
-                width="50%"
-                :fullscreen="globalStore.isMobile"
-                :title="t('resetPassword')"
-                append-to-body
-              >
+              <el-dialog v-model="resetPasswordDialogVisible" width="50%" :fullscreen="globalStore.isMobile"
+                :title="t('resetPassword')" append-to-body>
                 <el-form label-position="right" label-width="150px">
                   <el-form-item :label="t('password')" required>
-                    <el-input
-                      v-model="updateAgentPasswordParams.password"
-                      size="large"
-                      :placeholder="$t('enterPassword')"
-                      clearable
-                      type="password"
-                    />
+                    <el-input v-model="updateAgentPasswordParams.password" size="large" :placeholder="$t('enterPassword')"
+                      clearable type="password" />
                   </el-form-item>
                   <el-form-item :label="t('confirmPassword')" required>
-                    <el-input
-                      v-model="updateAgentPasswordParams.confirmPassword"
-                      size="large"
-                      :placeholder="$t('reEnterPassword')"
-                      clearable
-                      type="password"
-                    />
+                    <el-input v-model="updateAgentPasswordParams.confirmPassword" size="large"
+                      :placeholder="$t('reEnterPassword')" clearable type="password" />
                   </el-form-item>
                 </el-form>
                 <template #footer>
@@ -676,7 +556,7 @@ export default defineComponent({
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
       const transactionType = this.accountChange.transactionTypeList[row[column.property]];
-      return this.$t(transactionType.toString());
+      return this.$t(transactionType?.toString() ?? '');
     },
     formatDateTime2(value: string) {
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
@@ -932,18 +812,22 @@ export default defineComponent({
 .el-row {
   margin-bottom: 20px;
 }
+
 .datefrom {
   margin-left: 10px;
 }
+
 .btn {
   background: transparent;
   color: var(--el-input-border-color);
   box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color)) inset;
   border: none;
 }
+
 .empty-row {
   background-color: #000000;
 }
+
 .subtotal-row {
   background-color: #000000;
 }
@@ -953,6 +837,7 @@ export default defineComponent({
   justify-content: flex-end;
   gap: 10px;
 }
+
 .table {
   .search {
     margin-bottom: -18px;

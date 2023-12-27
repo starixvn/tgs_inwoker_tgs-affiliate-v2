@@ -4,19 +4,11 @@
       <el-col :span="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-select
-              v-model="searchForm.transactiontype"
-              size="large"
-              style="width: 100%"
-              :placeholder="$t('transactionType')"
-            >
+            <el-select v-model="searchForm.transactiontype" size="large" style="width: 100%"
+              :placeholder="$t('transactionType')">
               <el-option :label="$t('transactionType')" value="" />
-              <el-option
-                v-for="(value, propertyName) in transactionTypeList"
-                :key="propertyName"
-                :label="$t(value)"
-                :value="propertyName"
-              />
+              <el-option v-for="(value, propertyName) in transactionTypeList" :key="propertyName" :label="$t(value)"
+                :value="propertyName" />
             </el-select>
           </el-form-item>
         </el-form>
@@ -36,13 +28,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <el-date-picker
-              v-model="searchForm.dateRange"
-              type="daterange"
-              size="large"
-              @change="daterangeChange"
-              :disabled-date="disabledDate"
-            />
+            <el-date-picker v-model="searchForm.dateRange" type="daterange" size="large" @change="daterangeChange"
+              :disabled-date="disabledDate" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="btnsearch" size="large" @click="onSearch()">{{ t('search') }}</el-button>
@@ -55,13 +42,8 @@
         <el-table :data="tableData" stripe>
           <el-table-column :label="t('time')" prop="recordedOn" align="center" :formatter="formatDate">
           </el-table-column>
-          <el-table-column
-            prop="transactionType"
-            :label="t('transactionType')"
-            align="center"
-            :formatter="formatTransactionType"
-            width="150"
-          />
+          <el-table-column prop="transactionType" :label="t('transactionType')" align="center"
+            :formatter="formatTransactionType" width="150" />
 
           <el-table-column prop="amount" :label="t('amount')" align="right" :formatter="formatPrice" />
           <el-table-column prop="balance" :label="t('balance')" align="right" :formatter="formatPrice" />
@@ -74,15 +56,9 @@
     </el-row>
     <el-row>
       <div class="demo-pagination-block">
-        <el-pagination
-          v-model:current-page="searchForm.page"
-          v-model:page-size="searchForm.rows"
-          :page-sizes="[10, 50, 200]"
-          layout="sizes, prev, pager, next"
-          :total="totalRowCount"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="searchForm.page" v-model:page-size="searchForm.rows"
+          :page-sizes="[10, 50, 200]" layout="sizes, prev, pager, next" :total="totalRowCount"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </el-row>
   </el-card>
@@ -115,6 +91,7 @@ export default defineComponent({
   },
   data() {
     return {
+
       tableData: reactive<AccountChangesItems[]>([]),
       transactionTypeList: reactive<TransactionTypeData>({}),
       totalRowCount: 0,
@@ -164,7 +141,7 @@ export default defineComponent({
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
       const transactionType = this.transactionTypeList[row[column.property]];
-      return this.$t(transactionType.toString());
+      return this.t(transactionType ?? '')
     },
     onDateTypeChange() {
       if (this.dateType == 'today') {
@@ -224,18 +201,23 @@ export default defineComponent({
 .el-row {
   margin-bottom: 20px;
 }
+
 .datefrom {
   margin-left: 10px;
 }
+
 .btnsearch {
   margin-left: 10px;
 }
+
 .empty-row {
   background-color: #000000;
 }
+
 .subtotal-row {
   background-color: #000000;
 }
+
 .table {
   .search {
     margin-bottom: -18px;

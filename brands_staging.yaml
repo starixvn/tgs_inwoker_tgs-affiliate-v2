@@ -11,3 +11,7 @@ brands:
   brand: GPI-V2
   site: https://stg-gpi3.rpgp.cc/
   lang: en-US
+- deploy: agent-gpi-v2
+  brand: GPI-V2
+  site: https://stg-t1.rpgp.cc/
+  lang: en-US

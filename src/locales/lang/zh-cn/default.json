@@ -313,5 +313,11 @@
   "youveSetWithdrawalPassword": "您已设置过提款密码，若需修改，请联系客服团队。",
   "usernameAlreadyExist": "用户名称已存在",
   "cannotExceed31Days": "日期区间不能超过31天",
-  "valueCannotLesserThanZero": "值不能小于0"
+  "valueCannotLesserThanZero": "值不能小于0",
+
+  "transferout": "转出",
+  "transferoutfailed": "转出失败",
+  "transferin": "转入",
+  "transferfailed": "转入失败",
+  "br_dividend": "分红"
 }

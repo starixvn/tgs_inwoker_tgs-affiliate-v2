@@ -132,6 +132,9 @@ export default defineComponent({
       const response = await getTransactionTypeApi();
       const result = await response.runAsync();
       this.transactionTypeList = result.data;
+      this.transactionTypeList = {
+        ...result.data, 6100: "transferout", 6300: "transferoutfailed", 6500: "transferin", 6600: "transferinfailed", 4200: "br_dividend"
+      }
     },
     formatPrice(row: any, column: TableColumnCtx<AccountChangesItems>) {
       return formatNumber({ truncate: 2, padRight: 2 })(row[column.property]);
@@ -140,6 +143,7 @@ export default defineComponent({
       return moment(row[column.property]).format('YYYY-MM-DD HH:mm:ss');
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
+
       const transactionType = this.transactionTypeList[row[column.property]];
       return this.t(transactionType ?? '')
     },

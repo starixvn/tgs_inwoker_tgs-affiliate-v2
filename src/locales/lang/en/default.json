@@ -313,5 +313,11 @@
   "youveSetWithdrawalPassword": "You have already set the withdrawal password. If you need to modify it, please contact the customer service team.",
   "usernameAlreadyExist": "Username already exist",
   "cannotExceed31Days": "Cannot exceed 31 days",
-  "valueCannotLesserThanZero": "Value cannot be lesser than zero"
+  "valueCannotLesserThanZero": "Value cannot be lesser than zero",
+
+  "transferout": "Transfer Out",
+  "transferoutfailed": "Transfer Failed",
+  "transferin": "Transfer In",
+  "transferinfailed": " Transfer In Failed",
+  "br_dividend": "Dividend"
 }

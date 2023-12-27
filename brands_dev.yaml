@@ -1,0 +1,5 @@
+brands:
+- deploy: agent-gpi-v2
+  brand: GPI-V2
+  site: https://dev-t1.rpgp.cc/
+  lang: zh-CN

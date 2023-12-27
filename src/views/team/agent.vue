@@ -555,9 +555,11 @@ export default defineComponent({
       return this.formatDateTime2(row[column.property]);
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
-      const transactionType = this.accountChange.transactionTypeList[row[column.property]];
-      return this.$t(transactionType?.toString() ?? '');
+      const { transactionTypeList } = this.accountChange;
+      const transactionType = transactionTypeList[row[column.property]];
+      return this.$t(String(transactionType) || '');
     },
+
     formatDateTime2(value: string) {
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
     },

@@ -141,7 +141,8 @@ export default defineComponent({
     },
     formatTransactionType(row: any, column: TableColumnCtx<AccountChangesItems>) {
       const transactionType = this.transactionTypeList[row[column.property]];
-      return this.$t(transactionType?.toString() ?? '');
+      const translatedType = this.$t(transactionType?.toString() || '');
+      return translatedType;
     },
     onDateTypeChange() {
       if (this.dateType == 'today') {

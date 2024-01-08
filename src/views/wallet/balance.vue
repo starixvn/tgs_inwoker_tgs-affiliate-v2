@@ -133,7 +133,7 @@ export default defineComponent({
       const result = await response.runAsync();
       this.transactionTypeList = result.data;
       this.transactionTypeList = {
-        ...result.data, 6100: "transferout", 6300: "transferoutfailed", 6500: "transferin", 6600: "transferinfailed", 4200: "br_dividend"
+        ...result.data, 6100: "transferout", 6300: "transferoutfailed", 6500: "transferin", 6600: "transferinfailed", 4200: "br_dividend", 2100: "Withdrawal"
       }
     },
     formatPrice(row: any, column: TableColumnCtx<AccountChangesItems>) {

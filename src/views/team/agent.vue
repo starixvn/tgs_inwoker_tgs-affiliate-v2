@@ -540,9 +540,7 @@ export default defineComponent({
       const response = await getTransactionTypeApi();
       const result = await response.runAsync();
       this.accountChange.transactionTypeList = result.data;
-      this.accountChange.transactionTypeList = {
-        ...result.data, 6100: "transferout", 6300: "transferoutfailed", 6500: "transferin", 6600: "transferinfailed", 4200: "br_dividend", 2100: "Withdrawal"
-      }
+
     },
     formatStatus(row: any, column: TableColumnCtx<AgentData>) {
       return this.t(row[column.property]);

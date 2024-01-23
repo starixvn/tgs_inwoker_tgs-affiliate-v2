@@ -125,6 +125,8 @@
   "CancelWithdrawal": "取消提款",
   "all": "全部",
   "profitSharePT": "分红比例",
+  "profitShareConfig": "分红配置比例",
+  "profitShareSetup": "分红设置",
   "updateProfitSharePT": "修改分红比例",
   "setting": "设置",
 
@@ -319,5 +321,9 @@
   "transferoutfailed": "转出失败",
   "transferin": "转入",
   "transferfailed": "转入失败",
-  "br_dividend": "分红"
+  "br_dividend": "分红",
+
+  "activenumber": "活躍玩家",
+  "netprofit": "淨利潤",
+  "configdividendpercentage": "利潤分享百分比"
 }

@@ -17,7 +17,12 @@ export class AddPlayerPhoneParams {
   phone = '';
   playercode = '';
 }
-export interface AddPlayerPhoneResult extends BaseResult {}
+
+export class AddPlayerEmailParams {
+  email = '';
+  playercode = '';
+}
+
 export interface PlayerData {
   areacode: string;
   phone: string;
@@ -88,9 +93,22 @@ export function addPlayerApi<T extends boolean = true>(returnAxios: T = true as 
   );
 }
 export function addPlayerPhoneApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
-  return request<AddPlayerPhoneResult, [AddPlayerPhoneParams], T>(
+  return request<BaseResult, [AddPlayerPhoneParams], T>(
     (params) => ({
       url: 'player/phone',
+      method: 'put',
+      data: params,
+    }),
+    { needAll: true },
+    returnAxios,
+  );
+}
+
+
+export function addPlayerEmailApi<T extends boolean = true>(returnAxios: T = true as T, noLoading = false) {
+  return request<BaseResult, [AddPlayerEmailParams], T>(
+    (params) => ({
+      url: 'player/email',
       method: 'put',
       data: params,
     }),

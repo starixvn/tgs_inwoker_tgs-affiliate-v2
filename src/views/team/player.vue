@@ -262,8 +262,10 @@ import {
   AddPlayerParams,
   CheckConditionParams,
   AddPlayerPhoneParams,
+  AddPlayerEmailParams,
   checkConditionApi,
   addPlayerApi,
+  addPlayerEmailApi,
   addPlayerPhoneApi,
 } from '@/api/player';
 import formatNumber from 'format-number';
@@ -505,13 +507,19 @@ export default defineComponent({
       const res = await checkConditionApi()(param);
       if (res.data === true) {
         const resCreate = await addPlayerApi()(this.addPlayerParams);
+
         if (resCreate.err === 0) {
           let paramAddPhone = new AddPlayerPhoneParams();
+          let paramAddEmail = new AddPlayerEmailParams();
           paramAddPhone.areaCode = this.addPlayerParams.areaCode;
           paramAddPhone.playercode = resCreate.data;
           paramAddPhone.phone = this.addPlayerParams.phone;
+          paramAddEmail.email = this.addPlayerParams.email;
+          paramAddEmail.playercode = resCreate.data;
+
           const resAddPhone = await addPlayerPhoneApi()(paramAddPhone);
-          if (resAddPhone.err === 0) {
+          const resAddEmail = await addPlayerEmailApi()(paramAddEmail);
+          if (resAddPhone.err === 0 && resAddEmail.err === 0) {
             this.addPlayerDialogVisible = false;
           }
         }

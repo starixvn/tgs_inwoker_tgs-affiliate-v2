@@ -15,3 +15,11 @@ brands:
   brand: MOPH
   site: https://momobetph.com/
   lang: en-US
+- deploy: agent-v226
+  brand: V226
+  site: https://gbclub.com/
+  lang: zh-TW
+- deploy: agent-v227
+  brand: V227
+  site: https://sunbet668.com/
+  lang: zh-TW

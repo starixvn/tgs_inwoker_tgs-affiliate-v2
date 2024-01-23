@@ -135,6 +135,8 @@
   "ReceiveRollback": "Transfer In Failed",
   "all": "All",
   "profitSharePT": "Profit Share P/T",
+  "profitShareConfig": "Profit Share Config",
+  "profitShareSetup": "Setup",
   "updateProfitSharePT": "Update Profit Share P/T",
   "setting": "Setting",
 
@@ -328,5 +330,9 @@
   "transferoutfailed": "Transfer Failed",
   "transferin": "Transfer In",
   "transferinfailed": " Transfer In Failed",
-  "br_dividend": "Dividend"
+  "br_dividend": "Dividend",
+
+  "activenumber": "Active Number",
+  "netprofit": "Net Profit",
+  "configdividendpercentage": "Dividend Percentage"
 }

@@ -324,6 +324,15 @@
 
         <div class="contents">
           <div class="another-big-title">{{ $t('profitshare') }}</div>
+          <el-table
+            v-if="$state.user.agentdividendtype === 'MultipleLayer'"
+            :data="$state.user.dividendconditions"
+            class="table-border"
+          >
+            <el-table-column :label="t('netprofit')" prop="netprofit" align="center" />
+            <el-table-column :label="t('activenumber')" prop="activenumber" align="center" />
+            <el-table-column :label="t('configdividendpercentage')" prop="dividendpercentage" align="center"
+          /></el-table>
           <div class="content-inside-content">
             <div class="table-background">
               <div v-for="item in profitShare" :key="item.name">
@@ -684,6 +693,11 @@ const onVerfiyEmailCode = async () => {
 
 .input-row-no-label {
   padding-bottom: 10px;
+}
+
+.table-border {
+  border: solid 1px;
+  border-color: #efefef;
 }
 
 .table-background {

@@ -19,3 +19,11 @@ brands:
   brand: MOPH
   site: https://stg-moph.rpgp.cc/
   lang: en-US
+- deploy: agent-v226
+  brand: v226
+  site: https://stg-v226.rpgp.cc/
+  lang: zh-TW
+- deploy: agent-v227
+  brand: v227
+  site: https://stg-v227.rpgp.cc/
+  lang: zh-TW

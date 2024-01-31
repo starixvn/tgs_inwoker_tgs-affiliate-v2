@@ -31,7 +31,7 @@
                       </el-row>
                     </el-col>
                     <el-col :span="12" :xs="24">
-                      <el-form-item>
+                      <div class="status-row">
                         <el-select v-model="searchForm.GameProviderId" size="large" :placeholder="t('status')">
                           <el-option :label="t('all')" value="" />
                           <el-option
@@ -51,7 +51,7 @@
                             :value="item.id"
                           />
                         </el-select>
-                      </el-form-item>
+                      </div>
                     </el-col>
                   </el-row>
                 </el-col>
@@ -628,6 +628,14 @@ export default defineComponent({
     :deep(.el-input) {
       width: 319px;
     }
+  }
+}
+
+.status-row {
+  display: flex;
+
+  .el-select {
+    width: 100%;
   }
 }
 </style>

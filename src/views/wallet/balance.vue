@@ -6,6 +6,7 @@
           <el-form-item>
             <el-select
               v-model="searchForm.transactiontype"
+              class="modded-select"
               size="large"
               style="width: 100%"
               :placeholder="$t('transactionType')"

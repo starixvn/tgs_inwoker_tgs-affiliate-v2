@@ -87,7 +87,7 @@ deploy-dev:
 
         echo "Processing brand: $brand, $deploy, $site, $lang"
         
-        echo =============="
+        echo "=============="
       done
 
   environment:

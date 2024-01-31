@@ -74,7 +74,8 @@ deploy-dev:
     kube_ns: dev
   before_script:
     - export KUBECONFIG=$kubeconfig_dev
-    - export PATH=$PATH:/usr/local/bin/
+    - export PATH=$PATH:/usr/local/bin
+    - echo "PATH=$PATH"
   script: 
     - |
       YAML_CONTENT=$(cat brands_dev.yaml)

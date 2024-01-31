@@ -77,6 +77,7 @@ deploy-dev:
     - echo "PATH=$PATH"
   script: 
     - |
+      export Tag=$(cat tag_file)
       YAML_CONTENT=$(cat brands_dev.yaml)
       total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do

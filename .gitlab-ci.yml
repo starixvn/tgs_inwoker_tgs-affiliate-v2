@@ -12,7 +12,7 @@ default:
 
 stages:
   - npm-build
-  - docker-build
+#  - docker-build
   - deploy-dev
   - deploy-staging
   - deploy-prod

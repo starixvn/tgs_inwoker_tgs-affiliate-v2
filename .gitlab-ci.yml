@@ -74,11 +74,8 @@ deploy-dev:
     kube_ns: dev
   before_script:
     - export KUBECONFIG=$kubeconfig_dev
-    - apt-get update -qy
-    - apt-get install -y yq
-    - ORIGINAL_CONTENT=$(cat brands_dev.yaml)
-    - export data=$(echo "$ORIGINAL_CONTENT" | yq)
-    - echo $data
+    - YAML_CONTENT=$(cat brands_dev.yaml)
+    - echo $YAML_CONTENT
   script: 
     - |
       for index in $(seq 0 $(echo "$YAML_CONTENT" | yq eval '.brands | length - 1' -)); do

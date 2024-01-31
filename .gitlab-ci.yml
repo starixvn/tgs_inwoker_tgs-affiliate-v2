@@ -81,7 +81,7 @@ deploy-dev:
       echo "count=$count"
       for (i = 0;i < $count ; i++) {
          echo "=============="
-      done
+      }
   environment:
     name: develop
   only: 

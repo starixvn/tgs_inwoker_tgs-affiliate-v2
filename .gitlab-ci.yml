@@ -77,7 +77,7 @@ deploy-dev:
   script: 
     - |
       YAML_CONTENT=$(cat brands_dev.yaml)
-      count=$(echo "$YAML_CONTENT" | yq eval '.brands | length)
+      count=$(echo "$YAML_CONTENT" | yq eval '.brands | length')
       echo "count=$count"
       for (i = 0;i < $count ; i++) {
          echo "=============="

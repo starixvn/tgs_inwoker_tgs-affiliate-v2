@@ -80,13 +80,7 @@ deploy-dev:
       YAML_CONTENT=$(cat brands_dev.yaml)
       total_brands=$(echo "$YAML_CONTENT" | jq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do
-        deploy=$(echo "$YAML_CONTENT" | jq -r ".brands[$index].deploy")
-        site=$(echo "$YAML_CONTENT" | jq -r ".brands[$index].site")
-        lang=$(echo "$YAML_CONTENT" | jq -r ".brands[$index].lang")
-        brand=$(echo "$YAML_CONTENT" | jq -r ".brands[$index].brand")
-
-        echo "Processing brand: $brand, $deploy, $site, $lang"
-        
+       
         echo "=============="
       done
 

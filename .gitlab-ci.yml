@@ -78,7 +78,7 @@ deploy-dev:
     - echo "kubeconfig_staging=$kubeconfig_staging"
   script: 
     - |
-      data = readYaml file: "brands_${kube_ns}.yaml"
+      export data=$(cat brands_dev.yaml)
       for (i = 0;i <  data.brands.size(); i++) {
         
           deploy="${data.brands[i].deploy}"

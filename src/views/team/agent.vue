@@ -12,7 +12,7 @@
             <el-input v-model="searchForm.Username" :placeholder="$t('agentusername')" size="large" clearable />
           </el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.Status" size="large" :placeholder="t('status')">
+            <el-select v-model="searchForm.Status" class="modded-select" size="large" :placeholder="t('status')">
               <el-option :label="t('status')" value="" />
               <el-option v-for="(item, key) in statuses" :key="key" :label="t(item)" :value="item" />
             </el-select>

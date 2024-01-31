@@ -8,7 +8,7 @@ npm-build:
   image: node:latest
   stage: npm-build
   script:
-    - npm install
+    - npm install --force
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
   artifacts:

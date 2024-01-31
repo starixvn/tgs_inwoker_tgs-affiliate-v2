@@ -113,6 +113,7 @@ deploy-prod:
         lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
         brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
 
+        echo "Processing brand: $brand, $deploy, $site, $lang"
         image_tag="pgtgs/${deploy}:$Tag"
         
         npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod

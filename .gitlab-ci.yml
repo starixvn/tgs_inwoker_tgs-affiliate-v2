@@ -13,6 +13,7 @@ default:
 stages:
   - npm-build
   - docker-build
+  - deploy-dev
   - deploy-staging
   - deploy-prod
 
@@ -40,6 +41,7 @@ npm-build:
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
 
+
 docker-build:
   image: docker:latest
   services:
@@ -60,7 +62,44 @@ docker-build:
   artifacts:
     paths:
       - ./dist
-      
+
+deploy-dev:
+  stage: deploy-dev
+  needs:
+    - job: npm-build
+      artifacts: true
+    - job: docker-build
+  image: 
+    name: bitnami/kubectl:1.26
+    entrypoint: [""]
+  variables:
+    kube_ns: dev
+  before_script:
+    - export KUBECONFIG=$kubeconfig_staging
+    - echo "kubeconfig_dev=$kubeconfig_dev"
+    - echo "kubeconfig_staging=$kubeconfig_staging"
+  script: 
+    - |
+      def data = readYaml file: "brands_${kube_ns}.yaml"
+      for (i = 0;i <  data.brands.size(); i++) {
+        
+          deploy="${data.brands[i].deploy}"
+          image_tag="pgtgs/${data.brands[i].deploy}:$Tag"
+          
+          sh "npm run gitlab-build -- BRAND=${data.brands[i].brand} API_URL=/ SITE=${data.brands[i].site} DEFAULT_LANGUAGE=${data.brands[i].lang} vite build -m prod"
+          echo "image_tag=$image_tag"
+          
+          sh "docker build -t $image_tag ."
+          sh "docker push $image_tag"
+          sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $env.kube_ns"
+          
+          sh "echo '=============='"
+      }
+  environment:
+    name: develop
+  only: 
+    - develop
+
 deploy-staging:
   stage: deploy-staging
   needs:
@@ -85,7 +124,7 @@ deploy-staging:
   environment:
     name: staging
   only: 
-    - develop
+    - release/current
 #https://gitlab.com/gitlab-org/cluster-integration/helm-install-image   
 deploy-prod:
   stage: deploy-prod

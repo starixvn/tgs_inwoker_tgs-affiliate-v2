@@ -80,7 +80,19 @@ deploy-dev:
       YAML_CONTENT=$(cat brands_dev.yaml)
       total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do
-       
+        deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
+        site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
+        lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
+        brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
+
+        image_tag="pgtgs/${deploy}:$Tag"
+        
+        sh "npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod"
+        echo "image_tag=$image_tag"
+        
+        sh "docker build -t $image_tag ."
+        sh "docker push $image_tag"
+        sh "kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns"
         echo "=============="
       done
 

@@ -9,12 +9,6 @@ npm-build:
   stage: npm-build
   script:
     - npm install --force
-    - echo "Tag=$Tag"
-    - echo "$Tag" > tag_file
-  artifacts:
-    paths:
-      - ./dist
-      - tag_file
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
@@ -30,7 +24,6 @@ deploy-dev:
   variables:
     kube_ns: dev
   before_script:
-    - apt install -y yq
     - export KUBECONFIG=$kubeconfig_dev
   script: 
     - |

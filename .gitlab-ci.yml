@@ -14,9 +14,6 @@ npm-build:
   stage: npm-build
   script:
     - npm install
-    - echo "brand=$brand"
-    - echo "site=$site"
-    - echo "lang=$lang"
     - echo "Tag=$Tag"
     - echo "$Tag" > tag_file
   artifacts:

@@ -104,7 +104,6 @@ deploy-staging:
   needs:
     - job: npm-build
       artifacts: true
-    - job: docker-build
   image: 
     name: bitnami/kubectl:1.26
     entrypoint: [""]
@@ -130,7 +129,6 @@ deploy-prod:
   needs:
     - job: npm-build
       artifacts: true
-    - job: docker-build
   image: 
     name: bitnami/kubectl:1.26
     entrypoint: [""]

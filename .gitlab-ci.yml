@@ -66,7 +66,7 @@ deploy-staging:
     - export KUBECONFIG=$kubeconfig_staging
   script:
     - |
-      export Tag=$(cat tag_file)
+      export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
       YAML_CONTENT=$(cat brands_staging.yaml)
       total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do
@@ -104,7 +104,7 @@ deploy-prod:
     - export KUBECONFIG=$kubeconfig_prod
   script:
     - |
-      export Tag=$(cat tag_file)
+      export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
       YAML_CONTENT=$(cat brands_prod.yaml)
       total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do

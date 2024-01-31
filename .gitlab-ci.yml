@@ -73,12 +73,12 @@ deploy-dev:
   variables:
     kube_ns: dev
   before_script:
-    - export KUBECONFIG=$kubeconfig_staging
-    - echo "kubeconfig_dev=$kubeconfig_dev"
-    - echo "kubeconfig_staging=$kubeconfig_staging"
+    - export KUBECONFIG=$kubeconfig_dev
   script: 
     - |
       export data=$(cat brands_dev.yaml)
+      echo "data=="
+      echo $data
       for (i = 0;i <  data.brands.size(); i++) {
         
           deploy="${data.brands[i].deploy}"

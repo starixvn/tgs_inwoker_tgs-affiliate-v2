@@ -75,7 +75,7 @@ deploy-dev:
   before_script:
     - export KUBECONFIG=$kubeconfig_dev
   script: 
-    - >
+    - |
       YAML_CONTENT=$(cat brands_dev.yaml)
       count=$(echo "$YAML_CONTENT" | yq eval '.brands | length)
       for (i = 0;i < $count ; i++) {

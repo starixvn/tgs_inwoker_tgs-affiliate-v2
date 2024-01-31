@@ -2,11 +2,9 @@ stages:
   - deploy-dev
   - deploy-staging
   - deploy-prod
-
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
-
 deploy-dev:
   stage: deploy-dev
   image: 
@@ -20,7 +18,6 @@ deploy-dev:
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
     - YAML_CONTENT=$(cat brands_dev.yaml)
     - total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
-
   script: 
     - |
       for ((index=0; index<=total_brands; index++)); do
@@ -55,7 +52,11 @@ deploy-staging:
   variables:
     kube_ns: staging
   before_script:
+    - npm install --force
     - export KUBECONFIG=$kubeconfig_staging
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+    - YAML_CONTENT=$(cat brands_staging.yaml)
+    - total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
   script:
     - |
       export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
@@ -67,8 +68,7 @@ deploy-staging:
         lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
         brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
 
-        image_tag="pgtgs/${deploy}:$Tag"
-        
+        image_tag="pgtgs/${deploy}:$Tag"   
         npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
         echo "image_tag=$image_tag"
         
@@ -90,21 +90,20 @@ deploy-prod:
   variables:
     kube_ns: prod
   before_script:
+    - npm install --force
     - export KUBECONFIG=$kubeconfig_prod
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+    - YAML_CONTENT=$(cat brands_prod.yaml)
+    - total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
   script:
     - |
-      export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-      YAML_CONTENT=$(cat brands_prod.yaml)
-      total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do
         deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
         site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
         lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
         brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
 
-        echo "Processing brand: $brand, $deploy, $site, $lang"
-        image_tag="pgtgs/${deploy}:$Tag"
-        
+        image_tag="pgtgs/${deploy}:$Tag"    
         npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
         echo "image_tag=$image_tag"
         

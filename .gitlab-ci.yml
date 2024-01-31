@@ -1,8 +1,3 @@
-default:
-  before_script:
-    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-    - echo "Tag=$Tag"
-
 stages:
   - npm-build
   - deploy-dev
@@ -35,10 +30,11 @@ deploy-dev:
   variables:
     kube_ns: dev
   before_script:
+    - apt install -y yq
     - export KUBECONFIG=$kubeconfig_dev
   script: 
     - |
-      export Tag=$(cat tag_file)
+      export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
       YAML_CONTENT=$(cat brands_dev.yaml)
       total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
       for ((index=0; index<=total_brands; index++)); do

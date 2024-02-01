@@ -1,10 +1,10 @@
+#https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
+#https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
+#https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
 variables:
   config: "kubeconfig"
 stages:
   - deploy
-#https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-#https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
-#https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
 .deploy-template: &deploy-template
   stage: deploy
   image: 

@@ -1,83 +1,63 @@
-stages:
-  - deploy-dev
-  - deploy-staging
-  - deploy-prod
-
 variables:
-  common_script: &common_script
+  config: "kubeconfig"
+stages:
+  - deploy
+#https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
+#https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
+#https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
+.deploy-template: &deploy-template
+  stage: deploy
+  image: 
+    name: bitnami/kubectl:1.26
+    entrypoint: [""]
+  before_script:
+    - source get_tgs-env.sh
+    - export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
     - npm install --force
+    - export KUBECONFIG="${config}_${tgs_env}"
+    - export KUBECONFIG=${!KUBECONFIG}
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+    - YAML_CONTENT=$(cat brands_dev.yaml)
+    - total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
+  script: 
+    - |
+      for ((index=0; index<=total_brands; index++)); do
+        deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
+        site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
+        lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
+        brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
 
-.deploy: &deploy
-  script:
-    - *common_script
-    - deploy_brands $kubeconfig $namespace $yaml_file
+        echo "Processing brand: $brand, $deploy, $site, $lang"
 
-deploy:
-  variables:
-    kubeconfig: $kubeconfig_dev
-    namespace: dev
-    yaml_file: brands_dev.yaml
-  extends: .deploy
+        image_tag="pgtgs/${deploy}:$Tag"
+        
+        npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
+        echo "image_tag=$image_tag"
+        
+        docker build -t $image_tag .
+        docker push $image_tag
+        kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns
+        echo "=============="
+      done
+
+deploy-dev:
+  <<: *deploy-template
+  environment:
+    name: dev
+  only: 
+    - develop
 
 deploy-staging:
-  variables:
-    kubeconfig: $kubeconfig_staging
-    namespace: staging
-    yaml_file: brands_staging.yaml
-  extends: .deploy
+  <<: *deploy-template
+  environment:
+    name: staging
+  only: 
+    - release/current
 
 deploy-prod:
-  variables:
-    kubeconfig: $kubeconfig_prod
-    namespace: prod
-    yaml_file: brands_prod.yaml
-  extends: .deploy
-
-before_script:
-  - *common_script
-  - load_yaml_content $yaml_file
-
-script:
-  - echo "Deploying brands for $namespace environment..."
-  - deploy_brands $kubeconfig $namespace $yaml_file
-  - echo "Brands deployment completed for $namespace environment."
-
-environment:
-  name: development
-
-only:
-  - develop
-  - release/current
-  - master
-  - branches
-
-branches:
-  only:
-    - develop
-    - release/*
+  <<: *deploy-template
+  environment:
+    name: prod
+  only: 
     - master
-  except:
-    - tags
-    - triggers
-
-load_yaml_content: &load_yaml_content
-  - YAML_CONTENT=$(cat $1)
-
-deploy_brands: &deploy_brands
-  for ((index=0; index<=total_brands; index++)); do
-    deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
-    site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
-    lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
-    brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
-
-    image_tag="pgtgs/${deploy}:$Tag"
-    
-    npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
-    echo "image_tag=$image_tag"
-    
-    docker build -t $image_tag .
-    docker push $image_tag
-    kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns
-    echo "=============="
-  done
+  when: manual  

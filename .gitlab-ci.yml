@@ -1,135 +1,44 @@
-stages:
-  - npm-build
-  - deploy-dev
-  - deploy-staging
-  - deploy-prod
-
-npm-build:
-  image: node:latest
-  stage: npm-build
-  script:
-    - npm install
-    - echo "Tag=$Tag"
-    - echo "$Tag" > tag_file
-  artifacts:
-    paths:
-      - ./dist
-      - tag_file
 #https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #https://forum.gitlab.com/t/error-cannot-perform-an-interactive-login-from-a-non-tty-device/59936/4
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
-
-deploy-dev:
-  stage: deploy-dev
-  needs:
-    - job: npm-build
-      artifacts: true
+variables:
+  config: "kubeconfig"
+stages:
+  - deploy
+.deploy-template: &deploy-template
+  stage: deploy
   image: 
     name: bitnami/kubectl:1.26
     entrypoint: [""]
-  variables:
-    kube_ns: dev
-  before_script:
-    - apt install -y yq
-    - export KUBECONFIG=$kubeconfig_dev
-  script: 
-    - |
-      export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-      YAML_CONTENT=$(cat brands_dev.yaml)
-      total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
-      for ((index=0; index<=total_brands; index++)); do
-        deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
-        site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
-        lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
-        brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
+  script:
+    - source get_tgs-env.sh
+    - export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
+    - npm install --force
+    - export KUBECONFIG="${config}_${tgs_env}"
+    - export KUBECONFIG=${!KUBECONFIG}
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+    - export file="brands_${tgs_env}.yaml"
+    - YAML_CONTENT=$(cat ${file})
+    - deploy_brands
 
-        image_tag="pgtgs/${deploy}:$Tag"
-        
-        npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
-        echo "image_tag=$image_tag"
-        
-        docker build -t $image_tag .
-        docker push $image_tag
-        kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns
-        echo "=============="
-      done
-
+deploy-dev:
+  <<: *deploy-template
   environment:
-    name: develop
+    name: dev
   only: 
     - develop
 
 deploy-staging:
-  stage: deploy-staging
-  needs:
-    - job: npm-build
-      artifacts: true
-  image: 
-    name: bitnami/kubectl:1.26
-    entrypoint: [""]
-  variables:
-    kube_ns: staging
-  before_script:
-    - export KUBECONFIG=$kubeconfig_staging
-  script:
-    - |
-      export Tag=$(cat tag_file)
-      YAML_CONTENT=$(cat brands_staging.yaml)
-      total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
-      for ((index=0; index<=total_brands; index++)); do
-        deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
-        site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
-        lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
-        brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
-
-        image_tag="pgtgs/${deploy}:$Tag"
-        
-        npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
-        echo "image_tag=$image_tag"
-        
-        docker build -t $image_tag .
-        docker push $image_tag
-        kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns
-        echo "=============="
-      done
+  <<: *deploy-template
   environment:
     name: staging
   only: 
     - release/current
-#https://gitlab.com/gitlab-org/cluster-integration/helm-install-image   
-deploy-prod:
-  stage: deploy-prod
-  needs:
-    - job: npm-build
-      artifacts: true
-  image: 
-    name: bitnami/kubectl:1.26
-    entrypoint: [""]
-  variables:
-    kube_ns: prod
-  before_script:
-    - export KUBECONFIG=$kubeconfig_prod
-  script:
-    - |
-      export Tag=$(cat tag_file)
-      YAML_CONTENT=$(cat brands_prod.yaml)
-      total_brands=$(echo "$YAML_CONTENT" | yq '.brands | length - 1')
-      for ((index=0; index<=total_brands; index++)); do
-        deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
-        site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
-        lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
-        brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
 
-        image_tag="pgtgs/${deploy}:$Tag"
-        
-        npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
-        echo "image_tag=$image_tag"
-        
-        docker build -t $image_tag .
-        docker push $image_tag
-        kubectl set image deployment/$deploy $deploy=$image_tag -n $kube_ns
-        echo "=============="
-      done
+deploy-prod:
+  <<: *deploy-template
+  environment:
+    name: prod
   only: 
     - master
   when: manual  

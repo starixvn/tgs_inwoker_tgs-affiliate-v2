@@ -16,3 +16,24 @@ get_environment() {
 
   echo "$tgs_env"
 }
+
+deploy_brands() {
+  for ((index=0; index<=total_brands; index++)); do
+    deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
+    site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
+    lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
+    brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
+
+    echo "Processing brand: $brand, $deploy, $site, $lang"
+
+    image_tag="pgtgs/${deploy}:$Tag"
+    
+    npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
+    echo "image_tag=$image_tag"
+    
+    docker build -t $image_tag .
+    docker push $image_tag
+    kubectl set image deployment/$deploy $deploy=$image_tag -n $tgs_env
+    echo "=============="
+  done
+}

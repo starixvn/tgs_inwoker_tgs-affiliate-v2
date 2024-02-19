@@ -15,10 +15,6 @@ brands:
   brand: GPI-V2
   site: https://stg-t1.rpgp.cc/
   lang: en-US
-- deploy: agent-moph
-  brand: MOPH
-  site: https://stg-moph.rpgp.cc/
-  lang: en-US
 - deploy: agent-v226
   brand: v226
   site: https://stg-v226.rpgp.cc/

@@ -15,3 +15,7 @@ brands:
   brand: V227
   site: https://sunbet668.com/
   lang: zh-TW
+- deploy: agent-jili-ph
+  brand: JILI_PH
+  site: https://jiliphgames.com/
+  lang: en-US

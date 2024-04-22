@@ -27,3 +27,7 @@ brands:
   brand: JILI_PH
   site: https://stg-jiliph.rpgp.cc/
   lang: en-US
+- deploy: agent-sbocash
+  brand: SBOCASH
+  site: https://stg-sbo.rpgp.cc/
+  lang: en-US

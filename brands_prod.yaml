@@ -19,3 +19,7 @@ brands:
   brand: JILI_PH
   site: https://jiliphgames.com/
   lang: en-US
+- deploy: agent-sbocash
+  brand: SBOCASH
+  site: https://sbo-cash.com/
+  lang: en-US

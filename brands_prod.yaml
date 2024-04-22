@@ -15,3 +15,7 @@ brands:
   brand: V227
   site: https://sunbet668.com/
   lang: zh-TW
+- deploy: agent-sbocash
+  brand: SBOCASH
+  site: https://sbo-cash.com/
+  lang: en-US

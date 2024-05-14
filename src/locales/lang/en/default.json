@@ -334,5 +334,6 @@
 
   "activenumber": "Active Number",
   "netprofit": "Net Profit",
-  "configdividendpercentage": "Dividend Percentage"
+  "configdividendpercentage": "Dividend Percentage",
+  "platformCharge": "Platform Fee"
 }

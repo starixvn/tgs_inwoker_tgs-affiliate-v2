@@ -47,6 +47,7 @@ export interface AgentPlayerSpecialDetailData {
   bonus: number;
   bonusAdjust: number;
   productFee: number;
+  platformCharge: number;
 }
 
 export class AgentTotalDetailParams {

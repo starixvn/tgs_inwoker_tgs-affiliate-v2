@@ -152,23 +152,21 @@
                         <td>{{ t('bonusAdjustAmount') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonusAdjust) }}</td>
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <td>{{ t('platformCharge') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.platformCharge) }}</td>
                       </tr>
                       <tr>
                         <td>{{ t('productFee') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.productFee) }}</td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <th>{{ t('total') }}</th>
                         <th class="right">
                           {{
                             formatPrice2(
                               agentPlayerSpecialDetailData.bonus +
-                                agentPlayerSpecialDetailData.bonusAdjust +
-                                agentPlayerSpecialDetailData.productFee +
-                                agentPlayerSpecialDetailData.platformCharge,
+                              agentPlayerSpecialDetailData.bonusAdjust,
                             )
                           }}
                         </th>
@@ -519,8 +517,8 @@ export default defineComponent({
       agentPlayerSpecialDetailData: reactive<AgentPlayerSpecialDetailData>({
         bonus: 0,
         bonusAdjust: 0,
-        productFee: 0,
-        platformCharge: 0
+        // productFee: 0,
+        // platformCharge: 0
       }),
       tableData: reactive<any[]>([]),
       totalRowCount: 0,

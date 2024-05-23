@@ -41,20 +41,20 @@
               {{ affiliatelink }}
             </div>
             <div class="button-container">
-              <el-button type="primary" class="custom-btn" size="large" :icon="CopyDocument"
+              <el-button type="primary" class="custom-btn" :size="buttonSize" :icon="CopyDocument"
                 @click="performCopyText(affiliatelink)">{{ $t('copy') }}</el-button>
               <router-link :to="{ name: 'agent', path: '/team/agent', query: { perform: 'add' } }">
-                <el-button type="primary" size="large" icon="me-icon-addagent" class="custom-btn">
+                <el-button type="primary" :size="buttonSize" icon="me-icon-addagent" class="custom-btn">
                   {{ $t('addagent') }}
                 </el-button>
               </router-link>
               <router-link :to="{ name: 'player', path: '/team/player', query: { perform: 'add' } }">
-                <el-button type="primary" class="custom-btn" size="large" icon="me-icon-addplayer">
+                <el-button type="primary" class="custom-btn" :size="buttonSize" icon="me-icon-addplayer">
                   {{ $t('addplayer') }}
                 </el-button>
               </router-link>
 
-              <custom-button />
+              <!-- <custom-button /> -->
             </div>
           </div>
 
@@ -62,7 +62,7 @@
             <div>{{ $t('referralQRCode') }}</div>
             <div class="qrcode-container">
               <div>
-                <vue-qrcode id="testonly" :value="affiliatelink" :options="{ width: 250 }"></vue-qrcode>
+                <vue-qrcode id="testonly" :value="affiliatelink" :options="{ width: vueQrcodeSize }"></vue-qrcode>
               </div>
               <div class="qrcode-button">
                 <el-button class="custom-btn" type="primary" size="large" :icon="Download" style="width: 100%"
@@ -132,9 +132,20 @@ import { useUserStore } from '@/store';
 import { CopyDocument, Wallet, Download } from '@element-plus/icons-vue';
 import { router } from '@/router';
 import VueQrcode from '@chenfengyuan/vue-qrcode';
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useLocalesI18n } from '@/locales/hooks';
 import { getInfoApi, InfoData } from '@/api/agentTeam';
+import { useWindowSize } from '@vueuse/core'
+
+const { width } = useWindowSize()
+
+const vueQrcodeSize = computed(() => {
+  return width.value > 465 ? 250 : 150
+})
+
+const buttonSize = computed(() => {
+  return width.value > 465 ? 'large' : width.value > 390 ?  '' : 'small'
+})
 
 let teamData = reactive<InfoData>({
   directAgentCount: 0,
@@ -256,6 +267,11 @@ onMounted(async () => {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    /* display: flex */
+  }
+  @media (max-width: 465px) {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -409,6 +425,12 @@ onMounted(async () => {
 .button-container {
   display: flex;
   gap: 10px;
+  @media (max-width: 768px) {
+    a, button {
+      flex: 1;
+    }
+  }
+  
 }
 
 .button {

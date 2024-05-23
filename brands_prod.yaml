@@ -27,3 +27,7 @@ brands:
   brand: 369
   site: https://369s.co/
   lang: vi-VN
+- deploy: agent-369hk
+  brand: 369HK
+  site: https://hk369.co/
+  lang: zh-TW

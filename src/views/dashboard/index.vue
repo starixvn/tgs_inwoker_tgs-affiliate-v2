@@ -267,11 +267,6 @@ onMounted(async () => {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    /* display: flex */
-  }
-  @media (max-width: 465px) {
-    display: flex;
-    flex-direction: column;
   }
 }
 

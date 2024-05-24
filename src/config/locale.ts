@@ -10,6 +10,10 @@ export const loadMessageConfig = {
 // 语言列表 和elment-plus对应 locale字段值不要改变，否则会导致element-plus组件无法翻译为对应语言
 export const localeList = [
   {
+    text: '繁體中文',
+    locale: 'zh-tw',
+  },
+  {
     text: '简体中文',
     locale: 'zh-cn',
   },

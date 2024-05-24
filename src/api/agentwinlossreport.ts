@@ -46,7 +46,8 @@ export interface AgentPlayerSpecialDetailResult extends BaseResult {
 export interface AgentPlayerSpecialDetailData {
   bonus: number;
   bonusAdjust: number;
-  productFee: number;
+  // productFee: number;
+  // platformCharge: number;
 }
 
 export class AgentTotalDetailParams {

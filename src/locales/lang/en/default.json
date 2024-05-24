@@ -240,7 +240,7 @@
   "rl_netProfit": "Net Profit = Winloss - Bonus - Bonus Adjust.",
   "rl_directPlayerContribution": "Contribution (Player) = Net Profit * P/T.",
   "rl_teamContribution": "Contribution (Team) = Net Profit from Direct Agent * ( P/T - Direct Agent P/T ).",
-  "rl_profitSharingAmount": "Profit Sharing = Contribution ( Player )  + Contribution ( Team ) - Agent Adjust.",
+  "rl_profitSharingAmount": "Profit Sharing = Contribution ( Player )  + Contribution ( Team ) - Agent Adjust - Product Charges.",
   "settlementDate": "Settlement Date",
   "settlementDateFromTo": "Settlement interval",
   "goBack": "Go Back",

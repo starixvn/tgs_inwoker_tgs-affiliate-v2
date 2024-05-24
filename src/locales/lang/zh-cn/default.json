@@ -239,7 +239,7 @@
   "rl_netProfit": "净盈利 = 输赢金额 - 红利金额 - 优惠调帐",
   "rl_directPlayerContribution": "玩家贡献 = 净盈利 * 占成",
   "rl_teamContribution": "团队贡献 = 直属代理净盈利 * (占成 - 直属代理占成)",
-  "rl_profitSharingAmount": "分红金额 = 玩家贡献 + 团队贡献 - 代理调帐 - 产品费用(真人 + 电子 + 棋牌 + 彩票 + 虚拟体育)",
+  "rl_profitSharingAmount": "分红金额 = 玩家贡献 + 团队贡献 - 代理调帐 - 产品费用",
   "settlementDate": "结算日期",
   "settlementDateFromTo": "结算区间",
   "goBack": "返回",

@@ -21,6 +21,10 @@ export const localeList = [
     text: 'English',
     locale: 'en',
   },
+  {
+    text: '越南语',
+    locale: 'vi',
+  },
   // {
   //     text: '阿塞拜疆语',
   //     locale: 'az',
@@ -69,10 +73,7 @@ export const localeList = [
   //     text: '荷兰语',
   //     locale: 'nl',
   // },
-  // {
-  //     text: '越南语',
-  //     locale: 'vi',
-  // },
+
   // {
   //     text: '俄语',
   //     locale: 'ru',

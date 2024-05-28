@@ -22,7 +22,7 @@ export const localeList = [
     locale: 'en',
   },
   {
-    text: '越南语',
+    text: 'Tiếng Việt',
     locale: 'vi',
   },
   // {

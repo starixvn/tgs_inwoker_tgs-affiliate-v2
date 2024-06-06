@@ -1,9 +1,10 @@
 import { request, RequestOptions } from '@/utils/request';
+import { defaultAreaCode } from '@/utils/areaCode'
 export class AddPlayerParams {
   username = '';
   password = '';
   confirmPassword = '';
-  areaCode = '+852';
+  areaCode = defaultAreaCode;
   phone = '';
   email = '';
   tnc = false;

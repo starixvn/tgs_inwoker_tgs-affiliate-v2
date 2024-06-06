@@ -198,14 +198,15 @@
             v-model="addPlayerParams.phone"
             size="large"
             :placeholder="t('phoneFormat')"
-            :type="number"
+            type="number"
             :minlength="8"
             :maxlength="32"
           >
             <template #prepend>
               <el-select v-model="addPlayerParams.areaCode" placeholder="Select" style="width: 100px" size="large">
-                <el-option label="+86" value="86" />
-                <el-option label="+852" value="+852" />
+                <!-- <el-option label="+86" value="86" />
+                <el-option label="+852" value="+852" /> -->
+                <el-option v-for="areaCodeItem in areaCodeList" :key="areaCodeItem.value" :label="areaCodeItem.label" :value="areaCodeItem.value"/>
               </el-select>
             </template>
           </el-input>
@@ -272,6 +273,7 @@ import formatNumber from 'format-number';
 import { useGlobalStore } from '@/store';
 import { router } from '@/router';
 import { table } from 'console';
+import { areaCodeList as AreaCodeList } from '@/utils/areaCode'
 
 interface PlayerDataColumn {
   player: {
@@ -410,7 +412,14 @@ export default defineComponent({
       }),
     };
   },
-
+  computed: {
+    areaCodeList() {
+      return AreaCodeList.map(item => ({
+        label: item,
+        value: item
+      }))
+    }
+  },
   beforeMount() {
     this.getItems();
     this.getStatuses();

@@ -9,7 +9,12 @@
         <me-locale-select v-if="config.localeList.length > 1" class="item"></me-locale-select>
       </div>
     </div>
-    <el-dropdown class="me-size-select" trigger="click" max-height="500px">
+    
+    <div class="logout-icon-wrapper" v-if="globalStore.isMobile">
+      <logoutIcon @click="userStore.logOut()"/>
+    </div>
+
+    <el-dropdown class="me-size-select" trigger="click" max-height="500px" v-else>
       <div class="flex-center pointer" v-bind="$attrs">
         <span v-if="!globalStore.isMobile" class="ellipsis-2">{{ userStore.user.username }}</span>
       </div>
@@ -29,6 +34,7 @@ import { useGlobalStore, useUserStore } from '@/store';
 import { localeConfig as config } from '@/config';
 import moment from 'moment';
 import { ref, onMounted } from 'vue';
+import logoutIcon from './logoutIcon.vue'
 
 const userStore = useUserStore();
 const globalStore = useGlobalStore();
@@ -62,5 +68,9 @@ onMounted(() => {
     margin-right: 5px;
     flex-shrink: 0;
   }
+}
+.logout-icon-wrapper {
+  display: flex;
+  padding: 0 2px;
 }
 </style>

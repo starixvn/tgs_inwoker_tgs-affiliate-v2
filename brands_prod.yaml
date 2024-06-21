@@ -23,8 +23,8 @@ brands:
   brand: SBOCASH
   site: https://sbo-cash.com/
   lang: en-US
-- deploy: agent-369
-  brand: 369
+- deploy: agent-369vn
+  brand: 369VN
   site: https://369s.co/
   lang: vi-VN
 - deploy: agent-369hk

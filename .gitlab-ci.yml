@@ -27,6 +27,8 @@ deploy-dev:
     name: dev
   only: 
     - develop
+  rules:
+    - if: '$BRAND != ""'
 
 deploy-staging:
   <<: *deploy-template
@@ -34,6 +36,8 @@ deploy-staging:
     name: staging
   only: 
     - release/current
+  rules:
+    - if: '$BRAND != ""'
 
 deploy-prod:
   <<: *deploy-template
@@ -41,4 +45,5 @@ deploy-prod:
     name: prod
   only: 
     - master
-  when: manual  
+  rules:
+    - if: '$BRAND != ""'

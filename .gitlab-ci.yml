@@ -14,10 +14,12 @@ stages:
     - | 
       source get_tgs-env.sh
       export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
-      npm install --force
       export KUBECONFIG="${config}_${tgs_env}"
+      echo "KUBECONFIG=$KUBECONFIG"
       export KUBECONFIG=${!KUBECONFIG}
-      if [[ $TOKEN == ""]]; then
+      echo "KUBECONFIG=$KUBECONFIG"
+      
+      if [[ $TOKEN == "" ]]; then
           export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
           export file="brands_${tgs_env}.yaml"
           YAML_CONTENT=$(cat ${file})
@@ -25,7 +27,7 @@ stages:
           echo "total_brands=$total_brands"
           deploy_brands
       else 
-      
+          deploy_single_brand 
       fi
 
 deploy-dev:

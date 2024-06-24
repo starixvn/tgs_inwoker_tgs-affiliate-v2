@@ -19,7 +19,7 @@ stages:
       export KUBECONFIG=${!KUBECONFIG}
       echo "KUBECONFIG=$KUBECONFIG"
       
-      if [[ $TOKEN == ""]]; then
+      if [[ $TOKEN == "" ]]; then
           export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
           export file="brands_${tgs_env}.yaml"
           YAML_CONTENT=$(cat ${file})

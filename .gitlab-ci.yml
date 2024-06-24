@@ -19,6 +19,8 @@ stages:
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
     - export file="brands_${tgs_env}.yaml"
     - YAML_CONTENT=$(cat ${file})
+    - total_brands=$(yq e '.brands | length' $file)
+    - echo "total_brands=$total_brands"
     - deploy_brands
 
 deploy-dev:

@@ -11,17 +11,22 @@ stages:
     name: bitnami/kubectl:1.28
     entrypoint: [""]
   script:
-    - source get_tgs-env.sh
-    - export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
-    - npm install --force
-    - export KUBECONFIG="${config}_${tgs_env}"
-    - export KUBECONFIG=${!KUBECONFIG}
-    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-    - export file="brands_${tgs_env}.yaml"
-    - YAML_CONTENT=$(cat ${file})
-    - total_brands=$(yq e '.brands | length' $file)
-    - echo "total_brands=$total_brands"
-    - deploy_brands
+    - | 
+      source get_tgs-env.sh
+      export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
+      npm install --force
+      export KUBECONFIG="${config}_${tgs_env}"
+      export KUBECONFIG=${!KUBECONFIG}
+      if [[ $TOKEN == ""]]; then
+          export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+          export file="brands_${tgs_env}.yaml"
+          YAML_CONTENT=$(cat ${file})
+          total_brands=$(yq e '.brands | length' $file)
+          echo "total_brands=$total_brands"
+          deploy_brands
+      else 
+      
+      fi
 
 deploy-dev:
   <<: *deploy-template

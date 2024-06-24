@@ -2,7 +2,7 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-        <div class="big-title">{{ $t('winlossReport') }}</div>
+        <div class="big-title">{{ $t('contribute') }}</div>
       </el-col>
     </el-row>
 
@@ -37,15 +37,8 @@
 
     <el-row>
       <el-col :span="22">
-        <div class="legends">
-          <div>
-            <el-button type="primary" icon="me-icon-info" @click="showlegends = !showlegends" />
-          </div>
-          <div v-show="showlegends === true">
-            <div v-for="(legend, index) in legends" :key="index">
-              <div>- {{ t(legend) }}</div>
-            </div>
-          </div>
+        <div>
+          <el-checkbox v-model="showAgent" :label="t('showContributeAgentLabel')" size="large" />
         </div>
       </el-col>
       <el-col :span="2">
@@ -76,17 +69,15 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column :label="t('player')">
-            <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
-            <el-table-column
-              v-if="tableColumn.type.isShow"
-              :label="t('type')"
-              prop="type"
-              :formatter="formatType"
-              align="right"
-            />
-          </el-table-column>
+        <el-table :data="showTable" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
+          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
+          <el-table-column
+            v-if="tableColumn.type.isShow"
+            :label="t('type')"
+            prop="type"
+            :formatter="formatType"
+            align="right"
+          />
           <el-table-column
             v-if="tableColumn.depositAmount.isShow"
             :label="t('depositAmount')"
@@ -359,7 +350,28 @@ export default defineComponent({
     this.onDateTypeChange();
     this.getItems();
   },
-
+  computed: {
+    showTable() {
+      if (this.tableData.length > 1) {
+        if (this.showAgent) {
+          return this.tableData
+        }
+        const [total, ...items] = this.tableData
+        return [
+          total,
+          ...items.filter(item => item.type === 2)
+        ]
+      }
+      return this.tableData
+    }
+  },
+  watch: {
+    tableData() {
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      })
+    }
+  },
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };

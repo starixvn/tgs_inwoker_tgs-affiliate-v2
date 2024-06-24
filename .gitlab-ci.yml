@@ -25,7 +25,7 @@ stages:
           echo "total_brands=$total_brands"
           deploy_brands
       else 
-      
+          deploy_single_brand 
       fi
 
 deploy-dev:

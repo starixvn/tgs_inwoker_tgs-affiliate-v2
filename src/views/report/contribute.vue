@@ -2,7 +2,7 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-        <div class="big-title">{{ $t('contribute') }}</div>
+        <div class="big-title">{{ $t('dividendReport') }}</div>
       </el-col>
     </el-row>
 
@@ -69,9 +69,18 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="showTable" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
+        <el-table 
+          :data="showTable" 
+          :span-method="arraySpanMethod" 
+          :row-class-name="getRowClassName" 
+          stripe 
+          resizable 
+          show-summary
+          :summary-method="getSummaries"
+        >
+          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" fixed/>
           <el-table-column
+            fixed
             v-if="tableColumn.type.isShow"
             :label="t('type')"
             prop="type"
@@ -266,6 +275,10 @@ interface DataColumn {
     mustShow: boolean;
   };
 }
+interface SummaryMethodProps<T = ISubitems> {
+  columns: TableColumnCtx<T>[];
+  data: T[];
+}
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -379,7 +392,7 @@ export default defineComponent({
       searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
-      const totalPlaceholder = { username: this.t('total') + ':' };
+      const totalPlaceholder = { username: this.t('total') + ':', type: 'total' };
 
       const total = { ...totalPlaceholder, ...result.data.total };
 
@@ -387,7 +400,7 @@ export default defineComponent({
       this.totalRowCount = result.data.totalcount;
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
-      if (row.username == 'Total') {
+      if (row.type == 'total') {
         if (columnIndex == 0) {
           return [1, 2];
         }
@@ -473,6 +486,41 @@ export default defineComponent({
     handleCurrentChange(val: number) {
       this.searchForm.page = val;
       this.getItems();
+    },
+    getSummaries(param: SummaryMethodProps) {
+      const { columns, data } = param;
+      const showData = data.filter(item => item.type !=='total')
+
+      const sums: string[] = [];
+      columns.forEach((column, index) => {
+
+        if (index === 0 ) {
+          sums[index] = this.$t('pageTotal') + ':';
+          return ;
+        }
+
+        if (column.property === 'type') {
+          return ;
+        }
+       
+        const values = showData.map((item) => Number(item[column.property]));
+        if (!values.some((value) => Number.isNaN(value))) {
+          sums[index] = `${values
+            .reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!Number.isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0)
+            ?.toFixed(2) || 0}`;
+        } else {
+          sums[index] = '';
+        }
+      });
+
+      return sums;
     },
   },
 });

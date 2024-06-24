@@ -318,5 +318,6 @@
   "activenumber": "Người chơi hoạt động",
   "netprofit": "Lợi nhuận ròng",
   "configdividendpercentage": "Tỉ lệ phân chia lợi nhuận",
-  "showContributeAgentLabel": "Agent information"
+  "showContributeAgentLabel": "Agent information",
+  "dividendReport": "Dividend Report"
 }

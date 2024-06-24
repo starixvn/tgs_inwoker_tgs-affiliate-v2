@@ -18,6 +18,9 @@ get_environment() {
 }
 
 deploy_brands() {
+  npm install --force
+  echo "YAML_CONTENT=$YAML_CONTENT"
+  
   for ((index=0; index<=total_brands; index++)); do
     deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
     site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)

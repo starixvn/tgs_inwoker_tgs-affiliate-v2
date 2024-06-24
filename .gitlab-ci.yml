@@ -8,7 +8,7 @@ stages:
 .deploy-template: &deploy-template
   stage: deploy
   image: 
-    name: bitnami/kubectl:1.26
+    name: bitnami/kubectl:1.28
     entrypoint: [""]
   script:
     - source get_tgs-env.sh
@@ -27,8 +27,6 @@ deploy-dev:
     name: dev
   only: 
     - develop
-  rules:
-    - if: '$BRAND != ""'
 
 deploy-staging:
   <<: *deploy-template
@@ -37,7 +35,6 @@ deploy-staging:
   only: 
     - release/current
   rules:
-    - if: '$BRAND != ""'
 
 deploy-prod:
   <<: *deploy-template
@@ -45,5 +42,3 @@ deploy-prod:
     name: prod
   only: 
     - master
-  rules:
-    - if: '$BRAND != ""'

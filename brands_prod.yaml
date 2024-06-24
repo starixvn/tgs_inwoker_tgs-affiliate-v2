@@ -23,11 +23,31 @@ brands:
   brand: SBOCASH
   site: https://sbo-cash.com/
   lang: en-US
-- deploy: agent-369
-  brand: 369
+- deploy: agent-369vn
+  brand: 369VN
   site: https://369s.co/
   lang: vi-VN
 - deploy: agent-369hk
   brand: 369HK
   site: https://hk369.co/
   lang: zh-TW
+- deploy: agentv2-pb
+  brand: PB
+  site: https://pnd268.com/
+  lang: en-US
+- deploy: agentv2-pb2
+  brand: PB2
+  site: https://atinbet.com/
+  lang: en-US
+- deploy: agentv2-piso
+  brand: PISO
+  site: https://pisobet.com/
+  lang: en-US
+- deploy: agentv2-king8
+  brand: KING8
+  site: https://gameok888.com/
+  lang: en-US
+- deploy: agentv2-tiger
+  brand: TIGER
+  site: https://hktiger888.com
+  lang: en-US

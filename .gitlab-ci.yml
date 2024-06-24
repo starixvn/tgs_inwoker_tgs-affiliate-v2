@@ -8,7 +8,7 @@ stages:
 .deploy-template: &deploy-template
   stage: deploy
   image: 
-    name: bitnami/kubectl:1.26
+    name: bitnami/kubectl:1.28
     entrypoint: [""]
   script:
     - source get_tgs-env.sh
@@ -19,6 +19,8 @@ stages:
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
     - export file="brands_${tgs_env}.yaml"
     - YAML_CONTENT=$(cat ${file})
+    - total_brands=$(yq e '.brands | length' $file)
+    - echo "total_brands=$total_brands"
     - deploy_brands
 
 deploy-dev:
@@ -34,6 +36,7 @@ deploy-staging:
     name: staging
   only: 
     - release/current
+  rules:
 
 deploy-prod:
   <<: *deploy-template
@@ -41,4 +44,3 @@ deploy-prod:
     name: prod
   only: 
     - master
-  when: manual  

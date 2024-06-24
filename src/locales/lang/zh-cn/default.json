@@ -336,5 +336,6 @@
   "netprofit": "淨利潤",
   "configdividendpercentage": "利潤分享百分比",
   "platformCharge": "平台费用",
-  "showContributeAgentLabel": "包含代理咨询"
+  "showContributeAgentLabel": "包含代理资讯",
+  "dividendReport": "代理贡献报表"
 }

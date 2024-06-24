@@ -335,6 +335,7 @@
   "activenumber": "活躍玩家",
   "netprofit": "淨利潤",
   "configdividendpercentage": "利潤分享百分比",
-  "showContributeAgentLabel": "包含代理諮詢"
+  "showContributeAgentLabel": "包含代理资讯",
+  "dividendReport": "代理貢獻報表"
 }
 

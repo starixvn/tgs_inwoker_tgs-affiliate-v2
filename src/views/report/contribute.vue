@@ -10,7 +10,7 @@
       <el-col :span="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
+            <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
               <el-radio-button label="today">{{ t('today') }}</el-radio-button>
               <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
               <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
@@ -289,6 +289,7 @@ export default defineComponent({
 
   data() {
     return {
+      dateType: "thisWeek",
       showAgent: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
@@ -345,7 +346,6 @@ export default defineComponent({
         },
       }),
       searchForm: reactive<ISearchForm>({
-        dateType: 'today',
         From: '',
         To: '',
         dateRange: [new Date(), new Date()],
@@ -395,6 +395,7 @@ export default defineComponent({
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };
+      console.log(searchForm)
       searchForm.From = moment(searchForm.From).toISOString();
       searchForm.To = moment(searchForm.To).add(1, 'days').toISOString();
       const response = await agentContribute();
@@ -452,32 +453,33 @@ export default defineComponent({
       return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
     daterangeChange() {
+      console.log(this.searchForm.dateRange)
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     onDateTypeChange() {
-      if (this.searchForm.dateType == 'today') {
+      if (this.dateType == 'today') {
         this.searchForm.From = moment().format('YYYY-MM-DD');
         this.searchForm.To = moment().format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'yesterday') {
+      } else if (this.dateType == 'yesterday') {
         this.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisWeek') {
+      } else if (this.dateType == 'thisWeek') {
         this.searchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('isoWeek').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastWeek') {
+      } else if (this.dateType == 'lastWeek') {
         this.searchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisMonth') {
+      } else if (this.dateType == 'thisMonth') {
         this.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('month').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastMonth') {
+      } else if (this.dateType == 'lastMonth') {
         this.searchForm.From = moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisYear') {
+      } else if (this.dateType == 'thisYear') {
         this.searchForm.From = moment().startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('year').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastYear') {
+      } else if (this.dateType == 'lastYear') {
         this.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }

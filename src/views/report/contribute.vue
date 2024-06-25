@@ -75,8 +75,6 @@
           :row-class-name="getRowClassName" 
           stripe 
           resizable 
-          show-summary
-          :summary-method="getSummaries"
         >
           <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" fixed/>
           <el-table-column
@@ -366,13 +364,22 @@ export default defineComponent({
   computed: {
     showTable() {
       if (this.tableData.length > 1) {
-        if (this.showAgent) {
-          return this.tableData
-        }
         const [total, ...items] = this.tableData
+        const filterItems = this.showAgent ? items : [...items.filter(item => item.type === 2)]
+        const subTotal = {}
+        Object.keys(total).forEach(key => {
+          if(key === 'username') {
+            subTotal[key] = this.$t('pageTotal') + ':';
+          } else if (key === 'type') {
+            subTotal[key] = total[key]
+          } else {
+            subTotal[key] = filterItems.reduce((accumulator ,currentItem) => accumulator + parseInt(currentItem[key]), 0);
+          }
+        })
         return [
           total,
-          ...items.filter(item => item.type === 2)
+          ...filterItems,
+          subTotal
         ]
       }
       return this.tableData
@@ -388,8 +395,8 @@ export default defineComponent({
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };
-      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      searchForm.From = moment(searchForm.From).toISOString();
+      searchForm.To = moment(searchForm.To).add(1, 'days').toISOString();
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
       const totalPlaceholder = { username: this.t('total') + ':', type: 'total' };
@@ -456,11 +463,11 @@ export default defineComponent({
         this.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
       } else if (this.searchForm.dateType == 'thisWeek') {
-        this.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
-        this.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
+        this.searchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.To = moment().endOf('isoWeek').format('YYYY-MM-DD');
       } else if (this.searchForm.dateType == 'lastWeek') {
-        this.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-        this.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
+        this.searchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.To = moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DD');
       } else if (this.searchForm.dateType == 'thisMonth') {
         this.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('month').format('YYYY-MM-DD');

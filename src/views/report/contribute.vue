@@ -76,7 +76,16 @@
           stripe 
           resizable 
         >
-          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" fixed/>
+          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" fixed>
+            <template #default="scope">
+                <div v-if="scope.row.type === 'total'">
+                  {{ t(scope.row.username) + ':' }}
+                </div>
+                <div v-else>
+                  {{ scope.row.username }}
+                </div>
+              </template>
+          </el-table-column>
           <el-table-column
             fixed
             v-if="tableColumn.type.isShow"
@@ -369,7 +378,7 @@ export default defineComponent({
         const subTotal = {}
         Object.keys(total).forEach(key => {
           if(key === 'username') {
-            subTotal[key] = this.$t('pageTotal') + ':';
+            subTotal[key] = 'pageTotal';
           } else if (key === 'type') {
             subTotal[key] = total[key]
           } else {
@@ -395,12 +404,11 @@ export default defineComponent({
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };
-      console.log(searchForm)
       searchForm.From = moment(searchForm.From).toISOString();
       searchForm.To = moment(searchForm.To).add(1, 'days').toISOString();
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
-      const totalPlaceholder = { username: this.t('total') + ':', type: 'total' };
+      const totalPlaceholder = { username: 'total', type: 'total' };
 
       const total = { ...totalPlaceholder, ...result.data.total };
 
@@ -495,41 +503,6 @@ export default defineComponent({
     handleCurrentChange(val: number) {
       this.searchForm.page = val;
       this.getItems();
-    },
-    getSummaries(param: SummaryMethodProps) {
-      const { columns, data } = param;
-      const showData = data.filter(item => item.type !=='total')
-
-      const sums: string[] = [];
-      columns.forEach((column, index) => {
-
-        if (index === 0 ) {
-          sums[index] = this.$t('pageTotal') + ':';
-          return ;
-        }
-
-        if (column.property === 'type') {
-          return ;
-        }
-       
-        const values = showData.map((item) => Number(item[column.property]));
-        if (!values.some((value) => Number.isNaN(value))) {
-          sums[index] = `${values
-            .reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!Number.isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0)
-            ?.toFixed(2) || 0}`;
-        } else {
-          sums[index] = '';
-        }
-      });
-
-      return sums;
     },
   },
 });

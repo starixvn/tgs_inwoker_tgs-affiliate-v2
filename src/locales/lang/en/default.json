@@ -56,7 +56,7 @@
   "agentAdjustAmount": "Agent Adjust",
   "betAmount": "Bet Amount",
   "validBetAmount": "Valid Bet",
-  "turnover": "Valid Bet",
+  "turnover": "Turnover",
   "winLossAmount": "WinLoss",
   "netProfit": "Net Profit",
   "total": "Total",
@@ -335,5 +335,7 @@
   "activenumber": "Active Number",
   "netprofit": "Net Profit",
   "configdividendpercentage": "Dividend Percentage",
-  "platformCharge": "Platform Fee"
+  "platformCharge": "Platform Fee",
+  "showContributeAgentLabel": "Agent information",
+  "dividendReport": "Dividend Report"
 }

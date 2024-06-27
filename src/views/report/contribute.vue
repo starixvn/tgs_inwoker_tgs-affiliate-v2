@@ -2,7 +2,7 @@
   <el-card shadow="never" class="table">
     <el-row>
       <el-col :span="24">
-        <div class="big-title">{{ $t('winlossReport') }}</div>
+        <div class="big-title">{{ $t('dividendReport') }}</div>
       </el-col>
     </el-row>
 
@@ -10,7 +10,7 @@
       <el-col :span="24">
         <el-form :inline="true">
           <el-form-item>
-            <el-radio-group v-model="searchForm.dateType" size="large" @change="onDateTypeChange">
+            <el-radio-group v-model="dateType" size="large" @change="onDateTypeChange">
               <el-radio-button label="today">{{ t('today') }}</el-radio-button>
               <el-radio-button label="yesterday">{{ t('yesterday') }}</el-radio-button>
               <el-radio-button label="thisWeek">{{ t('thisWeek') }}</el-radio-button>
@@ -37,15 +37,8 @@
 
     <el-row>
       <el-col :span="22">
-        <div class="legends">
-          <div>
-            <el-button type="primary" icon="me-icon-info" @click="showlegends = !showlegends" />
-          </div>
-          <div v-show="showlegends === true">
-            <div v-for="(legend, index) in legends" :key="index">
-              <div>- {{ t(legend) }}</div>
-            </div>
-          </div>
+        <div>
+          <el-checkbox v-model="showAgent" :label="t('showContributeAgentLabel')" size="large" />
         </div>
       </el-col>
       <el-col :span="2">
@@ -76,17 +69,31 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="tableData" :span-method="arraySpanMethod" :row-class-name="getRowClassName" stripe resizable>
-          <el-table-column :label="t('player')">
-            <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" />
-            <el-table-column
-              v-if="tableColumn.type.isShow"
-              :label="t('type')"
-              prop="type"
-              :formatter="formatType"
-              align="right"
-            />
+        <el-table 
+          :data="showTable" 
+          :span-method="arraySpanMethod" 
+          :row-class-name="getRowClassName" 
+          stripe 
+          resizable 
+        >
+          <el-table-column v-if="tableColumn.username.isShow" :label="t('username')" prop="username" fixed>
+            <template #default="scope">
+                <div v-if="scope.row.type === 'total'">
+                  {{ t(scope.row.username) + ':' }}
+                </div>
+                <div v-else>
+                  {{ scope.row.username }}
+                </div>
+              </template>
           </el-table-column>
+          <el-table-column
+            fixed
+            v-if="tableColumn.type.isShow"
+            :label="t('type')"
+            prop="type"
+            :formatter="formatType"
+            align="right"
+          />
           <el-table-column
             v-if="tableColumn.depositAmount.isShow"
             :label="t('depositAmount')"
@@ -275,6 +282,10 @@ interface DataColumn {
     mustShow: boolean;
   };
 }
+interface SummaryMethodProps<T = ISubitems> {
+  columns: TableColumnCtx<T>[];
+  data: T[];
+}
 export default defineComponent({
   name: 'MyComponent',
   setup() {
@@ -287,6 +298,7 @@ export default defineComponent({
 
   data() {
     return {
+      dateType: "thisWeek",
       showAgent: false,
       tableData: reactive<any[]>([]),
       totalRowCount: 0,
@@ -343,7 +355,6 @@ export default defineComponent({
         },
       }),
       searchForm: reactive<ISearchForm>({
-        dateType: 'today',
         From: '',
         To: '',
         dateRange: [new Date(), new Date()],
@@ -359,15 +370,45 @@ export default defineComponent({
     this.onDateTypeChange();
     this.getItems();
   },
-
+  computed: {
+    showTable() {
+      if (this.tableData.length > 1) {
+        const [total, ...items] = this.tableData
+        const filterItems = this.showAgent ? items : [...items.filter(item => item.type === 2)]
+        const subTotal = {}
+        Object.keys(total).forEach(key => {
+          if(key === 'username') {
+            subTotal[key] = 'pageTotal';
+          } else if (key === 'type') {
+            subTotal[key] = total[key]
+          } else {
+            subTotal[key] = filterItems.reduce((accumulator ,currentItem) => accumulator + parseInt(currentItem[key]), 0);
+          }
+        })
+        return [
+          total,
+          ...filterItems,
+          subTotal
+        ]
+      }
+      return this.tableData
+    }
+  },
+  watch: {
+    tableData() {
+      this.$nextTick(() => {
+        this.$forceUpdate();
+      })
+    }
+  },
   methods: {
     async getItems() {
       let searchForm = { ...this.searchForm };
-      searchForm.From = moment(searchForm.From).add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-      searchForm.To = moment(searchForm.To).add(1, 'days').add(-8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+      searchForm.From = moment(searchForm.From).toISOString();
+      searchForm.To = moment(searchForm.To).add(1, 'days').toISOString();
       const response = await agentContribute();
       const result = await response.runAsync(searchForm);
-      const totalPlaceholder = { username: this.t('total') + ':' };
+      const totalPlaceholder = { username: 'total', type: 'total' };
 
       const total = { ...totalPlaceholder, ...result.data.total };
 
@@ -375,7 +416,7 @@ export default defineComponent({
       this.totalRowCount = result.data.totalcount;
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }: SpanMethodProps) {
-      if (row.username == 'Total') {
+      if (row.type == 'total') {
         if (columnIndex == 0) {
           return [1, 2];
         }
@@ -420,32 +461,33 @@ export default defineComponent({
       return time.getTime() > Date.now() || time.getTime() < moment().add(-1, 'd').add(-6, 'M').toDate().getTime();
     },
     daterangeChange() {
+      console.log(this.searchForm.dateRange)
       this.searchForm.From = moment(this.searchForm.dateRange[0]).format('YYYY-MM-DD');
       this.searchForm.To = moment(this.searchForm.dateRange[1]).format('YYYY-MM-DD');
     },
     onDateTypeChange() {
-      if (this.searchForm.dateType == 'today') {
+      if (this.dateType == 'today') {
         this.searchForm.From = moment().format('YYYY-MM-DD');
         this.searchForm.To = moment().format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'yesterday') {
+      } else if (this.dateType == 'yesterday') {
         this.searchForm.From = moment().subtract(1, 'days').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'days').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisWeek') {
-        this.searchForm.From = moment().startOf('week').format('YYYY-MM-DD');
-        this.searchForm.To = moment().endOf('week').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastWeek') {
-        this.searchForm.From = moment().subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-        this.searchForm.To = moment().subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisMonth') {
+      } else if (this.dateType == 'thisWeek') {
+        this.searchForm.From = moment().startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.To = moment().endOf('isoWeek').format('YYYY-MM-DD');
+      } else if (this.dateType == 'lastWeek') {
+        this.searchForm.From = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
+        this.searchForm.To = moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DD');
+      } else if (this.dateType == 'thisMonth') {
         this.searchForm.From = moment().startOf('month').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('month').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastMonth') {
+      } else if (this.dateType == 'lastMonth') {
         this.searchForm.From = moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'thisYear') {
+      } else if (this.dateType == 'thisYear') {
         this.searchForm.From = moment().startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().endOf('year').format('YYYY-MM-DD');
-      } else if (this.searchForm.dateType == 'lastYear') {
+      } else if (this.dateType == 'lastYear') {
         this.searchForm.From = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
         this.searchForm.To = moment().subtract(1, 'years').endOf('year').format('YYYY-MM-DD');
       }

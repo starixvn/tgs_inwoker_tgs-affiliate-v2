@@ -319,5 +319,6 @@
   "netprofit": "Lợi nhuận ròng",
   "configdividendpercentage": "Tỉ lệ phân chia lợi nhuận",
   "showContributeAgentLabel": "Agent information",
-  "dividendReport": "Dividend Report"
+  "dividendReport": "Dividend Report",
+  "companyAdjustAmount": "Company Adjust"
 }

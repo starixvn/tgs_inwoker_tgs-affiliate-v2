@@ -337,5 +337,6 @@
   "configdividendpercentage": "利潤分享百分比",
   "platformCharge": "平台费用",
   "showContributeAgentLabel": "包含代理资讯",
-  "dividendReport": "代理贡献报表"
+  "dividendReport": "代理贡献报表",
+  "companyAdjustAmount": "公司调帐"
 }

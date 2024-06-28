@@ -337,5 +337,6 @@
   "configdividendpercentage": "Dividend Percentage",
   "platformCharge": "Platform Fee",
   "showContributeAgentLabel": "Agent information",
-  "dividendReport": "Dividend Report"
+  "dividendReport": "Dividend Report",
+  "companyAdjustAmount": "Company Adjust"
 }

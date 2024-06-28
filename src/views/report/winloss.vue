@@ -157,7 +157,7 @@
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.agentAdjust) }}</td>
                       </tr>
                       <tr>
-                        <td>{{ t('productFee') }}</td>
+                        <td>{{ t('companyAdjustAmount') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.companyAdjust) }}</td>
                       </tr>
                       <tr>

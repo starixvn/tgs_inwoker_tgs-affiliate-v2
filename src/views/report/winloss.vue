@@ -120,7 +120,11 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column :label="t('memberType')" prop="memberType"></el-table-column>
+            <el-table-column :label="t('memberType')" prop="memberType">
+              <template #default="scope">
+                {{ $t(scope.row.memberType) }}
+              </template>
+            </el-table-column>
             <el-table-column :label="t('totalOrder')" prop="roundCount" align="right"></el-table-column>
             <el-table-column :label="t('validBet')" prop="turnover" align="right"></el-table-column>
             <el-table-column :label="t('player')" align="center">

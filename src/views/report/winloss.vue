@@ -120,7 +120,11 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column :label="t('memberType')" prop="memberType"></el-table-column>
+            <el-table-column :label="t('memberType')" prop="memberType">
+              <template #default="scope">
+                {{ $t(scope.row.memberType) }}
+              </template>
+            </el-table-column>
             <el-table-column :label="t('totalOrder')" prop="roundCount" align="right"></el-table-column>
             <el-table-column :label="t('validBet')" prop="turnover" align="right"></el-table-column>
             <el-table-column :label="t('player')" align="center">
@@ -152,21 +156,23 @@
                         <td>{{ t('bonusAdjustAmount') }}</td>
                         <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.bonusAdjust) }}</td>
                       </tr>
-                      <!-- <tr>
-                        <td>{{ t('platformCharge') }}</td>
-                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.platformCharge) }}</td>
+                      <tr>
+                        <td>{{ t('agentAdjustAmount') }}</td>
+                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.agentAdjust) }}</td>
                       </tr>
                       <tr>
-                        <td>{{ t('productFee') }}</td>
-                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.productFee) }}</td>
-                      </tr> -->
+                        <td>{{ t('companyAdjustAmount') }}</td>
+                        <td class="right">{{ formatPrice2(agentPlayerSpecialDetailData.companyAdjust) }}</td>
+                      </tr>
                       <tr>
                         <th>{{ t('total') }}</th>
                         <th class="right">
                           {{
                             formatPrice2(
                               agentPlayerSpecialDetailData.bonus +
-                              agentPlayerSpecialDetailData.bonusAdjust,
+                              agentPlayerSpecialDetailData.bonusAdjust +
+                              agentPlayerSpecialDetailData.agentAdjust +
+                              agentPlayerSpecialDetailData.companyAdjust
                             )
                           }}
                         </th>
@@ -517,6 +523,8 @@ export default defineComponent({
       agentPlayerSpecialDetailData: reactive<AgentPlayerSpecialDetailData>({
         bonus: 0,
         bonusAdjust: 0,
+        agentAdjust: 0,
+        companyAdjust: 0
         // productFee: 0,
         // platformCharge: 0
       }),

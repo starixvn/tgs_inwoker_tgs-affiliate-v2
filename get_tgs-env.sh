@@ -18,6 +18,9 @@ get_environment() {
 }
 
 deploy_brands() {
+  npm install --force
+  echo "YAML_CONTENT=$YAML_CONTENT"
+  
   for ((index=0; index<=total_brands; index++)); do
     deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
     site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
@@ -36,4 +39,13 @@ deploy_brands() {
     kubectl set image deployment/$deploy $deploy=$image_tag -n $tgs_env
     echo "=============="
   done
+}
+
+deploy_single_brand() {
+  npm run gitlab-build -- BRAND=$BRANDCODE API_URL=/ --SITE=$SITE DEFAULT_LANGUAGE=$DefaultLanguage vite build -m prod
+  image="pgtgs/$AGENT_IMAGEL:$TAG"
+  docker build -t $image
+  docker push $image
+  envsubst < deployment/${type}-${namespace}.yaml 
+  #envsubst < deployment/${type}-${namespace}.yaml  | kubectl apply -f -
 }

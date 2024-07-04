@@ -8,7 +8,7 @@ stages:
 .deploy-template: &deploy-template
   stage: deploy
   before_script:
-  - npm install
+  - npm install --legacy-peer-deps
   script:
     - | 
       source get_tgs-env.sh

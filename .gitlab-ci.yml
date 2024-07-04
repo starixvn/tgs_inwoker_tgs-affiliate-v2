@@ -8,8 +8,7 @@ stages:
 .deploy-template: &deploy-template
   stage: deploy
   before_script:
-  - apt-get update
-  - apt-get install -y curl
+  - sudo apt-get update
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
   - export NVM_DIR="$HOME/.nvm"
   - source "$NVM_DIR/nvm.sh"

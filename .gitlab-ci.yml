@@ -8,8 +8,14 @@ stages:
 .deploy-template: &deploy-template
   stage: deploy
   before_script:
-  - npm install --legacy-peer-deps
+  - apt-get update
+  - apt-get install -y curl
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+  - export NVM_DIR="$HOME/.nvm"
+  - source "$NVM_DIR/nvm.sh"
+  - nvm install 16.14
   - node -v
+  - npm install
   script:
     - | 
       source get_tgs-env.sh

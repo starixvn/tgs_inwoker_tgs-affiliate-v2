@@ -44,8 +44,8 @@ deploy_brands() {
 deploy_single_brand() {
   npm run gitlab-build -- BRAND=$BRANDCODE API_URL=/ --SITE=$SITE DEFAULT_LANGUAGE=$DefaultLanguage vite build -m prod
   image="pgtgs/$AGENT_IMAGEL:$TAG"
-  docker build -t $image
+  docker build -t $image .
   docker push $image
   envsubst < deployment/${type}-${namespace}.yaml 
-  #envsubst < deployment/${type}-${namespace}.yaml  | kubectl apply -f -
+  envsubst < deployment/${type}-${namespace}.yaml  | kubectl apply -f -
 }

@@ -7,9 +7,8 @@ stages:
   - deploy
 .deploy-template: &deploy-template
   stage: deploy
-  image: 
-    name: bitnami/kubectl:1.28
-    entrypoint: [""]
+  before_script:
+  - npm install
   script:
     - | 
       source get_tgs-env.sh

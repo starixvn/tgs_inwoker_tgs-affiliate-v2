@@ -9,6 +9,7 @@ stages:
   stage: deploy
   before_script:
   - npm install --legacy-peer-deps
+  - node -v
   script:
     - | 
       source get_tgs-env.sh

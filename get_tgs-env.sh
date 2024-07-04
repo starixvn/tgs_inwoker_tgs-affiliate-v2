@@ -44,7 +44,8 @@ deploy_brands() {
 deploy_single_brand() {
   npm run gitlab-build -- BRAND=$BRAND API_URL=/ --SITE=$SITE DEFAULT_LANGUAGE=$LANG vite build -m prod
   lowercase_brand=$(echo "$BRAND" | tr '[:upper:]' '[:lower:]')
-  image="pgtgs/agent-$lowercase_brand:$TAG"
+  tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+  image="pgtgs/agent-$lowercase_brand:$tag"
   docker build -t $image .
   docker push $image
   envsubst < deployment/${type}-${namespace}.yaml 

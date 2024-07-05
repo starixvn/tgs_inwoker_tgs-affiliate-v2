@@ -25,7 +25,8 @@ stages:
   - deploy
 .deploy-template: &deploy-template
   stage: deploy
-  extends: .default
+  before_script:
+    - !reference [default, before_script]
   script:
     - | 
 

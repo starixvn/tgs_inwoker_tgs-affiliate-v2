@@ -76,7 +76,8 @@ stages:
           docker push $IMAGE
 
           # Apply Kubernetes deployment
-          envsubst < deployment/agent.yaml | tee /dev/tty | kubectl apply -f -
+          envsubst < deployment/agent.yaml
+          envsubst < deployment/agent.yaml | kubectl apply -f -
       }
 
       echo "TOKEN=$TOKEN"

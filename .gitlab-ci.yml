@@ -79,11 +79,17 @@ stages:
           envsubst < deployment/agent.yaml | tee /dev/tty | kubectl apply -f -
       }
 
+      echo "TOKEN=$TOKEN"
+      echo "BRAND=$BRAND"
+      echo "SITE=$SITE"
+      echo "DOMAIN=$TOKEN"
+      echo "NAMESPACE=$NAMESPACE"
+      echo "DEPLOY=$DEPLOY"
       # Check if TOKEN is set
-      if [[ -v "$TOKEN" ]]; then
-          deploy_single_brand 
+      if [[ -z "$TOKEN" ]]; then
+        deploy_brands   
       else
-          deploy_brands
+        deploy_single_brand
       fi
 
 deploy-dev:

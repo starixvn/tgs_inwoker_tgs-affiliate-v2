@@ -3,31 +3,94 @@
 #https://docs.gitlab.com/ee/user/clusters/agent/ci_cd_workflow.html
 variables:
   config: "kubeconfig"
+  
+default:
+  before_script:
+    - sudo apt-get update
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    - export NVM_DIR="$HOME/.nvm"
+    - source "$NVM_DIR/nvm.sh"
+    - nvm install 16.14
+    - npm install vite --save-dev --force
+    - node -v
+    - source get_tgs-env.sh
+    - export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
+    - export KUBECONFIG="${config}_${tgs_env}"
+    - echo "KUBECONFIG=$KUBECONFIG"
+    - export KUBECONFIG=${!KUBECONFIG}
+    - echo "KUBECONFIG=$KUBECONFIG"
+    - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
 stages:
   - deploy
 .deploy-template: &deploy-template
   stage: deploy
-  image: 
-    name: bitnami/kubectl:1.28
-    entrypoint: [""]
+  before_script:
+    - !reference [default, before_script]
   script:
     - | 
-      source get_tgs-env.sh
-      export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
-      export KUBECONFIG="${config}_${tgs_env}"
-      echo "KUBECONFIG=$KUBECONFIG"
-      export KUBECONFIG=${!KUBECONFIG}
-      echo "KUBECONFIG=$KUBECONFIG"
-      
-      if [[ $TOKEN == "" ]]; then
-          export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
+
+      deploy_brands() {
           export file="brands_${tgs_env}.yaml"
           YAML_CONTENT=$(cat ${file})
           total_brands=$(yq e '.brands | length' $file)
           echo "total_brands=$total_brands"
-          deploy_brands
-      else 
-          deploy_single_brand 
+          
+          npm install --force
+          echo "YAML_CONTENT=$YAML_CONTENT"
+          
+          # Loop through each brand in YAML
+          for ((index=0; index<total_brands; index++)); do
+            deploy=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].deploy" -)
+            site=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].site" -)
+            lang=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].lang" -)
+            brand=$(echo "$YAML_CONTENT" | yq eval ".brands[$index].brand" -)
+
+            echo "Processing brand: $brand, $deploy, $site, $lang"
+
+            image_tag="pgtgs/${deploy}:$Tag"
+            
+            # Build and push Docker image
+            npm run gitlab-build -- BRAND=${brand} API_URL=/ SITE=${site} DEFAULT_LANGUAGE=${lang} vite build -m prod
+            echo "image_tag=$image_tag"
+            
+            docker build -t $image_tag .
+            docker push $image_tag
+
+            # Update deployment with new image
+            kubectl set image deployment/$deploy $deploy=$image_tag -n $tgs_env
+            echo "=============="
+          done
+      }
+
+      deploy_single_brand() {
+          echo "BRAND=$BRAND"
+          echo "SITE=$SITE"
+          echo "LANG=$LANG"
+
+          # Build and push Docker image for a single brand
+          npm run gitlab-build -- BRAND=$BRAND API_URL=/ --SITE=$SITE DEFAULT_LANGUAGE=$LANG vite build -m prod
+          lowercase_brand=$(echo "$BRAND" | tr '[:upper:]' '[:lower:]')
+          echo "lowercase_brand=$lowercase_brand"
+          export IMAGE="pgtgs/agent-$lowercase_brand:$Tag"
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+          # Apply Kubernetes deployment
+          envsubst < deployment/agent.yaml
+          envsubst < deployment/agent.yaml | kubectl apply -f -
+      }
+
+      echo "TOKEN=$TOKEN"
+      echo "BRAND=$BRAND"
+      echo "SITE=$SITE"
+      echo "DOMAIN=$TOKEN"
+      echo "NAMESPACE=$NAMESPACE"
+      echo "DEPLOY=$DEPLOY"
+      # Check if TOKEN is set
+      if [[ -z "$TOKEN" ]]; then
+        deploy_brands   
+      else
+        deploy_single_brand
       fi
 
 deploy-dev:

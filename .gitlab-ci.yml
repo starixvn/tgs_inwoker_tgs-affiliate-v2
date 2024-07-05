@@ -76,14 +76,14 @@ stages:
           docker push $IMAGE
 
           # Apply Kubernetes deployment
-          envsubst < deployment/agent-${tgs_env}.yaml | kubectl apply -f -
+          envsubst < deployment/agent.yaml | tee /dev/tty | kubectl apply -f -
       }
 
       # Check if TOKEN is set
-      if [[ $TOKEN == "" ]]; then
-          deploy_brands
+      if [[ -v "$TOKEN" ]]; then
+          deploy_single_brand 
       else
-          deploy_single_brand
+          deploy_brands
       fi
 
 deploy-dev:

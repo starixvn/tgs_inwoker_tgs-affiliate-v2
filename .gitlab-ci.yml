@@ -6,13 +6,13 @@ variables:
   
 default:
   before_script:
-    - sudo apt-get update
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-    - export NVM_DIR="$HOME/.nvm"
-    - source "$NVM_DIR/nvm.sh"
-    - nvm install 16.14
-    - npm install vite --save-dev --force
-    - node -v
+    # - sudo apt-get update
+    # - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    # - export NVM_DIR="$HOME/.nvm"
+    # - source "$NVM_DIR/nvm.sh"
+    # - nvm install 16.14
+    # - npm install vite --save-dev --force
+    # - node -v
     - source get_tgs-env.sh
     - export tgs_env=$(get_environment "$CI_COMMIT_REF_NAME")
     - export KUBECONFIG="${config}_${tgs_env}"

@@ -1,6 +1,16 @@
-## sample 
+## Sample 
 
 ![for example](/deployment/sample.png)*sample*
+
+
+BRAND  369VN
+SITE  https://stg-369vn.rpgp.cc/
+LANG  vi-VN
+DEPLOY  agentv2-369vn
+TOKEN  eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.
+NAMESPACE  staging
+DOMAIN stg-ag-369vn.rpgp.cc 
+
 
 # Me-admin template
 ## 简介

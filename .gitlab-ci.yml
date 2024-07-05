@@ -71,7 +71,7 @@ stages:
           npm run gitlab-build -- BRAND=$BRAND API_URL=/ --SITE=$SITE DEFAULT_LANGUAGE=$LANG vite build -m prod
           lowercase_brand=$(echo "$BRAND" | tr '[:upper:]' '[:lower:]')
           echo "lowercase_brand=$lowercase_brand"
-          IMAGE="pgtgs/agent-$lowercase_brand:$Tag"
+          export IMAGE="pgtgs/agent-$lowercase_brand:$Tag"
           docker build -t $IMAGE .
           docker push $IMAGE
 

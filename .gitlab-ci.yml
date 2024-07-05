@@ -20,7 +20,9 @@ default:
     - export KUBECONFIG=${!KUBECONFIG}
     - echo "KUBECONFIG=$KUBECONFIG"
     - export Tag="$(date -d $CI_PIPELINE_CREATED_AT +%Y%m%d%H%M).$CI_PIPELINE_IID"
-    
+    - sudo add-apt-repository ppa:rmescandon/yq
+    - sudo apt update
+    - sudo apt install yq -y
 stages:
   - deploy
 .deploy-template: &deploy-template

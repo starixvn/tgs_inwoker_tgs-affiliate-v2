@@ -31,3 +31,23 @@ brands:
   brand: SBOCASH
   site: https://stg-sbo.rpgp.cc/
   lang: en-US
+- deploy: agentv2-pb
+  brand: PB
+  site: https://stg-pb.rpgp.cc/
+  lang: en-US
+- deploy: agent-pb2
+  brand: PB2
+  site: https://stg-pb2.rpgp.cc/
+  lang: en-US
+- deploy: agentv2-piso
+  brand: PISO
+  site: https://stg-piso.rpgp.cc/
+  lang: en-US
+- deploy: agent-king8
+  brand: KING8
+  site: https://stg-king8.rpgp.cc/
+  lang: en-US
+- deploy: agent-tiger
+  brand: TIGER
+  site: https://stg-tiger.rpgp.cc/
+  lang: en-US

@@ -47,7 +47,3 @@ brands:
   brand: KING8
   site: https://stg-king8.rpgp.cc/
   lang: en-US
-- deploy: agent-tiger
-  brand: TIGER
-  site: https://stg-tiger.rpgp.cc/
-  lang: en-US

@@ -83,7 +83,7 @@ stages:
       echo "TOKEN=$TOKEN"
       echo "BRAND=$BRAND"
       echo "SITE=$SITE"
-      echo "DOMAIN=$TOKEN"
+      echo "DOMAIN=$DOMAIN"
       echo "NAMESPACE=$NAMESPACE"
       echo "DEPLOY=$DEPLOY"
       # Check if TOKEN is set
